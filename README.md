@@ -13,11 +13,13 @@ software tool (i.e., a web application and java code running on Android devices)
 android developers to analyze executions of Android apps (on real devices) by (i) visualizing hot
 spots, and (ii) detecting performance bottlenecks. In that sense this project requires a module
 for data collection on the device, and a web application for reporting the results.
-The data collection on the device should be done using the Xposed framework
 
+The data collection on the device should be done using the Xposed framework
 (http://repo.xposed.info/, https://github.com/rovo89/XposedBridge/wiki/Development­tutorial),
 which allows to hook source code methods of an Android app, and collect dynamic information
-meanwhile the app is executed in a real device. The visualizations will be provided in the web
+meanwhile the app is executed in a real device. 
+
+The visualizations will be provided in the web
 module using an effective method for performance analysis called “flame graphs”; and the
 performance bottlenecks detection should be done using anomaly detection techniques. The
 web module should deliver a good and cool user experience to developers, therefore, the team
@@ -26,6 +28,9 @@ Server Faces, and JPA.
 
 #Technologies Used
 
+###Xposed framework
+­ https://github.com/rovo89/XposedBridge/wiki/Development­tutorial
+­ http://repo.xposed.info/
 
 #References 
 
@@ -42,7 +47,4 @@ Reengineering (SANER), 2015 IEEE 22nd International Conference on , vol., no.,
 pp.535­539, 2­6 March 2015
 ­ http://www.brendangregg.com/flamegraphs.html
 
-Xposed framework:
-­ https://github.com/rovo89/XposedBridge/wiki/Development­tutorial
-­ http://repo.xposed.info/
 
