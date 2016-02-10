@@ -24,3 +24,25 @@ web module should deliver a good and cool user experience to developers, therefo
 should use modern web and ORM frameworks such as JQuery, Bootstrap, AngularJS, Java
 Server Faces, and JPA.
 
+#Technologies Used
+
+
+#References 
+
+Performance bottlenecks:
+­ Linares­Vasquez, M.; Vendome, C.; Qi Luo; Poshyvanyk, D., "How developers detect
+and fix performance bottlenecks in Android apps," in Software Maintenance and
+Evolution (ICSME), 2015 IEEE International Conference on , vol., no., pp.352­361, Sept.
+29 2015­Oct. 1 2015
+
+Flame graphs:
+­ Bezemer, C.­P.; Pouwelse, J.; Gregg, B., "Understanding software performance
+regressions using differential flame graphs," in Software Analysis, Evolution and
+Reengineering (SANER), 2015 IEEE 22nd International Conference on , vol., no.,
+pp.535­539, 2­6 March 2015
+­ http://www.brendangregg.com/flamegraphs.html
+
+Xposed framework:
+­ https://github.com/rovo89/XposedBridge/wiki/Development­tutorial
+­ http://repo.xposed.info/
+
