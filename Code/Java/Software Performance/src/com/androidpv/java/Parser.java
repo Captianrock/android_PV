@@ -21,26 +21,19 @@ public class Parser {
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
         final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         cu.accept(new ASTVisitor() {
-
             Set names = new HashSet();
 
             public boolean visit(MethodDeclaration node) {
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
-                String pack;
+                System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
+                        + "," + typeDec.getName().toString() +  "," + name.toString());
 
-                System.out.println((cu.getPackage() != null ? cu.getPackage().getName() : "Null") + "," + typeDec.getName()  +  "," + name);
+                printtoFile((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
+                        "," + typeDec.getName().toString() +  "," + name.toString());
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
-            }
-
-            public boolean visit(SimpleName node) {
-                if (this.names.contains(node.getIdentifier())) {
-                    System.out.println("Usage of '" + node + "' at line "
-                            + cu.getLineNumber(node.getStartPosition()));
-                }
-                return true;
             }
         });
     }
@@ -53,12 +46,10 @@ public class Parser {
         char[] buf = new char[10];
         int numRead = 0;
         while ((numRead = reader.read(buf)) != -1) {
-            //System.out.println(numRead);
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);
             buf = new char[1024];
         }
-
         reader.close();
 
         return  fileData.toString();
@@ -66,24 +57,18 @@ public class Parser {
 
     //loop directory to get file list
     public static void ParseFilesInDir(List<File> files) throws IOException{
-//        File dirs = new File(".");
-//        String dirPath = dirs.getCanonicalPath() + File.separator+"src"+File.separator;
-//
-//        File root = new File(dirPath);
-//        //System.out.println(rootDir.listFiles());
-//        File[] files = root.listFiles ( );
         String filePath = null;
         int n=0;
         for (File f : files ) {
             //System.out.println(f);
             filePath = f.getAbsolutePath();
             if(f.isFile()){
-                System.out.println("FILE BEING PARSED" + f);
+                //System.out.println("FILE BEING PARSED" + f);
                 parse(readFileToString(filePath));
             }
         }
     }
-    public static List printFiles() {
+    public static List getFiles() {
         Path fp = Paths.get("C:/Users/bradley/IdeaProjects");
         PrintFiles pf = new PrintFiles();
         try {
@@ -95,10 +80,27 @@ public class Parser {
         return pf.getFileL();
     }
 
+    public static void printtoFile(String s){
+        try {
+            File file = new File("./sourceMethods.txt");
+
+            // if file doesnt exists, then create it
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(s);
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        List<File> fileL = printFiles();
+        List<File> fileL = getFiles();
         ParseFilesInDir(fileL);
-
-
     }
 }
