@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Desktop/GitHub/android_PV/Code/Java/Software Performance/Software Performance.iml" filepath="$USER_HOME$/Desktop/GitHub/android_PV/Code/Java/Software Performance/Software Performance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Software Performance.iml" filepath="$PROJECT_DIR$/Software Performance.iml" />
     </modules>
   </component>
 </project>

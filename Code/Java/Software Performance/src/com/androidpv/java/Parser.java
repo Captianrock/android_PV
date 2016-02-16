@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,11 +31,17 @@ public class Parser {
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
-                //System.out.println("This is Class: " + typeDec.getName()  +  " and method: " + name);
+                String pack;
+                if (cu.getPackage() == null){
+                    pack = "Null";
+                }
+                else{
+                    pack =  cu.getPackage().getName().toString();
+                }
+                System.out.println("Package: " + pack + " Class: " + typeDec.getName()  +  " & Method: " + name);
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
-
 
             public boolean visit(SimpleName node) {
                 if (this.names.contains(node.getIdentifier())) {
@@ -64,17 +73,17 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir() throws IOException{
-        File dirs = new File(".");
-        String dirPath = dirs.getCanonicalPath() + File.separator+"src"+File.separator;
-
-        File root = new File(dirPath);
-        //System.out.println(rootDir.listFiles());
-        File[] files = root.listFiles ( );
+    public static void ParseFilesInDir(List<File> files) throws IOException{
+//        File dirs = new File(".");
+//        String dirPath = dirs.getCanonicalPath() + File.separator+"src"+File.separator;
+//
+//        File root = new File(dirPath);
+//        //System.out.println(rootDir.listFiles());
+//        File[] files = root.listFiles ( );
         String filePath = null;
         int n=0;
         for (File f : files ) {
-            System.out.println(f);
+            //System.out.println(f);
             filePath = f.getAbsolutePath();
             if(f.isFile()){
                 System.out.println("FILE BEING PARSED" + f);
@@ -82,8 +91,22 @@ public class Parser {
             }
         }
     }
+    public static List printFiles() {
+        Path fp = Paths.get("C:/Users/bradley/IdeaProjects");
+        PrintFiles pf = new PrintFiles();
+        try {
+            Files.walkFileTree(fp, pf);
+            //System.out.println("This is your fileList: " + pf.getFileL());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pf.getFileL();
+    }
 
     public static void main(String[] args) throws IOException {
-        ParseFilesInDir();
+        List<File> fileL = printFiles();
+        ParseFilesInDir(fileL);
+
+
     }
 }
