@@ -27,8 +27,8 @@ public class Parser {
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
-                System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
-                        + "," + typeDec.getName().toString() +  "," + name.toString());
+                //System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
+                        //+ "," + typeDec.getName().toString() +  "," + name.toString());
 
                 printtoFile((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
                         "," + typeDec.getName().toString() +  "," + name.toString());
@@ -44,7 +44,7 @@ public class Parser {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
         char[] buf = new char[10];
-        int numRead = 0;
+        int numRead;
         while ((numRead = reader.read(buf)) != -1) {
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);
@@ -57,7 +57,7 @@ public class Parser {
 
     //loop directory to get file list
     public static void ParseFilesInDir(List<File> files) throws IOException{
-        String filePath = null;
+        String filePath;
         int n=0;
         for (File f : files ) {
             //System.out.println(f);
@@ -81,20 +81,12 @@ public class Parser {
     }
 
     public static void printtoFile(String s){
-        try {
-            File file = new File("./sourceMethods.txt");
-
-            // if file doesnt exists, then create it
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(s);
-            bw.close();
-
-        } catch (IOException e) {
+        // Creates a file called "sourceMethods.txt" in the src directory
+        try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sourceMethods.txt", true)))) {
+            out.print("");
+            out.println(s);
+        }catch (IOException e) {
+            //exception handling left as an exercise for the reader
             e.printStackTrace();
         }
     }
@@ -102,5 +94,6 @@ public class Parser {
     public static void main(String[] args) throws IOException {
         List<File> fileL = getFiles();
         ParseFilesInDir(fileL);
+        System.out.println("Done");
     }
 }
