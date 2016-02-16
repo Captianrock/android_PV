@@ -3,10 +3,7 @@ package com.androidpv.java;
 /**
  * Created by bradley on 2/12/2016.
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,13 +29,8 @@ public class Parser {
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
                 String pack;
-                if (cu.getPackage() == null){
-                    pack = "Null";
-                }
-                else{
-                    pack =  cu.getPackage().getName().toString();
-                }
-                System.out.println("Package: " + pack + " Class: " + typeDec.getName()  +  " & Method: " + name);
+
+                System.out.println((cu.getPackage() != null ? cu.getPackage().getName() : "Null") + "," + typeDec.getName()  +  "," + name);
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
