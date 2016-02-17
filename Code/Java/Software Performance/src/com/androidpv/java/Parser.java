@@ -3,6 +3,7 @@ package com.androidpv.java;
 /**
  * Created by bradley on 2/12/2016.
  */
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +11,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.androidpv.java.gui.PVGUI;
 import org.eclipse.jdt.core.dom.*;
 
 public class Parser {
@@ -28,10 +31,10 @@ public class Parser {
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
                 //System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
-                        //+ "," + typeDec.getName().toString() +  "," + name.toString());
+                //+ "," + typeDec.getName().toString() +  "," + name.toString());
 
                 printtoFile((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        "," + typeDec.getName().toString() +  "," + name.toString());
+                        "," + typeDec.getName().toString() + "," + name.toString());
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
@@ -52,24 +55,25 @@ public class Parser {
         }
         reader.close();
 
-        return  fileData.toString();
+        return fileData.toString();
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir(List<File> files) throws IOException{
+    public static void ParseFilesInDir(List<File> files) throws IOException {
         String filePath;
-        int n=0;
-        for (File f : files ) {
+        int n = 0;
+        for (File f : files) {
             //System.out.println(f);
             filePath = f.getAbsolutePath();
-            if(f.isFile()){
+            if (f.isFile()) {
                 //System.out.println("FILE BEING PARSED" + f);
                 parse(readFileToString(filePath));
             }
         }
     }
-    public static List getFiles() {
-        Path fp = Paths.get("C:/Users/bradley/IdeaProjects");
+
+    public static List getFiles(String input) {
+        Path fp = Paths.get(input);
         PrintFiles pf = new PrintFiles();
         try {
             Files.walkFileTree(fp, pf);
@@ -80,19 +84,28 @@ public class Parser {
         return pf.getFileL();
     }
 
-    public static void printtoFile(String s){
+    public static void printtoFile(String s) {
         // Creates a file called "sourceMethods.txt" in the src directory
-        try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sourceMethods.txt", true)))) {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sourceMethods.txt", true)))) {
             out.print("");
             out.println(s);
-        }catch (IOException e) {
+        } catch (IOException e) {
             //exception handling left as an exercise for the reader
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) throws IOException {
-        List<File> fileL = getFiles();
+
+        PVGUI gui = new PVGUI();
+
+
+
+        String inputPathString = gui.getInputPath();
+        System.out.println("checking input string: " + inputPathString);
+        String outputPathString = gui.getOutputPath();
+
+        List<File> fileL = getFiles(inputPathString);
         ParseFilesInDir(fileL);
         System.out.println("Done");
     }
