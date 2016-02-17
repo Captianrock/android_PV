@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.jdt.core.dom.*;
 
+import javax.swing.*;
+
 public class Parser {
 
     //use ASTParse to parse string
@@ -32,6 +34,7 @@ public class Parser {
 
                 printtoFile((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
                         "," + typeDec.getName().toString() +  "," + name.toString());
+
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
@@ -46,6 +49,7 @@ public class Parser {
         char[] buf = new char[10];
         int numRead;
         while ((numRead = reader.read(buf)) != -1) {
+
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);
             buf = new char[1024];
@@ -59,11 +63,11 @@ public class Parser {
     public static void ParseFilesInDir(List<File> files) throws IOException{
         String filePath;
         int n=0;
+        //Iterates for each file in the File List
         for (File f : files ) {
-            //System.out.println(f);
             filePath = f.getAbsolutePath();
+            //Makes sure each file is a .java file
             if(f.isFile()){
-                //System.out.println("FILE BEING PARSED" + f);
                 parse(readFileToString(filePath));
             }
         }
@@ -73,7 +77,6 @@ public class Parser {
         PrintFiles pf = new PrintFiles();
         try {
             Files.walkFileTree(fp, pf);
-            //System.out.println("This is your fileList: " + pf.getFileL());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,8 +95,13 @@ public class Parser {
     }
 
     public static void main(String[] args) throws IOException {
-        List<File> fileL = getFiles();
-        ParseFilesInDir(fileL);
-        System.out.println("Done");
+        //List<File> fileL = getFiles();
+        //ParseFilesInDir(fileL);
+
+        ClassFrame frame = new ClassFrame("Parser");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        String dirPath = frame.myString;
+        //System.out.println(dirPath);
     }
 }
