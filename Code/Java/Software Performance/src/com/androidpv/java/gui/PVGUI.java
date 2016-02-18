@@ -11,11 +11,19 @@ public class PVGUI {
 
     private String inputPath;
     private String outputPath;
+    private boolean buttonPressed;
+
 
     public PVGUI() {
+        buttonPressed = false;
+    }
+
+    public void createGUI() {
 
         JTextField inputField = new JTextField();
         JTextField outputField = new JTextField();
+
+        JFrame window = new JFrame("Android Performance Visualization");
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
@@ -29,6 +37,12 @@ public class PVGUI {
 
                 System.out.println("input string: " + inputPath);
                 System.out.println("output string: " + outputPath);
+
+                buttonPressed = true;
+
+                // closes the window once program ends
+                window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }
         });
 
@@ -72,7 +86,6 @@ public class PVGUI {
         content.add(textFieldsContent, BorderLayout.CENTER);
         content.add(submitButton, BorderLayout.PAGE_END);
 
-        JFrame window = new JFrame("Android Performance Visualization");
         window.setContentPane(content);
         window.setSize(350, 200);
         window.setLocation(100, 100);
@@ -85,6 +98,10 @@ public class PVGUI {
 
     public String getOutputPath() {
         return outputPath;
+    }
+
+    public boolean returnButtonPressed() {
+        return buttonPressed;
     }
 
 }

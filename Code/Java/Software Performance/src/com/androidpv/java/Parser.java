@@ -98,8 +98,30 @@ public class Parser {
     public static void main(String[] args) throws IOException {
 
         PVGUI gui = new PVGUI();
+        Thread thread = new Thread(new Runnable(){
 
+            @Override
+            public void run() {
+                gui.createGUI();
+            }
+        });
+        thread.start();
 
+        while (!gui.returnButtonPressed()) {
+            try {
+                Thread.currentThread().sleep(1000);
+                System.out.println("sleeping!");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            thread.join();
+            System.out.println("Exited Thread");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         String inputPathString = gui.getInputPath();
         System.out.println("checking input string: " + inputPathString);
