@@ -1,29 +1,48 @@
 package com.androidpv.java.gui;
 
+/**
+ * Created by bradley on 2/16/2016.
+ */
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/**
- * Created by bradley on 2/16/2016.
- */
 public class PVGUI {
 
     private String inputPath;
     private String outputPath;
     private boolean buttonPressed;
+    JTextField inputField = new JTextField();
+    JTextField outputField = new JTextField();
+    JFrame window = new JFrame("Android Performance Visualization");
 
 
     public PVGUI() {
         buttonPressed = false;
     }
 
+
+    /*
+        Called when GUI receives bad input
+     */
+    public void resetGUI() {
+
+        buttonPressed = false;
+
+        // will eventually want to change to mimic TextPrompt
+        inputField.setText("Invalid directory name.");
+    }
+
+
+    public void closeGUI() {
+
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+    }
+
+
     public void createGUI() {
-
-        JTextField inputField = new JTextField();
-        JTextField outputField = new JTextField();
-
-        JFrame window = new JFrame("Android Performance Visualization");
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
@@ -35,14 +54,8 @@ public class PVGUI {
                 inputPath = inputField.getText();
                 outputPath = outputField.getText();
 
-                System.out.println("input string: " + inputPath);
-                System.out.println("output string: " + outputPath);
-
                 buttonPressed = true;
 
-                // closes the window once program ends
-                window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }
         });
 
