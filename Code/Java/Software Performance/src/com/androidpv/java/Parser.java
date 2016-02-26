@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.*;
 public class Parser {
 
     //use ASTParse to parse string
-    public static void parse(String str) {
+    public static void parse(String str, String outputFile) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setSource(str.toCharArray());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -33,7 +33,7 @@ public class Parser {
                 //System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
                 //+ "," + typeDec.getName().toString() +  "," + name.toString());
 
-                printtoFile((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
+                printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
                         "," + typeDec.getName().toString() + "," + name.toString());
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
@@ -54,20 +54,24 @@ public class Parser {
             buf = new char[1024];
         }
         reader.close();
-
         return fileData.toString();
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir(List<File> files) throws IOException {
+    public static void ParseFilesInDir(List<File> files, String outputFile) {
         String filePath;
         int n = 0;
         for (File f : files) {
-            //System.out.println(f);
+//            System.out.println(f);
             filePath = f.getAbsolutePath();
             if (f.isFile()) {
-                //System.out.println("FILE BEING PARSED" + f);
-                parse(readFileToString(filePath));
+//                System.out.println("FILE BEING PARSED" + f);
+                try {
+                    parse(readFileToString(filePath), outputFile);
+                } catch (IOException e) {
+                    System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -77,16 +81,21 @@ public class Parser {
         PrintFiles pf = new PrintFiles();
         try {
             Files.walkFileTree(fp, pf);
-            //System.out.println("This is your fileList: " + pf.getFileL());
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("Error walkFileTree in getFiles: " + e.getMessage());
             e.printStackTrace();
         }
-        return pf.getFileL();
+        if (pf.getFileL().size() == 0) {  // either empty directory or directory doesn't exist
+            return null;
+        }
+        else {
+            return pf.getFileL();
+        }
     }
 
-    public static void printtoFile(String s) {
-        // Creates a file called "sourceMethods.txt" in the src directory
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sourceMethods.txt", true)))) {
+    public static void printtoFile(String outputFile, String s) {
+        // Creates output file in the src directory
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
             out.print("");
             out.println(s);
         } catch (IOException e) {
@@ -95,18 +104,44 @@ public class Parser {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         PVGUI gui = new PVGUI();
+        gui.createGUI();
 
+        while (!gui.returnButtonPressed()) {
+            try {
+                Thread.currentThread().sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-
-        String inputPathString = gui.getInputPath();
-        System.out.println("checking input string: " + inputPathString);
-        String outputPathString = gui.getOutputPath();
+        String inputPathString = gui.getInputPath().trim();
+        String outputPathString = gui.getOutputPath().trim();
 
         List<File> fileL = getFiles(inputPathString);
-        ParseFilesInDir(fileL);
+        while (fileL == null) { // bad input
+            gui.resetGUI();
+            while (!gui.returnButtonPressed()) {
+                try {
+                    Thread.currentThread().sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            // reset strings and check if directory is valid
+            inputPathString = gui.getInputPath().trim();
+            outputPathString = gui.getOutputPath().trim();
+            fileL = getFiles(inputPathString);
+        }
+        try {
+            ParseFilesInDir(fileL, outputPathString);
+        } catch (Exception e) {
+            System.err.println("Error parseFilesInDir in main: " + e.getMessage());
+            e.printStackTrace();
+        }
         System.out.println("Done");
+        gui.closeGUI();
     }
 }
