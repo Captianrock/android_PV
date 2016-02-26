@@ -34,7 +34,7 @@ public class Parser {
                 //+ "," + typeDec.getName().toString() +  "," + name.toString());
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        "," + typeDec.getName().toString() + "," + name.toString());
+                        "," + typeDec.getName().toString() + "," + name.toString() + "," + node.parameters() );
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
