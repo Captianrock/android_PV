@@ -35,7 +35,7 @@ public class Tutorial implements IXposedHookLoadPackage {
                 XposedBridge.log("updateClock::methodEnd::" + endTime);
                 //Gets the shared preference
                 String text = pref.getString("user_text", "");
-                XposedBridge.log("String: " + text);
+                XposedBridge.log("Send: " + text);
                 //reads the value which is saves, using nothing as default value to use if nothing is saved
                 tv.setText(text);
                 tv.setTextColor(Color.BLUE);
