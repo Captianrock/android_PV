@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.androidpv.java.gui.PVGUI;
+import com.androidpv.java.xposed.ModuleBuilder;
 import org.eclipse.jdt.core.dom.*;
 
 public class Parser {
@@ -141,7 +142,9 @@ public class Parser {
             System.err.println("Error parseFilesInDir in main: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("Done");
+        System.out.println("Done parsing");
         gui.closeGUI();
+
+        ModuleBuilder moduleBuilder = new ModuleBuilder(outputPathString);
     }
 }
