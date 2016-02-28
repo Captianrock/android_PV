@@ -133,6 +133,8 @@ public class Parser {
             // reset strings and check if directory is valid
             inputPathString = gui.getInputPath().trim();
             outputPathString = gui.getOutputPath().trim();
+
+
             fileL = getFiles(inputPathString);
         }
         try {
