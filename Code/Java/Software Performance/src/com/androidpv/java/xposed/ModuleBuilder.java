@@ -2,6 +2,7 @@ package com.androidpv.java.xposed;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class ModuleBuilder {
         System.out.println("in moduel builder");
 
         this.sourceFile = new File(fileName);
+        boolean beginningOfFile = true;
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.txt")));
@@ -36,22 +38,31 @@ public class ModuleBuilder {
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(",");
                 if (!splitString[0].equals(packageName)) {
+                    if (!beginningOfFile) {
+                        writer.println(addEndOfIfClause());
+                    }
+                    beginningOfFile = false;
                     writer.println(addPackageNameCheck(splitString[0]));
                     packageName = splitString[0];
                     System.out.println(packageName);
                 }
                 writer.println(addFindHook(splitString));
+                writer.println(addBeforeHook(splitString[2]));
+                writer.println(addAfterHook(splitString[2]));
             }
+            writer.println(addEndOfCode());
+            reader.close();
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.sourceFile.deleteOnExit();
     }  // End of Constructor
 
 
-
-
     private String addFindHook(String[] methodInfo) {
+
+        List<String> primitives = Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char");
 
         StringBuilder hookMethodBuilder = new StringBuilder();
 
@@ -69,17 +80,28 @@ public class ModuleBuilder {
             // we have parameters
             int i = 3;
             while (i < methodInfo.length) {
-                String param = methodInfo[i];
+                String paramPair = methodInfo[i];
 
-                // can't just do replace because of arrays
-                if (param.charAt(0) == '[') {
-                    param = param.substring(1);
+                // clean the parameter - remove brackets
+                    // can't just do replace because of arrays
+                if (paramPair.charAt(0) == '[') {
+                    paramPair = paramPair.substring(1);
                 }
-                if (param.charAt(param.length()-1) == ']') {
-                    param = param.substring(0, param.length()-2);
+                if (paramPair.charAt(paramPair.length()-1) == ']') {
+                    paramPair = paramPair.substring(0, paramPair.length()-1);
                 }
 
-                String paramString = ", \"" + param + "\"";
+                paramPair = paramPair.trim();
+                String[] paramTuple = paramPair.split(" ");
+                String param = paramTuple[0];
+                String paramString;
+                if (primitives.contains(param)) {
+                    paramString = ", \"" + param + "\"";
+                }
+                else {
+                    paramString = ", " + param + ".class";
+                }
+
                 hookMethodBuilder.append(paramString);
                 i++;
             }
@@ -90,12 +112,27 @@ public class ModuleBuilder {
         return hookMethodBuilder.toString();
     }
 
-    private void addBeforeHook() {
+    private String addBeforeHook(String method) {
 
+        String beforeHook = "\t\t\t\t@Override\n" +
+                "\t\t\t\tprotected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n" +
+                "\t\t\t\t\tstartTime = System.nanoTime();\n" +
+                "\t\t\t\t\tXposedBridge.log(\"" + method + "::methodStart::\" + startTime);\n" +
+                "\t\t\t\t}";
+
+        return beforeHook;
     }
 
-    private void addAfterHook() {
+    private String addAfterHook(String method) {
 
+        String afterHook = "\t\t\t\t@Override\n" +
+                "\t\t\t\tprotected void afterHookedMethod(MethodHookParam param) throws Throwable {\n" +
+                "\t\t\t\t\tendTime = System.nanoTime();\n" +
+                "\t\t\t\t\tXposedBridge.log(\"" + method + "::methodEnd::\" + endTime);\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\t});\n";
+
+        return afterHook;
     }
 
     private String addPackageNameCheck(String packageName) {
@@ -125,12 +162,12 @@ public class ModuleBuilder {
             ifClause.append(packageNamesList.get(i));
             i++;
             if (i != packageNamesList.size()) {
-                ifClause.append(") || lpparam.packageName.equals(\"");
+                ifClause.append("\") || lpparam.packageName.equals(\"");
             }
         }
         ifClause.append("\"))) {\n" +
                         "\t\t\treturn;\n" +
-                        "\t\t}");
+                        "\t\t}\n");
 
         return ifClause.toString();
     }
@@ -169,7 +206,7 @@ public class ModuleBuilder {
         String className = "public class Tutorial implements IXposedHookLoadPackage {\n" +
                 "\tlong startTime,endTime;\n" +
                 "\tpublic void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {\n" +
-                "\t\tXposedBridge.log(\"Loaded app: \" + lpparam.packageName);";
+                "\t\tXposedBridge.log(\"Loaded app: \" + lpparam.packageName);\n";
         return className;
     }
 
@@ -185,10 +222,22 @@ public class ModuleBuilder {
                 "import de.robv.android.xposed.XC_MethodHook;\n" +
                 "import de.robv.android.xposed.XSharedPreferences;\n" +
                 "import de.robv.android.xposed.XposedBridge;\n" +
-                "import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;\n" +
-                "\n" +
-                "import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;";
+                "import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;\n\n" +
+                "import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;\n";
         return imports;
+    }
+
+
+    // Done for all but last if clause
+    private String addEndOfIfClause() {
+        return "\t\t}\n\n";
+    }
+
+
+    private String addEndOfCode() {
+        return "\t\t}\n" +
+                "\t}\n" +
+                "}\n";
     }
 
 }
