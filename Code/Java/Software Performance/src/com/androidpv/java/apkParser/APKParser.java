@@ -14,7 +14,7 @@ public class APKParser {
     public static void main(String[] args) throws JadxException {
         File f = new File (new File("").getAbsoluteFile().toString() + "/src/BBCNews.apk");
         if (isAPK(f.toPath())){
-        //parse(f);
+            parse(f);
             System.out.println(f + " Is an APK File");
         }
     }

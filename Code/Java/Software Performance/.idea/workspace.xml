@@ -2,9 +2,63 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="adbf4701-71db-4fa9-88b6-d578818eb507" name="Default" comment="Edited eclipseJDT.xml to find jars based on workign directory&#10;&#10;PVGUI has two text fields. Able to catch string. Still need to use string in parser program.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/androidpv/java/gui/PVGUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/androidpv/java/Parser.java" afterPath="$PROJECT_DIR$/src/com/androidpv/java/Parser.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/android-5.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/annotations-12.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/antlr-runtime-3.5.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/asm-5.0.3.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/asm-debug-all-4.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-collections-3.2.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-configuration-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-lang-2.5.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-logging-1.1.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/dx-1.10.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jadx-cli-0.6.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jadx-core-0.6.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jcommander-1.47.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jfontchooser-1.0.5.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/logback-classic-1.1.2.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/logback-core-1.1.2.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.runtime_3.5.0.v20090525.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/org.eclipse.osgi_3.5.2.R35x_v20100126.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/rsyntaxtextarea-2.5.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/slf4j-api-1.7.10.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BBCNews.apk" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/eclipseJDT.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/android-5.1.jar" afterPath="$PROJECT_DIR$/lib/android-5.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/annotations-12.0.jar" afterPath="$PROJECT_DIR$/lib/annotations-12.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/antlr-runtime-3.5.jar" afterPath="$PROJECT_DIR$/lib/antlr-runtime-3.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/asm-5.0.3.jar" afterPath="$PROJECT_DIR$/lib/asm-5.0.3.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/asm-debug-all-4.1.jar" afterPath="$PROJECT_DIR$/lib/asm-debug-all-4.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/commons-collections-3.2.1.jar" afterPath="$PROJECT_DIR$/lib/commons-collections-3.2.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/commons-configuration-1.6.jar" afterPath="$PROJECT_DIR$/lib/commons-configuration-1.6.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/commons-io-2.4.jar" afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/commons-lang-2.5.jar" afterPath="$PROJECT_DIR$/lib/commons-lang-2.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/commons-logging-1.1.1.jar" afterPath="$PROJECT_DIR$/lib/commons-logging-1.1.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/jadx-cli-0.6.0.jar" afterPath="$PROJECT_DIR$/lib/jadx-cli-0.6.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/jadx-core-0.6.0.jar" afterPath="$PROJECT_DIR$/lib/jadx-core-0.6.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/jcommander-1.47.jar" afterPath="$PROJECT_DIR$/lib/jcommander-1.47.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/jfontchooser-1.0.5.jar" afterPath="$PROJECT_DIR$/lib/jfontchooser-1.0.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/logback-classic-1.1.2.jar" afterPath="$PROJECT_DIR$/lib/logback-classic-1.1.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/logback-core-1.1.2.jar" afterPath="$PROJECT_DIR$/lib/logback-core-1.1.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.core.runtime_3.5.0.v20090525.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.core.runtime_3.5.0.v20090525.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/org.eclipse.osgi_3.5.2.R35x_v20100126.jar" afterPath="$PROJECT_DIR$/lib/org.eclipse.osgi_3.5.2.R35x_v20100126.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/libs/rsyntaxtextarea-2.5.6.jar" afterPath="$PROJECT_DIR$/lib/rsyntaxtextarea-2.5.6.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Software Performance.iml" afterPath="$PROJECT_DIR$/Software Performance.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/androidpv/java/apkParser/APKParser.java" afterPath="$PROJECT_DIR$/src/com/androidpv/java/apkParser/APKParser.java" />
     </list>
     <ignored path="Software Performance.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +83,8 @@
       <file leaf-file-name="Parser.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/Parser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3305509">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+            <state vertical-scroll-proportion="3.5866208">
+              <caret line="123" column="44" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -42,7 +96,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/PrintFiles.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="5" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -53,6 +107,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="APKParser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/apkParser/APKParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -101,14 +165,15 @@
         <option value="$PROJECT_DIR$/src/com/androidpv/java/gui/PVGUI.java" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/src/com/androidpv/java/Parser.java" />
+        <option value="$PROJECT_DIR$/src/com/androidpv/java/apkParser/APKParser.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1050" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -166,50 +231,9 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Software Performance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Software Performance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Software Performance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Software Performance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
@@ -239,11 +263,12 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/org.eclipse.osgi_3.5.2.R35x_v20100126.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="settings.github" />
@@ -257,12 +282,16 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.androidpv.java.gui" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\lib" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\lib" />
       <recent name="C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\libs" />
       <recent name="C:\Users\kim\Desktop\GitHub\android_PV\Code\Java" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.parser">
+  <component name="RunManager" selected="Application.APKParser">
     <configuration default="false" name="parser" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -283,17 +312,17 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="GetFileExtension" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="APKParser" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.androidpv.java.gui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="MAIN_CLASS_NAME" value="com.androidpv.java.GetFileExtension" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Software Performance" />
+      <option name="MAIN_CLASS_NAME" value="com.androidpv.java.apkParser.APKParser" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
@@ -586,15 +615,15 @@
       <method />
     </configuration>
     <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="JAR Application.org.eclipse.core.runtime_3.5.0.v20090525.jar" />
-      <item index="1" class="java.lang.String" itemvalue="Application.parser" />
-      <item index="2" class="java.lang.String" itemvalue="Application.GetFileExtension" />
-      <item index="3" class="java.lang.String" itemvalue="Application.PVGUI" />
+      <item index="0" class="java.lang.String" itemvalue="Application.parser" />
+      <item index="1" class="java.lang.String" itemvalue="Application.APKParser" />
+      <item index="2" class="java.lang.String" itemvalue="Application.PVGUI" />
+      <item index="3" class="java.lang.String" itemvalue="JAR Application.org.eclipse.core.runtime_3.5.0.v20090525.jar" />
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.parser" />
-        <item index="1" class="java.lang.String" itemvalue="Application.GetFileExtension" />
+        <item index="0" class="java.lang.String" itemvalue="Application.APKParser" />
+        <item index="1" class="java.lang.String" itemvalue="Application.parser" />
         <item index="2" class="java.lang.String" itemvalue="Application.PVGUI" />
       </list>
     </recent_temporary>
@@ -653,7 +682,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -663,10 +692,10 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.503231" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28219178" sideWeight="0.49434572" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27153763" sideWeight="0.4951535" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2700491" sideWeight="0.4951535" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24427481" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.228125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22768533" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -748,18 +777,36 @@
     <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/eclipseJDT.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/PrintFiles.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/gui/PVGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/Parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -791,9 +838,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -827,9 +872,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -863,9 +906,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -933,36 +974,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/eclipseJDT.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58278143">
-          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/gui/PVGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/PrintFiles.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="5" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/apkParser/APKParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/androidpv/java/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3305509">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state vertical-scroll-proportion="3.5866208">
+          <caret line="123" column="44" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1033,7 +1074,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>eclipseJDT</last-edited>
+          <last-edited>lib</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
