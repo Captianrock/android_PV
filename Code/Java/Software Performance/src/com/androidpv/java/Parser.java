@@ -60,7 +60,6 @@ public class Parser {
     //loop directory to get file list
     public static void ParseFilesInDir(List<File> files, String outputFile) {
         String filePath;
-        int n = 0;
         for (File f : files) {
 //            System.out.println(f);
             filePath = f.getAbsolutePath();
@@ -107,7 +106,9 @@ public class Parser {
     public static void main(String[] args) {
 
         PVGUI gui = new PVGUI();
+        dataBaseListener db = new dataBaseListener();
         gui.createGUI();
+
 
         while (!gui.returnButtonPressed()) {
             try {
