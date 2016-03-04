@@ -13,6 +13,8 @@ public class ModuleBuilder {
     private File sourceFile;
     private File outputFile;
 
+    private boolean DO_NOT_PRINT = false;
+
     public ModuleBuilder(String fileName) {
 
         System.out.println("in moduel builder");
@@ -36,7 +38,7 @@ public class ModuleBuilder {
             String packageName = ""; // need to check that package name is different
 
             while ((line = reader.readLine()) != null) {
-                String[] splitString = line.split(",");
+                String[] splitString = line.split(";");
                 if (!splitString[0].equals(packageName)) {
                     if (!beginningOfFile) {
                         writer.println(addEndOfIfClause());
@@ -46,9 +48,21 @@ public class ModuleBuilder {
                     packageName = splitString[0];
                     System.out.println(packageName);
                 }
-                writer.println(addFindHook(splitString));
-                writer.println(addBeforeHook(splitString[2]));
-                writer.println(addAfterHook(splitString[2]));
+
+                String findHook = addFindHook(splitString);
+
+                if (!DO_NOT_PRINT) {
+
+                    writer.println(findHook);
+
+//                writer.println(addFindHook(splitString));
+                    writer.println(addBeforeHook(splitString[2]));
+                    writer.println(addAfterHook(splitString[2]));
+
+                }
+
+                DO_NOT_PRINT = false;
+
             }
             writer.println(addEndOfCode());
             reader.close();
@@ -57,10 +71,13 @@ public class ModuleBuilder {
             e.printStackTrace();
         }
         this.sourceFile.deleteOnExit();
+        System.out.println("Module built.");
     }  // End of Constructor
 
 
     private String addFindHook(String[] methodInfo) {
+
+        DO_NOT_PRINT = false;
 
         List<String> primitives = Arrays.asList("byte", "short", "int", "long", "float", "double", "boolean", "char");
 
@@ -69,18 +86,32 @@ public class ModuleBuilder {
         String packageName = methodInfo[0];
         String className = methodInfo[1];
         String methodName = methodInfo[2];
+        String parameters = methodInfo[3];
+        String modifiers = methodInfo[4];
         // any remainders are parameter info
+
+        if (modifiers.contains("abstract")) {
+            DO_NOT_PRINT = true;
+        }
+        if (!modifiers.contains("private")) {
+            if (!modifiers.contains("public")) {
+                if (!modifiers.contains("protected")) {
+                    DO_NOT_PRINT = true;
+                }
+            }
+        }
 
         String findHookMethodPt1 = "\t\t\tfindAndHookMethod(\"" + packageName + "." + className
                 + "\", lpparam.classLoader, \"" + methodName + "\"";
 
         hookMethodBuilder.append(findHookMethodPt1);
         // now need to add parameters
-        if (!methodInfo[3].equals("[]")) {
+        if (!parameters.equals("[]")) {
             // we have parameters
-            int i = 3;
-            while (i < methodInfo.length) {
-                String paramPair = methodInfo[i];
+            String[] parameterPairs = parameters.split(",");
+            int i = 0;
+            while (i < parameterPairs.length) {
+                String paramPair = parameterPairs[i];
 
                 // clean the parameter - remove brackets
                     // can't just do replace because of arrays
@@ -100,6 +131,8 @@ public class ModuleBuilder {
                 }
                 else {
                     paramString = ", " + param + ".class";
+
+                    DO_NOT_PRINT = true;
                 }
 
                 hookMethodBuilder.append(paramString);
@@ -185,7 +218,7 @@ public class ModuleBuilder {
             String packageName = ""; // need to check that package name is different
 
             while ((line = reader.readLine()) != null) {
-                String[] splitString = line.split(",");
+                String[] splitString = line.split(";");
                 if (!splitString[0].equals(packageName)) {
                     packageName = splitString[0];
                     packageNamesList.add(packageName);
