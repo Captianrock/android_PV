@@ -37,8 +37,8 @@ public class PVGUI {
 
     public void closeGUI() {
 
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    //    window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }
 
 
