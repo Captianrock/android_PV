@@ -15,30 +15,23 @@ import java.util.Set;
 
 import com.androidpv.java.gui.PVGUI;
 import com.androidpv.java.xposed.ModuleBuilder;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IClassFile;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
 public class Parser {
 
     //use ASTParse to parse string
     public static void parse(String str, String outputFile, String inputString) {
-//    public static void parse(File file, String outputFile, String inputString) {
+        ASTParser parser = ASTParser.newParser(AST.JLS8);
+      //  String[] sourcePaths = {inputString};
 
-        ASTParser parser = ASTParser.newParser(AST.JLS3);
+     //   parser.setEnvironment(new String[] {"/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/PrintFiles", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/Parser", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/GetFileExtension", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/dataBaseListener", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/xposed/ModuleBuilder", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/gui/PVGUI", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-collections-3.2.1.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-configuration-1.6.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-lang-2.5.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-logging-1.1.1.jar","/Users/eobie3/android_PV/Code/Java/Software Performance/libs/mysql-connector-java-5.1.38-bin.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.runtime_3.5.0.v20090525.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.osgi_3.5.2.R35x_v20100126.jar"}, new String[] {"/Users/eobie3/android_PV/Code/Java/Software Performance/src"}, new String[] {"UTF-8"}, false);
 
         parser.setSource(str.toCharArray());
      //   parser.setSource(JavaCore.createCompilationUnitFrom((IFile) file));
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
-        parser.setResolveBindings(true);
-        parser.setBindingsRecovery(true);
+    //    parser.setResolveBindings(true);
+    //    parser.setBindingsRecovery(true);
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
 
         final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
@@ -46,32 +39,21 @@ public class Parser {
             Set names = new HashSet();
 
             public boolean visit(MethodDeclaration node) {
-//            public boolean visit(MethodDeclaration node) {
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
-                //System.out.println((cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null")
-                //+ "," + typeDec.getName().toString() +  "," + name.toString());
 
-//                for (Object parameter : node.parameters()) {
-//                    VariableDeclaration variableDeclaration = (VariableDeclaration) parameter;
-//
-//                    String type = variableDeclaration.getStructuralProperty(SingleVariableDeclaration.TYPE_PROPERTY)
-//                            .toString();
-//                    System.out.println(type);
-//                    for (int i = 0; i < variableDeclaration.getExtraDimensions(); i++) {
-//                        type += "[]";
-//                    }
-//                }
-
+                // convert imports list to one line
+                List importsList = cu.imports();
+                List<String> importsListString = new ArrayList<String>();
+                for (Object item : importsList) {
+                    String importString = item.toString().replaceAll(";\n", "");
+                    importsListString.add(importString);
+                }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        ";" + typeDec.getName().toString() + ";" + name.toString() + ";" + node.parameters() + ";"
-                        + node.modifiers());
-//                + ","
-//                        + (!node.parameters().isEmpty() ? node.parameters().get(0).getClass() : "Null"));
-           //     System.out.println(node.typeParameters());
-
+                        ";" + typeDec.getName().toString() + ";" + importsListString + "; " + name.toString() + ";"
+                        + node.parameters() + ";" + node.modifiers());
 
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
@@ -146,7 +128,7 @@ public class Parser {
     public static void main(String[] args) {
 
         PVGUI gui = new PVGUI();
-        dataBaseListener db = new dataBaseListener();
+   //     dataBaseListener db = new dataBaseListener();
         gui.createGUI();
 
 
