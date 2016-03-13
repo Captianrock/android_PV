@@ -8,6 +8,8 @@ import java.util.List;
  */
 public final class MBConstants {
 
+    public static final String JAR_FILES = "/parseLibs";
+
     public static final int PACKAGE_INDEX = 0;
     public static final int CLASS_INDEX = 1;
     public static final int IMPORT_INDEX = 2;

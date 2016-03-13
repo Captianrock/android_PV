@@ -39,6 +39,10 @@ public class ModuleBuilder {
 
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(";");
+                for (int i = 0; i < splitString.length; i++) {
+                    splitString[i] = splitString[i].trim();
+                }
+
                 if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
                     if (!beginningOfFile) {
                         writer.println(addEndOfIfClause());
@@ -54,8 +58,6 @@ public class ModuleBuilder {
                 if (!DO_NOT_PRINT) {
 
                     writer.println(findHook);
-
-//                writer.println(addFindHook(splitString));
                     writer.println(addBeforeHook(splitString[MBConstants.METHOD_INDEX]));
                     writer.println(addAfterHook(splitString[MBConstants.METHOD_INDEX]));
 
@@ -160,55 +162,55 @@ public class ModuleBuilder {
 
 
 
-                int i = 0;
-                while (i < parameterPairs.length) {
-                    String paramPair = parameterPairs[i];
-
-                    paramPair = paramPair.trim();
-                    String[] paramTuple = paramPair.split(" ");
-                    String param = paramTuple[0];
-                    String paramString;
-                    if (MBConstants.PRIMITIVES_LIST.contains(param)) {
-                        paramString = ", \"" + param + "\"";
-                        hookMethodBuilder.append(paramString);
-                    } else {  // parameter is not primitive. Must search imports
-
-                        // first check if class is in standardImports
-                        boolean found = false;
-                        int importIter = 0;
-                        while ((!found) && (importIter < standardImports.size())) {
-                            String[] standardImportStatement = standardImports.get(importIter).split("\\.");
-                            if (standardImportStatement[standardImportStatement.length - 1].equals(param)) {
-                                found = true;
-                            }
-                            importIter++;
-                        }
-                        if (!found) {   // must try all star imports. This means we need a try block for each star import
-                            for (String starImportStatement : starImports) {
-                                hookMethodBuilder.append(MBConstants.TRY_STRING);
-
-
-                            }
-
-                        } else {
-                            hookMethodBuilder.append(findHookMethodPt1);
-
-                            // add the parameter with import statement
-                        }
-
-
-                        paramString = param;
-                    }
-
-                    hookMethodBuilder.append(paramString);
-                    i++;
-                }
+//                int i = 0;
+//                while (i < parameterPairs.length) {
+//                    String paramPair = parameterPairs[i];
+//
+//                    paramPair = paramPair.trim();
+//                    String[] paramTuple = paramPair.split(" ");
+//                    String param = paramTuple[0];
+//                    String paramString;
+//                    if (MBConstants.PRIMITIVES_LIST.contains(param)) {
+//                        paramString = ", \"" + param + "\"";
+//                        hookMethodBuilder.append(paramString);
+//                    } else {  // parameter is not primitive. Must search imports
+//
+//                        // first check if class is in standardImports
+//                        boolean found = false;
+//                        int importIter = 0;
+//                        while ((!found) && (importIter < standardImports.size())) {
+//                            String[] standardImportStatement = standardImports.get(importIter).split("\\.");
+//                            if (standardImportStatement[standardImportStatement.length - 1].equals(param)) {
+//                                found = true;
+//                            }
+//                            importIter++;
+//                        }
+//                        if (!found) {   // must try all star imports. This means we need a try block for each star import
+//                            for (String starImportStatement : starImports) {
+//                                hookMethodBuilder.append(MBConstants.TRY_STRING);
+//
+//
+//                            }
+//
+//                        } else {
+//                            hookMethodBuilder.append(findHookMethodPt1);
+//
+//                            // add the parameter with import statement
+//                        }
+//
+//
+//                        paramString = param;
+//                    }
+//
+//                    hookMethodBuilder.append(paramString);
+//                    i++;
+//                }
             }
         }
         else {
             hookMethodBuilder.append(findHookMethodPt1);
+            hookMethodBuilder.append(MBConstants.END_OF_FIND_HOOK_METHOD);
         }
-        hookMethodBuilder.append(MBConstants.END_OF_FIND_HOOK_METHOD);
 
         return hookMethodBuilder.toString();
     }
@@ -254,7 +256,7 @@ public class ModuleBuilder {
                     String[] importBits = imports.get(importIter).split("\\.");
                     if (param.equals(importBits[importBits.length-1])) {
                         importFound = true;
-                        fullParamsList.add(imports.get(MBConstants.IMPORT_INDEX));
+                        fullParamsList.add(imports.get(importIter));
                     }
                     importIter++;
                 }
@@ -300,7 +302,7 @@ public class ModuleBuilder {
 
         List<String> importList = new ArrayList<>(Arrays.asList(imports.split(",")));
         for (int importIter = 0; importIter < importList.size(); importIter++) {
-            String importStatement = importList.get(importIter).replaceFirst("import", "");
+            String importStatement = importList.get(importIter).replace("import", "").trim();
             importList.set(importIter, importStatement);
         }
 
@@ -325,11 +327,10 @@ public class ModuleBuilder {
     }
 
     private List<String> getParameterTypesList(String[] parameters) {
-        // parameter is comma separated parameter pairs
 
         List<String> paramTypes = new ArrayList<>();
         for (String paramPair : parameters) {
-            String[] paramType = paramPair.split(" ");
+            String[] paramType = paramPair.trim().split(" ");
             paramTypes.add(paramType[0]);
         }
 
