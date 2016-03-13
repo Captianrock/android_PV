@@ -1,5 +1,6 @@
 package com.androidpv.java.apkParser;
 import com.androidpv.java.GetFileExtension;
+import com.androidpv.java.Parser;
 import jadx.api.JadxDecompiler;
 import jadx.core.utils.exceptions.JadxException;
 import java.io.File;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
  * Created by bradley on 2/27/2016.
  */
 public class APKParser {
+    Parser parser = new Parser();
 
     public static void main(String[] args) throws JadxException {
         File f = new File (new File("").getAbsoluteFile().toString() + "/src/BBCNews.apk");
@@ -29,5 +31,6 @@ public class APKParser {
         jadx.loadFile(f);
         jadx.setOutputDir(new File("decompiledSource"));
         jadx.save();
+
     }
 }

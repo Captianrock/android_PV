@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
+import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.dom.*;
 
 public class Parser {
@@ -78,6 +80,7 @@ public class Parser {
 
     public static List getFiles(String input) {
         Path fp = Paths.get(input);
+
         PrintFiles pf = new PrintFiles();
         try {
             Files.walkFileTree(fp, pf);
@@ -105,10 +108,10 @@ public class Parser {
     }
 
     public static void main(String[] args) {
-
+        APKParser apkParser = new APKParser();
         PVGUI gui = new PVGUI();
         gui.createGUI();
-
+        List<File> fileL;
         while (!gui.returnButtonPressed()) {
             try {
                 Thread.currentThread().sleep(1000);
@@ -120,7 +123,24 @@ public class Parser {
         String inputPathString = gui.getInputPath().trim();
         String outputPathString = gui.getOutputPath().trim();
 
-        List<File> fileL = getFiles(inputPathString);
+       //Checks if the path is an apk file and automatically parsing for methods!
+        Path inputPath = Paths.get(inputPathString);
+        if (APKParser.isAPK(inputPath)) try {
+            System.out.println("Parsing APK NOW");
+            apkParser.parse(inputPath.toFile());
+            //C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\src\BBCNews.apk
+
+            fileL = getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
+            ParseFilesInDir(fileL, outputPathString);
+
+        } catch (JadxException e) {
+            System.err.println("Error JadxException in main: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        //
+        fileL = getFiles(inputPathString);
         while (fileL == null) { // bad input
             gui.resetGUI();
             while (!gui.returnButtonPressed()) {
