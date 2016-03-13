@@ -21,7 +21,6 @@ public  class PrintFiles extends SimpleFileVisitor<Path> {
         if (ext.equals("java")) {
             // Adds file object to the list
             fileL.add(file.toFile());
-            //System.out.println("This is a java file: " + file.getFileName());
         }
         //System.out.println("(" + attr.size() + "bytes)");
         return CONTINUE;
