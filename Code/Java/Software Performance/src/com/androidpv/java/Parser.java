@@ -5,8 +5,6 @@ package com.androidpv.java;
  */
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,16 +19,10 @@ import org.eclipse.jdt.core.dom.*;
 public class Parser {
 
     //use ASTParse to parse string
-    public static void parse(String str, String outputFile, List<String> classpathList, File file) {
+    public static void parse(String str, String outputFile, File sourceFile) {
         ASTParser parser = ASTParser.newParser(AST.JLS8);
-      //  String[] sourcePaths = {inputString};
 
         File currentDirectory = new File(new File(".").getAbsolutePath());
-        try {
-            System.out.println(currentDirectory.getCanonicalPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         File jarFolder = null;
         try {
             jarFolder = new File(currentDirectory.getCanonicalPath() + MBConstants.JAR_FILES);
@@ -38,28 +30,23 @@ public class Parser {
             e.printStackTrace();
         }
 
+        String sourcePath = getSourcePath(sourceFile);
+
         File[] jarFiles = jarFolder.listFiles();
 
-        String[] classpath = new String[jarFiles.length + 1];
+        String[] classpath = new String[jarFiles.length];
 
         for (int jarIter = 0; jarIter < jarFiles.length; jarIter++) {
             classpath[jarIter] = jarFiles[jarIter].getPath();
         }
-        classpath[jarFiles.length] = "/Users/eobie3/android-sdks/platforms/android-19/android.jar";
 
         Map options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
         parser.setCompilerOptions(options);
 
-   //     String[] classpath = classpathList.toArray(new String[classpathList.size()]);
-    //    String[] sources = new String[] {"/Users/eobie3/android_PV/Code/Java/Software Performance/src"};
-//        parser.setEnvironment(new String[] {"/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/PrintFiles", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/Parser", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/GetFileExtension", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/dataBaseListener", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/xposed/ModuleBuilder", "/Users/eobie3/android_PV/Code/Java/Software Performance/src/com/androidpv/java/gui/PVGUI", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-collections-3.2.1.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-configuration-1.6.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-lang-2.5.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/commons-logging-1.1.1.jar","/Users/eobie3/android_PV/Code/Java/Software Performance/libs/mysql-connector-java-5.1.38-bin.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.core.runtime_3.5.0.v20090525.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar", "/Users/eobie3/android_PV/Code/Java/Software Performance/libs/org.eclipse.osgi_3.5.2.R35x_v20100126.jar"}, new String[] {"/Users/eobie3/android_PV/Code/Java/Software Performance/src"}, new String[] {"UTF-8"}, false);
-        parser.setUnitName(file.getName());
-    //    parser.setEnvironment(classpath, sources, new String[] {"UTF-8"}, true);
-        //parser.setEnvironment(new String[] {"/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/rt.jar"}, new String[] {"/Users/eobie3/AlarmClock/android/alarmclock/src"}, new String[] {"UTF-8"}, true);
-        parser.setEnvironment(classpath, new String[] {"/Users/eobie3/AlarmClock/android/alarmclock/src"}, new String[] {"UTF-8"}, true);
+        parser.setUnitName(sourceFile.getName());
+        parser.setEnvironment(classpath, new String[] {sourcePath}, new String[] {"UTF-8"}, true);
         parser.setSource(str.toCharArray());
-     //   parser.setSource(JavaCore.createCompilationUnitFrom((IFile) file));
 
         parser.setResolveBindings(true);
         parser.setBindingsRecovery(true);
@@ -77,6 +64,31 @@ public class Parser {
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
 
+                boolean parentSet = false;
+                String parent = typeDec.getName().toString();
+                try {
+                    parent = ((TypeDeclaration) node.getParent()).getName().toString();
+                    parentSet = true;
+                }
+                catch(Throwable throwable) {
+                    System.err.println(throwable.toString());
+                    System.err.println(throwable.getMessage());
+                }
+                if (!parentSet) {
+                    // will need to keep track of how many anonymous classes we come across
+
+                    //
+
+
+//                    try {
+//                        parent = ((ClassInstanceCreation) node.getParent().getParent()).getType().toString();
+//                    } catch (Throwable throwable) {
+//                        System.err.println(throwable.toString());
+//                        System.err.println(throwable.getMessage());
+//                    }
+                }
+                System.out.println(parent);
+
                 // convert imports list to one line
                 List importsList = cu.imports();
                 List<String> importsListString = new ArrayList<String>();
@@ -85,13 +97,22 @@ public class Parser {
                     importsListString.add(importString);
                 }
 
-                String fullMethodName = node.resolveBinding().toString();
-                int paren = fullMethodName.indexOf("(");
-                String parameters = fullMethodName.substring(paren);
+                int paramLength = node.resolveBinding().getParameterTypes().length;
+                String[] parameters = new String[paramLength];
+                for (int paramIndex = 0; paramIndex < paramLength; paramIndex++) {
+                    if (MBConstants.PRIMITIVES_LIST.contains(
+                            node.resolveBinding().getParameterTypes()[paramIndex].getName())) {
+                        parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getName();
+                    }
+                    else {
+                        parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName();
+                    }
+                }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        ";" + typeDec.getName().toString() + ";" + importsListString + "; " + name.toString() + ";"
-                        + parameters + ";" + node.modifiers());
+                        ";" + typeDec.getName().toString() + ";" + parent + ";" + importsListString + "; " +
+                        name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
+                        node.isConstructor());
 
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
@@ -116,7 +137,7 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir(List<File> files, String outputFile, List<String> classpath) {
+    public static void ParseFilesInDir(List<File> files, String outputFile) {
         String filePath;
         for (File f : files) {
 //            System.out.println(f);
@@ -126,7 +147,7 @@ public class Parser {
                 try {
 //                    parse(f, outputFile, inputFile);
 
-                    parse(readFileToString(filePath), outputFile, classpath, f);
+                    parse(readFileToString(filePath), outputFile, f);
                 } catch (Exception e) {
                     System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                     e.printStackTrace();
@@ -163,25 +184,24 @@ public class Parser {
         }
     }
 
-    public static void main(String[] args) {
+    private static String getSourcePath(File file) {
+        String fullPath = file.getPath();
 
-        List<String> classPath = new ArrayList<>();
-
-        System.out.println("Classpath: \n");
-
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-        URL[] urls = ((URLClassLoader)cl).getURLs();
-
-        for(URL url: urls){
-            classPath.add(url.getFile());
-//            System.out.println(url.getFile());
+        int srcIndex = fullPath.indexOf("src");
+        if (srcIndex == -1) {
+            return "";
         }
+        String path = fullPath.substring(0, srcIndex + "src".length());
+
+        return path;
+    }
+
+
+    public static void main(String[] args) {
 
         PVGUI gui = new PVGUI();
    //     dataBaseListener db = new dataBaseListener();
         gui.createGUI();
-
 
         while (!gui.returnButtonPressed()) {
             try {
@@ -210,7 +230,7 @@ public class Parser {
             fileL = getFiles(inputPathString);
         }
         try {
-            ParseFilesInDir(fileL, outputPathString, classPath);
+            ParseFilesInDir(fileL, outputPathString);
         } catch (Exception e) {
             System.err.println("Error parseFilesInDir in main: " + e.getMessage());
             e.printStackTrace();
