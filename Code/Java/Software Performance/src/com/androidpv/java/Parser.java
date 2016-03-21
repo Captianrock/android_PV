@@ -8,11 +8,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
 import com.androidpv.java.xposed.MBConstants;
 import com.androidpv.java.xposed.ModuleBuilder;
+import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
@@ -140,7 +144,6 @@ public class Parser {
     public static void ParseFilesInDir(List<File> files, String outputFile) {
         String filePath;
         for (File f : files) {
-//            System.out.println(f);
             filePath = f.getAbsolutePath();
             if (f.isFile()) {
    //             System.out.println("FILE BEING PARSED" + f);
@@ -154,6 +157,7 @@ public class Parser {
                 }
             }
         }
+        System.out.println("Done Parsing Files!");
     }
 
     public static List getFiles(String input) {
@@ -198,11 +202,11 @@ public class Parser {
 
 
     public static void main(String[] args) {
-
+        APKParser apkParser = new APKParser();
         PVGUI gui = new PVGUI();
    //     dataBaseListener db = new dataBaseListener();
         gui.createGUI();
-
+        List<File> fileL;
         while (!gui.returnButtonPressed()) {
             try {
                 Thread.currentThread().sleep(1000);
@@ -214,7 +218,24 @@ public class Parser {
         String inputPathString = gui.getInputPath().trim();
         String outputPathString = gui.getOutputPath().trim();
 
-        List<File> fileL = getFiles(inputPathString);
+        //Checks if the path is an apk file and automatically parsing for methods!
+        Path inputPath = Paths.get(inputPathString);
+        if (APKParser.isAPK(inputPath)) try {
+            System.out.println("Parsing APK NOW");
+            apkParser.parse(inputPath.toFile());
+            //C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\src\BBCNews.apk
+
+            fileL = getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
+            ParseFilesInDir(fileL, outputPathString);
+
+        } catch (JadxException e) {
+            System.err.println("Error JadxException in main: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        //
+        fileL = getFiles(inputPathString);
         while (fileL == null) { // bad input
             gui.resetGUI();
             while (!gui.returnButtonPressed()) {
@@ -224,11 +245,14 @@ public class Parser {
                     e.printStackTrace();
                 }
             }
+
             // reset strings and check if directory is valid
             inputPathString = gui.getInputPath().trim();
             outputPathString = gui.getOutputPath().trim();
+
             fileL = getFiles(inputPathString);
         }
+
         try {
             ParseFilesInDir(fileL, outputPathString);
         } catch (Exception e) {
@@ -237,7 +261,6 @@ public class Parser {
         }
         System.out.println("Done parsing");
         gui.closeGUI();
-
         ModuleBuilder moduleBuilder = new ModuleBuilder(outputPathString);
     }
 }
