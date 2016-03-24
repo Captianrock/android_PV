@@ -1,10 +1,24 @@
 <component name="libraryTable">
-  <library name="eclipseJDT">
+  <library name="libs">
     <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/android-5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/annotations-12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/antlr-runtime-3.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/asm-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/asm-debug-all-4.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/commons-collections-3.2.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/commons-configuration-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-io-2.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/commons-lang-2.5.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/dx-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jadx-cli-0.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jadx-core-0.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jcommander-1.47.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jfontchooser-1.0.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/logback-classic-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/logback-core-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mysql-connector-java-5.1.38-bin.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar!/" />
@@ -13,6 +27,8 @@
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/org.eclipse.osgi_3.5.2.R35x_v20100126.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/rsyntaxtextarea-2.5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/slf4j-api-1.7.10.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

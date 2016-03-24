@@ -8,27 +8,20 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
 import com.androidpv.java.xposed.ModuleBuilder;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IClassFile;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
+import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.dom.*;
 
 public class Parser {
 
     //use ASTParse to parse string
-    public static void parse(String str, String outputFile, String inputString) {
+    public static void parse(String str, String outputFile) {
 //    public static void parse(File file, String outputFile, String inputString) {
 
         ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -96,23 +89,21 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir(List<File> files, String outputFile, String inputFile) {
+    public static void ParseFilesInDir(List<File> files, String outputFile) {
         String filePath;
         for (File f : files) {
-//            System.out.println(f);
             filePath = f.getAbsolutePath();
             if (f.isFile()) {
 //                System.out.println("FILE BEING PARSED" + f);
                 try {
-//                    parse(f, outputFile, inputFile);
-
-                    parse(readFileToString(filePath), outputFile, inputFile);
+                    parse(readFileToString(filePath), outputFile);
                 } catch (Exception e) {
                     System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         }
+        System.out.println("Done Parsing Files!");
     }
 
     public static List getFiles(String input) {
@@ -144,12 +135,10 @@ public class Parser {
     }
 
     public static void main(String[] args) {
-
+        APKParser apkParser = new APKParser();
         PVGUI gui = new PVGUI();
-        dataBaseListener db = new dataBaseListener();
         gui.createGUI();
-
-
+        List<File> fileL;
         while (!gui.returnButtonPressed()) {
             try {
                 Thread.currentThread().sleep(1000);
@@ -161,7 +150,24 @@ public class Parser {
         String inputPathString = gui.getInputPath().trim();
         String outputPathString = gui.getOutputPath().trim();
 
-        List<File> fileL = getFiles(inputPathString);
+        //Checks if the path is an apk file and automatically parsing for methods!
+        Path inputPath = Paths.get(inputPathString);
+        if (APKParser.isAPK(inputPath)) try {
+            System.out.println("Parsing APK NOW");
+            apkParser.parse(inputPath.toFile());
+            //C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\src\BBCNews.apk
+
+            fileL = getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
+            ParseFilesInDir(fileL, outputPathString);
+
+        } catch (JadxException e) {
+            System.err.println("Error JadxException in main: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        //
+        fileL = getFiles(inputPathString);
         while (fileL == null) { // bad input
             gui.resetGUI();
             while (!gui.returnButtonPressed()) {
@@ -171,20 +177,23 @@ public class Parser {
                     e.printStackTrace();
                 }
             }
+
             // reset strings and check if directory is valid
             inputPathString = gui.getInputPath().trim();
             outputPathString = gui.getOutputPath().trim();
+
             fileL = getFiles(inputPathString);
         }
+
         try {
-            ParseFilesInDir(fileL, outputPathString, inputPathString);
+            ParseFilesInDir(fileL, outputPathString);
         } catch (Exception e) {
             System.err.println("Error parseFilesInDir in main: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("Done parsing");
-        gui.closeGUI();
 
+        System.out.println("Done");
+        gui.closeGUI();
         ModuleBuilder moduleBuilder = new ModuleBuilder(outputPathString);
     }
 }
