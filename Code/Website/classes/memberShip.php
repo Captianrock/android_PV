@@ -2,7 +2,7 @@
 
 require 'Mysql.php';
 
-class memberShip{
+class membership{
 	function logUserOut(){
 		if(isset($_SESSION['status'])){
 			unset($_SESSION['status']);
