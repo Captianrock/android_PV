@@ -16,11 +16,12 @@ public final class MBConstants {
     public static final int PACKAGE_INDEX = 0;
     public static final int CLASS_INDEX = 1;
     public static final int PARENT_INDEX = 2;
-    public static final int IMPORT_INDEX = 3;
-    public static final int METHOD_INDEX = 4;
-    public static final int PARAMETERS_INDEX = 5;
-    public static final int MODIFIERS_INDEX = 6;
-    public static final int CONSTRUCTOR_BOOL_INDEX = 7;
+    public static final int ANON_CLASS_INDEX = 3;
+    public static final int IMPORT_INDEX = 4;
+    public static final int METHOD_INDEX = 5;
+    public static final int PARAMETERS_INDEX = 6;
+    public static final int MODIFIERS_INDEX = 7;
+    public static final int CONSTRUCTOR_BOOL_INDEX = 8;
 
 
     public static final String PERIOD = ".";

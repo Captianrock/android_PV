@@ -2,6 +2,8 @@ package com.androidpv.java.xposed;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -30,10 +32,15 @@ public class ModuleBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.txt")));
+
+            List<List<List<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
+            List<String> packageNamesList = packagesAndAnonClasses.get(0).get(0);
+            List<List<String>> anonClassList = packagesAndAnonClasses.get(1);
+
             writer.println(MBConstants.MODULE_PACKAGE_NAME);
             writer.println(MBConstants.IMPORTS);
             writer.println(MBConstants.CLASS_NAME_MAIN_METHOD);
-            writer.println(addMainIfClausePackages(this.sourceFile));
+            writer.println(addMainIfClausePackages(packageNamesList));
             writer.println(MBConstants.PREFERENCES);
 
             // Header of code done. Now need to write hooks for each method
@@ -59,7 +66,7 @@ public class ModuleBuilder {
                     System.out.println(packageName);
                 }
 
-                String findHook = addFindHook(splitString);
+                String findHook = addFindHook(splitString, anonClassList);
 
                 if (!DO_NOT_PRINT) {
 
@@ -91,7 +98,7 @@ public class ModuleBuilder {
      * @param methodInfo  each line of the parsed file outputted by Parser split into a String array
      * @return  the findAndHookMethod/Constructor as String
      */
-    private String addFindHook(String[] methodInfo) {
+    private String addFindHook(String[] methodInfo, List<List<String>> anonClassList) {
 
         DO_NOT_PRINT = false;
 
@@ -100,12 +107,15 @@ public class ModuleBuilder {
         String packageName = methodInfo[MBConstants.PACKAGE_INDEX];
         String className = methodInfo[MBConstants.CLASS_INDEX];
         String parent = methodInfo[MBConstants.PARENT_INDEX];
+        boolean anonClassBoolean = Boolean.parseBoolean(methodInfo[MBConstants.ANON_CLASS_INDEX]);
         String imports = methodInfo[MBConstants.IMPORT_INDEX];
         String methodName = methodInfo[MBConstants.METHOD_INDEX];
         String parameters = methodInfo[MBConstants.PARAMETERS_INDEX];
         String modifiers = methodInfo[MBConstants.MODIFIERS_INDEX];
         boolean isConstructor = Boolean.parseBoolean(methodInfo[MBConstants.CONSTRUCTOR_BOOL_INDEX]);
-        boolean nestedClass = false;
+        boolean nestedClassBoolean = false;
+        boolean tryNeededBoolean = false;
+        int numOfAnon = 0;
 
         if (modifiers.contains("abstract")) {
             DO_NOT_PRINT = true;
@@ -122,20 +132,52 @@ public class ModuleBuilder {
 
         // if nested class, must append to classname
         if (!className.equals(parent)) {
-            nestedClass = true;
-            className = className + "$" + parent;
+            if (anonClassBoolean) {
+                int anonIter = 0;
+                while ((anonIter < anonClassList.size()) && (!anonClassList.get(anonIter).get(0).equals(className))) {
+                    anonIter++;
+                }
+                if (anonIter == anonClassList.size()) {
+                    System.out.println("We didn't find anonymous class for " + className);
+                    System.out.println("Using parent");
+                    className = className + "$" + parent;
+                }
+                else {
+                    numOfAnon = anonClassList.get(anonIter).size() - 1;
+                }
+            }
+            else {
+                nestedClassBoolean = true;
+                className = className + "$" + parent;
+            }
         }
 
         if (isConstructor) {
-            if (nestedClass) {
+            if (nestedClassBoolean) {
                 // replaces methodName with call to super instance
                 methodName = packageName + "." + classNameWithoutParent;
+            }
+            else if (numOfAnon != 0) {
+                if (numOfAnon == 1) {
+                    className = className + "$" + 1;
+                }
+                else {
+                    tryNeededBoolean = true;
+                }
             }
             String findHookConstructor = MBConstants.FIND_HOOK_CONSTRUCTOR_STRING + packageName + "." + className
                     + MBConstants.LPPARAM_CLASS_LOADER_STRING + methodName + "\"";
             hookMethodBuilder.append(findHookConstructor);
         }
         else {
+            if (numOfAnon != 0) {
+                if (numOfAnon == 1) {
+                    className = className + "$" + 1;
+                }
+                else {
+                    tryNeededBoolean = true;
+                }
+            }
             String findHookMethodPt1 = MBConstants.FIND_HOOK_METHOD_STRING + packageName + "." + className
                     + MBConstants.LPPARAM_CLASS_LOADER_STRING + methodName + "\"";
             hookMethodBuilder.append(findHookMethodPt1);
@@ -189,16 +231,15 @@ public class ModuleBuilder {
     }
 
 
-    /**
+    /** NEEDS EDIT
      * This method generates the String checking that we are working in the correct package. It is not for each
      * individual package but rather prevents the module from proceeding if we are not in a package the module
      * recognizes.
      *
-     * @param file  the file containing the output of Parser
+     * @param
      * @return  the main IF clause containing the package names. Returned as a String
      */
-    private String addMainIfClausePackages(File file) {
-        List<String> packageNamesList = getPackages(file);
+    private String addMainIfClausePackages(List<String> packageNamesList) {
         StringBuilder ifClause = new StringBuilder();
         ifClause.append(MBConstants.MAIN_PACKAGE_IF_CLAUSE_BEGINNING + MBConstants.MAIN_LPPARAM_PACKAGENAME_EQUALS);
 
@@ -216,15 +257,18 @@ public class ModuleBuilder {
     }
 
 
-    /**
+    /**  NEEDS EDIT
      * This method does an initial runthrough of the parsed source code outputted by Parser to gather all of the
      * package names. The package names are required for the main IF clause of the module.
      *
      * @param file  the file containing the output of Parser
      * @return  a list of all the packages in the source code
      */
-    private List<String> getPackages(File file) {
-        List<String> packageNamesList = new ArrayList<String>();
+    private List<List<List<String>>> getPackagesAndAnonClasses(File file) {
+        List<List<String>> packageNamesList = new ArrayList<>(); // make List<List<String>> in order to return both
+                                                                // packageNamesList and anonClassesList
+
+        List<List<String>> anonClassesList = new ArrayList<>();  // [[parent, anonClass1, anonClass2, ...]]
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -236,7 +280,12 @@ public class ModuleBuilder {
                 String[] splitString = line.split(MBConstants.PARSED_FILE_SEPARATOR);
                 if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
                     packageName = splitString[MBConstants.PACKAGE_INDEX];
-                    packageNamesList.add(packageName);
+                    packageNamesList.add(Arrays.asList(packageName));
+                }
+                if (Boolean.parseBoolean(splitString[MBConstants.ANON_CLASS_INDEX])) {
+                    anonClassesList =
+                            addAnonClass(splitString[MBConstants.CLASS_INDEX], splitString[MBConstants.PARENT_INDEX],
+                                    anonClassesList);
                 }
             }
             reader.close();
@@ -246,7 +295,42 @@ public class ModuleBuilder {
             e.printStackTrace();
         }
 
-        return packageNamesList;
+        List<List<List<String>>> packagesAndAnonClasses = new ArrayList<>();
+        packagesAndAnonClasses.add(packageNamesList);
+        packagesAndAnonClasses.add(anonClassesList);
+
+        return packagesAndAnonClasses;
+    }
+
+
+    /** NEEDS EDIT
+     * Helper method
+     *
+     * @param className
+     * @param anonClass
+     * @param anonClassList
+     * @return
+     */
+    private List<List<String>> addAnonClass(String className, String anonClass, List<List<String>> anonClassList) {
+        if (anonClassList.isEmpty()) {
+            anonClassList.add(Arrays.asList(className, anonClass));
+        }
+        else {
+            for (int i = 0; i < anonClassList.size(); i++) {
+                if (anonClassList.get(i).get(0).equals(className)) {
+                    // parent already has an anon class. make sure it's not the same one
+                    if (!anonClassList.get(i).contains(anonClass)) {
+                        // does not include this anonClass. Add it
+                        anonClassList.get(i).add(anonClass);
+                    }
+                }
+                else {
+                    // this parent has not been added
+                    anonClassList.add(Arrays.asList(className, anonClass));
+                }
+            }
+        }
+        return anonClassList;
     }
 
 }

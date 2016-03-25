@@ -8,9 +8,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
@@ -64,6 +62,9 @@ public class Parser {
             Set names = new HashSet();
 
             public boolean visit(MethodDeclaration node) {
+
+                boolean anonymousClass = false;
+
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
@@ -79,17 +80,13 @@ public class Parser {
                     System.err.println(throwable.getMessage());
                 }
                 if (!parentSet) {
-                    // will need to keep track of how many anonymous classes we come across
-
-                    //
-
-
-//                    try {
-//                        parent = ((ClassInstanceCreation) node.getParent().getParent()).getType().toString();
-//                    } catch (Throwable throwable) {
-//                        System.err.println(throwable.toString());
-//                        System.err.println(throwable.getMessage());
-//                    }
+                    try {
+                        parent = ((ClassInstanceCreation) node.getParent().getParent()).getType().toString();
+                        anonymousClass = true;
+                    } catch (Throwable throwable) {
+                        System.err.println(throwable.toString());
+                        System.err.println(throwable.getMessage());
+                    }
                 }
                 System.out.println(parent);
 
@@ -114,9 +111,9 @@ public class Parser {
                 }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        ";" + typeDec.getName().toString() + ";" + parent + ";" + importsListString + "; " +
-                        name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
-                        node.isConstructor());
+                        ";" + typeDec.getName().toString() + ";" + parent + ";" + anonymousClass + ";" +
+                        importsListString + "; " + name.toString() + ";" + Arrays.toString(parameters) + ";" +
+                        node.modifiers() + ";" + node.isConstructor());
 
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
