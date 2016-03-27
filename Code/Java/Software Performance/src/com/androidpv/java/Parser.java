@@ -63,40 +63,22 @@ public class Parser {
 
             public boolean visit(MethodDeclaration node) {
 
-                boolean anonymousClass = false;
+                boolean isInterface = false;
 
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
 
-                boolean parentSet = false;
-                String parent = typeDec.getName().toString();
                 try {
-                    parent = ((TypeDeclaration) node.getParent()).getName().toString();
-                    parentSet = true;
+                    isInterface = ((TypeDeclaration) node.getParent()).isInterface();
                 }
                 catch(Throwable throwable) {
-                    System.err.println(throwable.toString());
-                    System.err.println(throwable.getMessage());
-                }
-                if (!parentSet) {
-                    try {
-                        parent = ((ClassInstanceCreation) node.getParent().getParent()).getType().toString();
-                        anonymousClass = true;
-                    } catch (Throwable throwable) {
-                        System.err.println(throwable.toString());
-                        System.err.println(throwable.getMessage());
-                    }
-                }
-                System.out.println(parent);
 
-                // convert imports list to one line
-                List importsList = cu.imports();
-                List<String> importsListString = new ArrayList<String>();
-                for (Object item : importsList) {
-                    String importString = item.toString().replaceAll(";\n", "");
-                    importsListString.add(importString);
                 }
+
+                List<List<String>> parentsAnonClassList = getParents(node);
+                List<String> parentList = parentsAnonClassList.get(0);
+                List<String> anonClassList = parentsAnonClassList.get(1);
 
                 int paramLength = node.resolveBinding().getParameterTypes().length;
                 String[] parameters = new String[paramLength];
@@ -111,14 +93,201 @@ public class Parser {
                 }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        ";" + typeDec.getName().toString() + ";" + parent + ";" + anonymousClass + ";" +
-                        importsListString + "; " + name.toString() + ";" + Arrays.toString(parameters) + ";" +
-                        node.modifiers() + ";" + node.isConstructor());
+                        ";" + typeDec.getName().toString() + ";" + parentList + ";" + anonClassList + ";" +
+                        name.toString() + ";" + Arrays.toString(parameters) + ";" +
+                        node.modifiers() + ";" + node.isConstructor() + ";" + isInterface);
 
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
             }
         });
+    }
+
+    /**
+     * This method returns the chain of parents as a list.
+     *
+     * @param node
+     * @return
+     */
+    private static List<List<String>> getParents(MethodDeclaration node) {
+
+        List<String> parentsList = new ArrayList<>();
+        List<String> anonClassList = new ArrayList<>();
+
+        TypeDeclaration parentTypeDec = null;
+        ClassInstanceCreation parentClassInstanceDec = null;
+        EnumDeclaration parentEnumDec = null;
+
+        boolean lastParentFound = false;
+        String parentString;
+
+        // first run through is with node
+        boolean parentSet = false;
+        try {
+            parentTypeDec = (TypeDeclaration) node.getParent();
+            parentString = parentTypeDec.getName().toString();
+            parentsList.add(parentString);
+            parentSet = true;
+        } catch (Throwable throwable) {
+
+        }
+        if (!parentSet) {
+            try {
+                parentClassInstanceDec = ((ClassInstanceCreation) node.getParent().getParent());
+                parentString = parentClassInstanceDec.getType().toString();
+                parentsList.add(parentString);
+                anonClassList.add(parentString);
+                parentSet = true;
+            } catch (Throwable throwable) {
+
+            }
+        }
+        if (!parentSet) {
+            try {
+                parentEnumDec = (EnumDeclaration) node.getParent();
+                parentString = parentEnumDec.getName().toString();
+                parentsList.add(parentString);
+            } catch (Throwable throwable) {
+
+            }
+        }
+
+        while (!lastParentFound) {
+
+            parentSet = false;
+
+            if (parentTypeDec != null) {
+                try {
+                    parentTypeDec = (TypeDeclaration) parentTypeDec.getParent();
+                    parentString = parentTypeDec.getName().toString();
+                    parentsList.add(parentString);
+                    parentSet = true;
+
+                    parentClassInstanceDec = null;
+                    parentEnumDec = null;
+
+                } catch (Throwable throwable) {
+
+                }
+                if (!parentSet) {
+                    try {
+                        parentClassInstanceDec = (ClassInstanceCreation) parentTypeDec.getParent().getParent();
+                        parentString = parentClassInstanceDec.getType().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        parentTypeDec = null;
+                        parentEnumDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+                if (!parentSet) {
+                    try {
+                        parentEnumDec = (EnumDeclaration) parentTypeDec.getParent();
+                        parentString = parentEnumDec.getName().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        parentTypeDec = null;
+                        parentClassInstanceDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+            }
+            else if (parentClassInstanceDec != null) {
+                try {
+                    parentTypeDec = (TypeDeclaration) parentClassInstanceDec.getParent().getParent().getParent();
+                    parentString = parentTypeDec.getName().toString();
+                    parentsList.add(parentString);
+                    parentSet = true;
+
+                    parentClassInstanceDec = null;
+                    parentEnumDec = null;
+
+                } catch (Throwable throwable) {
+
+                }
+                if (!parentSet) {
+                    try {
+                        parentClassInstanceDec = (ClassInstanceCreation) parentClassInstanceDec.getParent().getParent().getParent();
+                        parentString = parentClassInstanceDec.getType().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        anonClassList.add(parentString);
+                        parentTypeDec = null;
+                        parentEnumDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+                if (!parentSet) {
+                    try {
+                        parentEnumDec = (EnumDeclaration) parentClassInstanceDec.getParent().getParent().getParent();
+                        parentString = parentEnumDec.getName().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        parentTypeDec = null;
+                        parentClassInstanceDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+            }
+            else if (parentEnumDec != null) {
+                try {
+                    parentTypeDec = (TypeDeclaration) parentEnumDec.getParent();
+                    parentString = parentTypeDec.getName().toString();
+                    parentsList.add(parentString);
+                    parentSet = true;
+
+                    parentClassInstanceDec = null;
+                    parentEnumDec = null;
+
+                } catch (Throwable throwable) {
+
+                }
+                if (!parentSet) {
+                    try {
+                        parentClassInstanceDec = (ClassInstanceCreation) parentEnumDec.getParent().getParent();
+                        parentString = parentClassInstanceDec.getType().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        anonClassList.add(parentString);
+                        parentTypeDec = null;
+                        parentEnumDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+                if (!parentSet) {
+                    try {
+                        parentEnumDec = (EnumDeclaration) parentEnumDec.getParent();
+                        parentString = parentEnumDec.getName().toString();
+                        parentsList.add(parentString);
+                        parentSet = true;
+
+                        parentTypeDec = null;
+                        parentClassInstanceDec = null;
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+            }
+            if (!parentSet) {
+                // we've hit the end of the parent chain
+                lastParentFound = true;
+            }
+        }
+        List<List<String>> parentsAnonClassList = new ArrayList<>();
+        parentsAnonClassList.add(parentsList);
+        parentsAnonClassList.add(anonClassList);
+
+        return parentsAnonClassList;
     }
 
     //read file content into a string

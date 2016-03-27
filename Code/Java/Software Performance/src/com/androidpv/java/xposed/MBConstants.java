@@ -17,15 +17,13 @@ public final class MBConstants {
     public static final int CLASS_INDEX = 1;
     public static final int PARENT_INDEX = 2;
     public static final int ANON_CLASS_INDEX = 3;
-    public static final int IMPORT_INDEX = 4;
-    public static final int METHOD_INDEX = 5;
-    public static final int PARAMETERS_INDEX = 6;
-    public static final int MODIFIERS_INDEX = 7;
-    public static final int CONSTRUCTOR_BOOL_INDEX = 8;
+    public static final int METHOD_INDEX = 4;
+    public static final int PARAMETERS_INDEX = 5;
+    public static final int MODIFIERS_INDEX = 6;
+    public static final int CONSTRUCTOR_BOOL_INDEX = 7;
+    public static final int INTERFACE_BOOL_INDEX = 8;
 
 
-    public static final String PERIOD = ".";
-    public static final String SLASH = "\"";
     public static final String PARSED_FILE_SEPARATOR = ";";
 
 
@@ -37,10 +35,19 @@ public final class MBConstants {
     public static final String PACKAGE_NAME_IF_END = "\")) {\n";
     public static final String FIND_HOOK_METHOD_STRING = "\t\t\tfindAndHookMethod(\"";
     public static final String FIND_HOOK_CONSTRUCTOR_STRING = "\t\t\tfindAndHookConstructor(\"";
-    public static final String LPPARAM_CLASS_LOADER_STRING = "\", lpparam.classLoader, \"";
+    public static final String LPPARAM_CLASS_LOADER_STRING = "\", lpparam.classLoader";
+    public static final String COMMA_QUOTE = ", \"";
     public static final String END_OF_FIND_HOOK_METHOD = ", new XC_MethodHook() {\n";
     public static final String END_OF_IF_CLAUSE = "\t\t}\n\n";
 
+    // if we need try block for findAndHookMethods
+    public static final String TRY_BLOCK_BEGINNING = "\t\t\t\ttry {";
+    public static final String TRY_BLOCK_END_FULL = "\t\t\t\t}\n" +
+            "\t\t\t\tcatch (Throwable t) {\n\t\t\t\t\tSystem.err.println(t.getMessage());\n\t\t\t\t}";
+    public static final String TRY_BLOCK_END_1 = "\t\t\t\t}\n" +
+            "\t\t\t\tcatch (Throwable t) {\n\t\t\t\t\tSystem.err.println(\"Cannot find ";
+    public static final String TRY_BLOCK_END_2 = "\" in \"";
+    public static final String TRY_BLOCK_END_3 = ");\n\t\t\t\t\tSystem.err.println(t.getMessage());\n\t\t\t\t}";
 
     // Constants for addHook methods
     public static final String ADD_HOOK_METHOD_BEGINNING = "\t\t\t\t@Override\n\t\t\t\tprotected void ";

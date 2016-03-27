@@ -1,10 +1,7 @@
 package com.androidpv.java.xposed;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Erin on 2/27/16.
@@ -33,9 +30,9 @@ public class ModuleBuilder {
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.txt")));
 
-            List<List<List<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
-            List<String> packageNamesList = packagesAndAnonClasses.get(0).get(0);
-            List<List<String>> anonClassList = packagesAndAnonClasses.get(1);
+            List<Map<String, List<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
+            List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");
+            Map<String, List<String>> anonClassMap = packagesAndAnonClasses.get(1);
 
             writer.println(MBConstants.MODULE_PACKAGE_NAME);
             writer.println(MBConstants.IMPORTS);
@@ -66,15 +63,23 @@ public class ModuleBuilder {
                     System.out.println(packageName);
                 }
 
-                String findHook = addFindHook(splitString, anonClassList);
-
-                if (!DO_NOT_PRINT) {
-
-                    writer.println(findHook);
-                    writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.BEFORE_STRING,
-                            MBConstants.METHOD_START_TIME));
-                    writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.AFTER_STRING,
-                            MBConstants.METHOD_END_TIME));
+                int anonClassNum = anonClassCheck(splitString, anonClassMap);
+                String findHook = "";
+                if ((anonClassNum != 0) && (anonClassNum != 1)){
+                    for (int tryIter = 1; tryIter <= anonClassNum; tryIter++) {
+                        writer.println(MBConstants.TRY_BLOCK_BEGINNING);
+                        findHook = addFindHook(splitString, anonClassMap, tryIter);
+                        if (!DO_NOT_PRINT) {
+                            writer = addHookMethodBlock(writer, findHook, splitString);
+                        }
+                        writer.println(MBConstants.TRY_BLOCK_END_FULL);
+                    }
+                }
+                else {
+                    findHook = addFindHook(splitString, anonClassMap, anonClassNum);
+                    if (!DO_NOT_PRINT) {
+                        writer = addHookMethodBlock(writer, findHook, splitString);
+                    }
                 }
 
                 DO_NOT_PRINT = false;
@@ -98,7 +103,7 @@ public class ModuleBuilder {
      * @param methodInfo  each line of the parsed file outputted by Parser split into a String array
      * @return  the findAndHookMethod/Constructor as String
      */
-    private String addFindHook(String[] methodInfo, List<List<String>> anonClassList) {
+    private String addFindHook(String[] methodInfo, Map<String, List<String>> anonMap, int anonNum) {
 
         DO_NOT_PRINT = false;
 
@@ -106,18 +111,19 @@ public class ModuleBuilder {
 
         String packageName = methodInfo[MBConstants.PACKAGE_INDEX];
         String className = methodInfo[MBConstants.CLASS_INDEX];
-        String parent = methodInfo[MBConstants.PARENT_INDEX];
-        boolean anonClassBoolean = Boolean.parseBoolean(methodInfo[MBConstants.ANON_CLASS_INDEX]);
-        String imports = methodInfo[MBConstants.IMPORT_INDEX];
+        List<String> parentList = convertStringToList(methodInfo[MBConstants.PARENT_INDEX]);
+        List<String> anonClassList = convertStringToList(methodInfo[MBConstants.ANON_CLASS_INDEX]);
         String methodName = methodInfo[MBConstants.METHOD_INDEX];
         String parameters = methodInfo[MBConstants.PARAMETERS_INDEX];
         String modifiers = methodInfo[MBConstants.MODIFIERS_INDEX];
         boolean isConstructor = Boolean.parseBoolean(methodInfo[MBConstants.CONSTRUCTOR_BOOL_INDEX]);
+        boolean isInterface = Boolean.parseBoolean(methodInfo[MBConstants.INTERFACE_BOOL_INDEX]);
         boolean nestedClassBoolean = false;
-        boolean tryNeededBoolean = false;
-        int numOfAnon = 0;
 
         if (modifiers.contains("abstract")) {
+            DO_NOT_PRINT = true;
+        }
+        if (isInterface) {
             DO_NOT_PRINT = true;
         }
         if (!modifiers.contains("private")) {
@@ -128,79 +134,110 @@ public class ModuleBuilder {
             }
         }
 
-        String classNameWithoutParent = className;
+        String findHookInit;
+        String classParentChain = getParentString(parentList, anonMap, anonNum);
 
-        // if nested class, must append to classname
-        if (!className.equals(parent)) {
-            if (anonClassBoolean) {
-                int anonIter = 0;
-                while ((anonIter < anonClassList.size()) && (!anonClassList.get(anonIter).get(0).equals(className))) {
-                    anonIter++;
-                }
-                if (anonIter == anonClassList.size()) {
-                    System.out.println("We didn't find anonymous class for " + className);
-                    System.out.println("Using parent");
-                    className = className + "$" + parent;
-                }
-                else {
-                    numOfAnon = anonClassList.get(anonIter).size() - 1;
-                }
-            }
-            else {
-                nestedClassBoolean = true;
-                className = className + "$" + parent;
-            }
+        if (classParentChain.contains("$")) {
+            nestedClassBoolean = true;
         }
 
         if (isConstructor) {
             if (nestedClassBoolean) {
                 // replaces methodName with call to super instance
-                methodName = packageName + "." + classNameWithoutParent;
+                int lastDollarSign = classParentChain.lastIndexOf("$");
+                String classChain = classParentChain.substring(0,lastDollarSign);
+                methodName = packageName + "." + classChain;
             }
-            else if (numOfAnon != 0) {
-                if (numOfAnon == 1) {
-                    className = className + "$" + 1;
-                }
-                else {
-                    tryNeededBoolean = true;
-                }
+            else {
+                methodName = "";
             }
-            String findHookConstructor = MBConstants.FIND_HOOK_CONSTRUCTOR_STRING + packageName + "." + className
-                    + MBConstants.LPPARAM_CLASS_LOADER_STRING + methodName + "\"";
-            hookMethodBuilder.append(findHookConstructor);
+            findHookInit = MBConstants.FIND_HOOK_CONSTRUCTOR_STRING;
         }
         else {
-            if (numOfAnon != 0) {
-                if (numOfAnon == 1) {
-                    className = className + "$" + 1;
-                }
-                else {
-                    tryNeededBoolean = true;
-                }
-            }
-            String findHookMethodPt1 = MBConstants.FIND_HOOK_METHOD_STRING + packageName + "." + className
-                    + MBConstants.LPPARAM_CLASS_LOADER_STRING + methodName + "\"";
-            hookMethodBuilder.append(findHookMethodPt1);
+            findHookInit = MBConstants.FIND_HOOK_METHOD_STRING;
         }
 
+        // paramString results in all formatted parameters for that method
+        String paramString = getParametersString(parameters);
+
+        String findHookMethodPt1 = findHookInit + packageName + "." + classParentChain
+                + MBConstants.LPPARAM_CLASS_LOADER_STRING;
+
+        if (methodName.equals("")) {
+            findHookMethodPt1 += paramString;
+        }
+        else {
+            findHookMethodPt1 += MBConstants.COMMA_QUOTE + methodName + "\"" + paramString;
+        }
+
+        hookMethodBuilder.append(findHookMethodPt1);
+        hookMethodBuilder.append(MBConstants.END_OF_FIND_HOOK_METHOD);
+
+        return hookMethodBuilder.toString();
+    }
+
+
+    private String getParentString(List<String> parentsList, Map<String, List<String>> anonMap, int anonNum) {
+        String parentString = "";
+        String className = parentsList.get(parentsList.size()-1).trim();
+        for (int i = parentsList.size()-1; i >= 0; i--) {
+            String parent = parentsList.get(i).trim();
+            if (anonMap.containsKey(className)) {
+                if (anonMap.get(className).contains(parent)) {
+                    // parent is anonymous class
+                    parent = String.valueOf(anonNum);
+                }
+            }
+            parentString += parent;
+            if (i != 0) {
+                parentString += "$";
+            }
+        }
+        return parentString;
+    }
+
+
+    private String getParametersString(String parameters) {
+        String paramString = "";
         if (!parameters.equals("[]")) {
-            // we have parameters
 
             // remove brackets
-            parameters = parameters.substring(1, parameters.length()-1);
+            parameters = parameters.substring(1, parameters.length() - 1);
 
             // convert parameters into list, splitting on ,
             String[] parameterArray = parameters.split(",");
 
             for (String parameter : parameterArray) {
-                String paramString = ", \"" + parameter.trim() + "\"";
-                hookMethodBuilder.append(paramString);
+                paramString += ", \"" + parameter.trim() + "\"";
             }
         }
-        hookMethodBuilder.append(MBConstants.END_OF_FIND_HOOK_METHOD);
-
-        return hookMethodBuilder.toString();
+        return paramString;
     }
+
+
+    private List<String> convertStringToList(String listString) {
+        List<String> list = new ArrayList<>();
+        if (!listString.equals("[]")) {
+            listString = listString.replace("[", "");
+            listString = listString.replace("]", "");
+
+            list = Arrays.asList(listString.split(","));
+        }
+
+        return list;
+    }
+
+
+    private PrintWriter addHookMethodBlock(PrintWriter writer, String findHook, String[] splitString) {
+
+        writer.println(findHook);
+        writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.BEFORE_STRING,
+                               MBConstants.METHOD_START_TIME));
+        writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.AFTER_STRING,
+                               MBConstants.METHOD_END_TIME));
+        return writer;
+    }
+
 
 
     /**
@@ -264,11 +301,9 @@ public class ModuleBuilder {
      * @param file  the file containing the output of Parser
      * @return  a list of all the packages in the source code
      */
-    private List<List<List<String>>> getPackagesAndAnonClasses(File file) {
-        List<List<String>> packageNamesList = new ArrayList<>(); // make List<List<String>> in order to return both
-                                                                // packageNamesList and anonClassesList
-
-        List<List<String>> anonClassesList = new ArrayList<>();  // [[parent, anonClass1, anonClass2, ...]]
+    private List<Map<String, List<String>>> getPackagesAndAnonClasses(File file) {
+        List<String> packageNamesList = new ArrayList<>();
+        Map<String, List<String>> anonMap = new HashMap<>(); // [parent: [anonClass1, anonClass2, ...]]
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -278,14 +313,14 @@ public class ModuleBuilder {
 
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(MBConstants.PARSED_FILE_SEPARATOR);
+                String className = splitString[MBConstants.CLASS_INDEX];
+                List<String> anonClassList = convertStringToList(splitString[MBConstants.ANON_CLASS_INDEX]);
                 if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
                     packageName = splitString[MBConstants.PACKAGE_INDEX];
-                    packageNamesList.add(Arrays.asList(packageName));
+                    packageNamesList.add(packageName);
                 }
-                if (Boolean.parseBoolean(splitString[MBConstants.ANON_CLASS_INDEX])) {
-                    anonClassesList =
-                            addAnonClass(splitString[MBConstants.CLASS_INDEX], splitString[MBConstants.PARENT_INDEX],
-                                    anonClassesList);
+                if (!anonClassList.isEmpty()) {
+                    anonMap = addAnonClass(className, anonClassList, anonMap);
                 }
             }
             reader.close();
@@ -295,9 +330,11 @@ public class ModuleBuilder {
             e.printStackTrace();
         }
 
-        List<List<List<String>>> packagesAndAnonClasses = new ArrayList<>();
-        packagesAndAnonClasses.add(packageNamesList);
-        packagesAndAnonClasses.add(anonClassesList);
+        List<Map<String, List<String>>> packagesAndAnonClasses = new ArrayList<>();
+        Map<String, List<String>> packageMap = new HashMap<>();
+        packageMap.put("0", packageNamesList);
+        packagesAndAnonClasses.add(packageMap);
+        packagesAndAnonClasses.add(anonMap);
 
         return packagesAndAnonClasses;
     }
@@ -307,30 +344,44 @@ public class ModuleBuilder {
      * Helper method
      *
      * @param className
-     * @param anonClass
      * @param anonClassList
+     * @param anonClassMap
      * @return
      */
-    private List<List<String>> addAnonClass(String className, String anonClass, List<List<String>> anonClassList) {
-        if (anonClassList.isEmpty()) {
-            anonClassList.add(Arrays.asList(className, anonClass));
-        }
-        else {
-            for (int i = 0; i < anonClassList.size(); i++) {
-                if (anonClassList.get(i).get(0).equals(className)) {
-                    // parent already has an anon class. make sure it's not the same one
-                    if (!anonClassList.get(i).contains(anonClass)) {
-                        // does not include this anonClass. Add it
-                        anonClassList.get(i).add(anonClass);
-                    }
-                }
-                else {
-                    // this parent has not been added
-                    anonClassList.add(Arrays.asList(className, anonClass));
+    private Map<String, List<String>> addAnonClass(String className, List<String> anonClassList, Map<String, List<String>> anonClassMap) {
+
+        if (anonClassMap.containsKey(className)) {
+            for (String anon : anonClassList) {
+                if (!anonClassMap.get(className).contains(anon)) {
+                    anonClassMap.get(className).add(anon);
                 }
             }
         }
-        return anonClassList;
+        else {
+            anonClassMap.put(className, anonClassList);
+        }
+
+        return anonClassMap;
+    }
+
+
+    /**
+     * Helper method
+     *
+     * @param methodInfo
+     * @param anonClassMap
+     * @return
+     */
+    private int anonClassCheck(String[] methodInfo, Map<String, List<String>> anonClassMap) {
+
+        String className = methodInfo[MBConstants.CLASS_INDEX];
+
+        if (!anonClassMap.containsKey(className)) {
+            return 0;
+        }
+        else {  // we have anonymous classes
+            return anonClassMap.get(className).size();
+        }
     }
 
 }
