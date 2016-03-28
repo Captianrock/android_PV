@@ -53,8 +53,11 @@ public final class MBConstants {
     public static final String ADD_HOOK_METHOD_BEGINNING = "\t\t\t\t@Override\n\t\t\t\tprotected void ";
     public static final String BEFORE_STRING = "before";
     public static final String AFTER_STRING = "after";
-    public static final String ADD_HOOK_METHOD_END = "HookedMethod(MethodHookParam param) throws Throwable {\n" +
-        "\t\t\t\t\tendTime = System.nanoTime();\n\t\t\t\t\tXposedBridge.log(\"";
+    public static final String START_STRING = "start";
+    public static final String END_STRING = "end";
+    public static final String ADD_HOOK_METHOD_END_PART1 = "HookedMethod(MethodHookParam param) throws Throwable {\n" +
+        "\t\t\t\t\t";
+    public static final String ADD_HOOK_METHOD_END_PART2 = "Time = System.nanoTime();\n\t\t\t\t\tXposedBridge.log(\"";
     public static final String METHOD_START_TIME = "::methodStart::\" + startTime);\n\t\t\t\t}";
     public static final String METHOD_END_TIME = "::methodEnd::\" + endTime);\n\t\t\t\t}\n\t\t\t});\n";
 

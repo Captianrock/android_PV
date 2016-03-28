@@ -232,9 +232,9 @@ public class ModuleBuilder {
 
         writer.println(findHook);
         writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.BEFORE_STRING,
-                               MBConstants.METHOD_START_TIME));
-        writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.AFTER_STRING,
-                               MBConstants.METHOD_END_TIME));
+                MBConstants.START_STRING, MBConstants.METHOD_START_TIME));
+        writer.println(addHook(splitString[MBConstants.METHOD_INDEX], MBConstants.AFTER_STRING, MBConstants.END_STRING,
+                MBConstants.METHOD_END_TIME));
         return writer;
     }
 
@@ -248,9 +248,10 @@ public class ModuleBuilder {
      * @param methodTime  specifies whether we are capturing methodStart or methodEnd - matches timeInstance
      * @return  the "beforeHookMethod" or "afterHookMethod"
      */
-    private String addHook(String method, String timeInstance, String methodTime) {
+    private String addHook(String method, String timeInstance, String startEndTime, String methodTime) {
         String hook = MBConstants.ADD_HOOK_METHOD_BEGINNING + timeInstance
-                + MBConstants.ADD_HOOK_METHOD_END + method + methodTime;
+                + MBConstants.ADD_HOOK_METHOD_END_PART1 + startEndTime + MBConstants.ADD_HOOK_METHOD_END_PART2 + method
+                + methodTime;
         return hook;
     }
 
