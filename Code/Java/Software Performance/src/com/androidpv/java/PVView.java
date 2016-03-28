@@ -1,4 +1,4 @@
-package com.androidpv.java.gui;
+package com.androidpv.java;
 import com.androidpv.java.Parser;
 import com.androidpv.java.apkParser.APKParser;
 import jadx.core.utils.exceptions.JadxException;
@@ -62,7 +62,7 @@ public class PVView extends JFrame {
                     // Parses Given Directory for Java Files
                     if (inputPath.toFile().isDirectory()){
                         //appendNewText("Parsing Directory NOW");
-                        Parser.parse(inputPath.toString(), outputPathString);
+                 //       Parser.parseFilesInDir(inputPath.toString(), outputPathString, inputPath.toFile());
                         appendNewText("Done parsing directory!");
 
                     }

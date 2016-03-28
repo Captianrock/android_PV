@@ -13,7 +13,6 @@ import java.util.*;
 import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
 import com.androidpv.java.xposed.MBConstants;
-import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.JavaCore;
@@ -394,7 +393,7 @@ public class Parser {
             //C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\src\BBCNews.apk
 
             fileL = getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-            ParseFilesInDir(fileL, outputPathString);
+            parseFilesInDir(fileL, outputPathString);
 
         } catch (JadxException e) {
             System.err.println("Error JadxException in main: " + e.getMessage());
@@ -422,7 +421,7 @@ public class Parser {
         }
 
         try {
-            ParseFilesInDir(fileL, outputPathString);
+            parseFilesInDir(fileL, outputPathString);
         } catch (Exception e) {
             System.err.println("Error parseFilesInDir in main: " + e.getMessage());
             e.printStackTrace();
@@ -430,5 +429,7 @@ public class Parser {
         System.out.println("Done parsing");
         gui.closeGUI();
         ModuleBuilder moduleBuilder = new ModuleBuilder(outputPathString);
+
+     //   new PVView();
     }
 }

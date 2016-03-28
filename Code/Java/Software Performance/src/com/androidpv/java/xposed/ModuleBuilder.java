@@ -28,7 +28,7 @@ public class ModuleBuilder {
         boolean beginningOfFile = true;
 
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.txt")));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.java")));
 
             List<Map<String, List<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
             List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");
