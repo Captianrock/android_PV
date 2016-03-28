@@ -1,0 +1,7 @@
+<?php
+
+class memberShip{
+	function validate_user($un,$pwd){ <br />
+		
+	}
+}

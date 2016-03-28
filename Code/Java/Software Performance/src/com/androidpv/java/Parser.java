@@ -13,6 +13,7 @@ import java.util.*;
 import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.gui.PVGUI;
 import com.androidpv.java.xposed.MBConstants;
+import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.JavaCore;
@@ -307,7 +308,7 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void ParseFilesInDir(List<File> files, String outputFile) {
+    public static void parseFilesInDir(List<File> files, String outputFile) {
         String filePath;
         for (File f : files) {
             filePath = f.getAbsolutePath();
@@ -326,6 +327,7 @@ public class Parser {
         System.out.println("Done Parsing Files!");
     }
 
+    //Gets files in a given directory
     public static List getFiles(String input) {
         Path fp = Paths.get(input);
         PrintFiles pf = new PrintFiles();
