@@ -164,7 +164,8 @@ I/Xposed  ( 9919): refreshNotification::methodEnd::2457972899820
 I/Xposed  ( 9919): refreshNotification::methodStart::2517963122186
 I/Xposed  ( 9919): refreshNotification::methodEnd::2517969085424
 I/Xposed  ( 9919): refreshNotification::methodStart::2577964129033
-I/Xposed  ( 9919): refreshNotification::methodEnd::2577973182424bbc.beacon.android;BBCBeacon;BBCBeacon;[SitestatUrlMaker sitestatUrlMaker, HttpRequestSender httpRequestSender];[]
+I/Xposed  ( 9919): refreshNotification::methodEnd::2577973182424
+bbc.beacon.android;BBCBeacon;BBCBeacon;[SitestatUrlMaker sitestatUrlMaker, HttpRequestSender httpRequestSender];[]
 bbc.beacon.android;BBCBeacon;setNonLiveEnvironment;[String str];[public]
 bbc.beacon.android;BBCBeacon;trackAction;[String str, String str2, String str3];[public]
 bbc.beacon.android;BBCBeacon;trackPageView;[String str];[public]
