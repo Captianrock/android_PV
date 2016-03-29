@@ -13,9 +13,9 @@ import java.util.HashMap;
 public class dataBaseListener {
 
     public dataBaseListener(){
-        String url = "jdbc:mysql://localhost:3306/androidPV";
-        String username = "java";
-        String password = "wet543";
+        String url = "jdbc:mysql://localhost:3306/methodexec";
+        String username = "root";
+        String password = "";
         Statement stmt;
         ResultSet rs;
         String oldFileName = "data.txt";
@@ -30,7 +30,7 @@ public class dataBaseListener {
            try{
                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                        ResultSet.CONCUR_UPDATABLE);
-               rs = stmt.executeQuery("SELECT * FROM methodexec");
+               rs = stmt.executeQuery("SELECT * FROM times");
                long dup = 0;
                if(rs.last()){
                    dup = rs.getLong(3);
@@ -46,7 +46,7 @@ public class dataBaseListener {
                        String currentName = temp[temp.length - 1];
                        if(splitline.length == 3){
                            if(stack.containsKey(currentName)){
-                               //System.out.println("Hi");
+                              // System.out.println(dup);
                                if( Long.parseLong(splitline[2]) > dup){
                                    rs.moveToInsertRow();
                                    rs.updateString(1, currentName);
