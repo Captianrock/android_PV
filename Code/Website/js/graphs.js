@@ -76,7 +76,7 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Runtimes'
+            text: 'Method Runtime Percentages'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
