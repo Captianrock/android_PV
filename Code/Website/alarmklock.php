@@ -1,40 +1,34 @@
+<?php
+require_once 'classes/methodExec.php';
+?>
+
+<?php include ('header.html'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
- <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Software Engineering</title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
   </head>
   <body>
- 	  <?php include ('header.html'); ?>
-
     <center>
-      <font size="6" color="white">Application: AlarmKlock</font>
-    </center>
+          <font size="6" color="white">Application: AlarmKlock</font>
+      </center>
     
     <center>
       <img src="images/alarmklock.png" alt="Mountain View" ;>
     </center>
-
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" align="left"> Trace Select 
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Trace 1</a></li>
-        <li><a href="#">Trace 2</a></li>
-        <li><a href="#">Trace 3</a></li>
-      </ul>
+    
+    <div id="container" style="min-width: 310px; max-width: 1300px; height: 2000px; margin: auto;"></div>
+    <div id="container2" style="min-width: 310px; max-width: 1300px; height: 700px; margin: auto; padding-top: 50px;"></div>
+    <div id="container3" style= "width: 400px; margin: auto; padding-top: 50px;">
+    <div class="panel panel-danger">
+      <div class="panel-body">
+        The most costly method is <span id = "highestMethod"></span> with a computation time of <span id = "highestTime"></span>
+      </div>
+    </div>
     </div>
 
- 	<!-- Drop down menu populated with the names of applicaton in database
- 	 -->
-
-	
+    <script type="text/javascript" src="js/graphs.js"></script>
   </body>
-  </html>
+</html>
