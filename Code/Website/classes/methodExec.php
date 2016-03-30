@@ -36,4 +36,3 @@ $timesList = $methodExecVar->getTimes();
 
 
 <script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script>

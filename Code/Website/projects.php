@@ -13,7 +13,7 @@
   </head>
   <body>
  	<?php include ('header.html'); ?>
- 	<input name="Button" type="button" id="submit" onclick="test.php?runFunction=hello" value="Button" />
+ <!--	<input name="Button" type="button" id="submit" onclick="test.php?runFunction=hello" value="Button" /> -->
 
   </body>
   </html>

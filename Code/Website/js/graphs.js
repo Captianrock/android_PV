@@ -7,17 +7,38 @@ var start = [];
 var end = [];
 var diff = [];
 var pie = [];
+var max = 0;
+var maxMethod = "None";
 
 for (var i = 0; i < jsArray.length; i++) 
 {
-	method.push(jsArray[i]["methodName"]);
-	start.push(parseInt(jsArray[i]["timeStart"]));
-	end.push(parseInt(jsArray[i]["timeEnd"]));
-	diff.push(end[i] - start[i]);
-	pie.push({
-		name: method[i],
-		y: diff[i]
-	});
+    var tempElem = method.indexOf(jsArray[i]["methodName"]);
+	if(tempElem == -1){
+       method.push(jsArray[i]["methodName"]);
+	   start.push(parseInt(jsArray[i]["timeStart"]));
+	   end.push(parseInt(jsArray[i]["timeEnd"]));
+	   diff.push(end[i] - start[i]);
+        if(end[i] - start[i] > max){
+            max = end[i] - start[i];
+            maxMethod = jsArray[i]["methodName"];
+        }
+    }
+    else{
+        start.push(parseInt(jsArray[i]["timeStart"]));
+        end.push(parseInt(jsArray[i]["timeEnd"]));
+        diff[tempElem] += end[i] - start[i];
+        if(diff[tempElem] > max){
+            max = end[i] - start[i];
+            maxMethod = jsArray[i]["methodName"];
+        }
+    }
+}
+for (var i = 0; i < method.length; i++) 
+{
+    pie.push({
+        name: method[i],
+        y: diff[i]
+    });
 }
 
 $(function () { 
@@ -55,7 +76,7 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Browser market shares January, 2015 to May, 2015'
+                text: 'Runtimes'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -78,3 +99,13 @@ $(function () {
         });
     });
 });
+
+var highestMethod = function() {
+    return maxMethod;    
+};
+var highestTime = function() {
+    return max;    
+};
+
+document.getElementById( 'highestMethod' ).innerHTML = highestMethod();
+document.getElementById( 'highestTime' ).innerHTML = highestTime();
