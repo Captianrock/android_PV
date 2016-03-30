@@ -20,8 +20,9 @@ public final class MBConstants {
     public static final int METHOD_INDEX = 4;
     public static final int PARAMETERS_INDEX = 5;
     public static final int MODIFIERS_INDEX = 6;
-    public static final int CONSTRUCTOR_BOOL_INDEX = 7;
-    public static final int INTERFACE_BOOL_INDEX = 8;
+    public static final int PARENT_MODIFIERS_INDEX = 7;
+    public static final int CONSTRUCTOR_BOOL_INDEX = 8;
+    public static final int INTERFACE_BOOL_INDEX = 9;
 
 
     public static final String PARSED_FILE_SEPARATOR = ";";
@@ -44,10 +45,6 @@ public final class MBConstants {
     public static final String TRY_BLOCK_BEGINNING = "\t\t\t\ttry {";
     public static final String TRY_BLOCK_END_FULL = "\t\t\t\t}\n" +
             "\t\t\t\tcatch (Throwable t) {\n\t\t\t\t\tSystem.err.println(t.getMessage());\n\t\t\t\t}";
-    public static final String TRY_BLOCK_END_1 = "\t\t\t\t}\n" +
-            "\t\t\t\tcatch (Throwable t) {\n\t\t\t\t\tSystem.err.println(\"Cannot find ";
-    public static final String TRY_BLOCK_END_2 = "\" in \"";
-    public static final String TRY_BLOCK_END_3 = ");\n\t\t\t\t\tSystem.err.println(t.getMessage());\n\t\t\t\t}";
 
     // Constants for addHook methods
     public static final String ADD_HOOK_METHOD_BEGINNING = "\t\t\t\t@Override\n\t\t\t\tprotected void ";

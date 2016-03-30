@@ -1,4 +1,4 @@
-package com.androidpv.java;
+package com.androidpv.java.database;
 
 import java.sql.*;
 import java.io.BufferedReader;

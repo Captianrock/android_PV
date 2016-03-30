@@ -1,6 +1,7 @@
 package com.androidpv.java.gui;
-import com.androidpv.java.Parser;
+import com.androidpv.java.codeParser.Parser;
 import com.androidpv.java.apkParser.APKParser;
+import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
 
 import java.awt.event.ActionEvent;
@@ -21,9 +22,13 @@ public class PVView extends JFrame {
     private JButton parseButton;
     private JTextArea outputArea;
     private File selectedFile;
+    private String parsedDataOutputPathString;
 
     public PVView(){
         super("File Chooser");
+
+        parsedDataOutputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
+
         SwingUtilities.invokeLater(() -> {
             setContentPane(rootPanel);
             pack();
@@ -32,6 +37,8 @@ public class PVView extends JFrame {
             // JFileChooser set to  Directory Button
             dirButton.addActionListener(ae -> {
                 JFileChooser fileChooser = new JFileChooser("C:/Users/");
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setAcceptAllFileFilterUsed(false);
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
@@ -43,7 +50,7 @@ public class PVView extends JFrame {
 
             // Parser Class set to Parse Button
             parseButton.addActionListener(new ActionListener() {
-                String outputPathString = new File("").getAbsoluteFile().toString() + "/data.txt" ;
+                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
                     appendNewText("Parsing now...");
                     Path inputPath = Paths.get(getfilePath());
@@ -61,13 +68,22 @@ public class PVView extends JFrame {
 
                     // Parses Given Directory for Java Files
                     if (inputPath.toFile().isDirectory()){
-                        //appendNewText("Parsing Directory NOW");
-                        Parser.parse(inputPath.toString(), outputPathString);
+                        List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
+
+                        try {
+                            Parser.parseFilesInDir(fileL, outputPathString);
+                        } catch (Exception except) {
+                            System.err.println("Error parseFilesInDir in main: " + except.getMessage());
+                            except.printStackTrace();
+                        }
                         appendNewText("Done parsing directory!");
+
 
                     }
                     fileField.setText("");
                     appendNewText("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
+                    appendNewText("Building module");
+                    new ModuleBuilder(outputPathString);
                 }
             });
 
@@ -86,6 +102,10 @@ public class PVView extends JFrame {
 
     public String getfilePath(){
         return ((!selectedFile.getAbsolutePath().isEmpty()? selectedFile.getAbsolutePath() : null ));
+    }
+
+    public String getOutputPathString() {
+        return parsedDataOutputPathString;
     }
 
     public static void main(String[] args) {

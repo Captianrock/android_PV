@@ -1,7 +1,9 @@
-package com.androidpv.java;
+package com.androidpv.java.codeParser;
 /**
  * Created by bradley on 2/15/2016.
  */
+import com.androidpv.java.codeParser.GetFileExtension;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;

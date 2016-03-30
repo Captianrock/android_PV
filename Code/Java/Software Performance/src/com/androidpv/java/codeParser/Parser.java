@@ -1,4 +1,4 @@
-package com.androidpv.java;
+package com.androidpv.java.codeParser;
 
 /**
  * Created by bradley on 2/12/2016.
@@ -10,11 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import com.androidpv.java.apkParser.APKParser;
-import com.androidpv.java.gui.PVGUI;
+import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.MBConstants;
-import com.androidpv.java.xposed.ModuleBuilder;
-import jadx.core.utils.exceptions.JadxException;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
@@ -91,11 +88,18 @@ public class Parser {
                         parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName();
                     }
                 }
+                List<String> parentModifiers = new ArrayList<String>();
+                try {
+                    parentModifiers = ((TypeDeclaration) node.getParent()).modifiers();
+                }
+                catch (Exception e) {
+
+                }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
                         ";" + typeDec.getName().toString() + ";" + parentList + ";" + anonClassList + ";" +
-                        name.toString() + ";" + Arrays.toString(parameters) + ";" +
-                        node.modifiers() + ";" + node.isConstructor() + ";" + isInterface);
+                        name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
+                        parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
 
                 this.names.add(name.getIdentifier());
                 return false; // do not continue
@@ -369,67 +373,7 @@ public class Parser {
 
 
     public static void main(String[] args) {
-        APKParser apkParser = new APKParser();
-        PVGUI gui = new PVGUI();
-   //     dataBaseListener db = new dataBaseListener();
-        gui.createGUI();
-        List<File> fileL;
-        while (!gui.returnButtonPressed()) {
-            try {
-                Thread.currentThread().sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String inputPathString = gui.getInputPath().trim();
-        String outputPathString = gui.getOutputPath().trim();
-
-        //Checks if the path is an apk file and automatically parsing for methods!
-        Path inputPath = Paths.get(inputPathString);
-        if (APKParser.isAPK(inputPath)) try {
-            System.out.println("Parsing APK NOW");
-            apkParser.parse(inputPath.toFile());
-            //C:\Users\bradley\IdeaProjects\android_PV\Code\Java\Software Performance\src\BBCNews.apk
-
-            fileL = getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-            parseFilesInDir(fileL, outputPathString);
-
-        } catch (JadxException e) {
-            System.err.println("Error JadxException in main: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-
-        //
-        fileL = getFiles(inputPathString);
-        while (fileL == null) { // bad input
-            gui.resetGUI();
-            while (!gui.returnButtonPressed()) {
-                try {
-                    Thread.currentThread().sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // reset strings and check if directory is valid
-            inputPathString = gui.getInputPath().trim();
-            outputPathString = gui.getOutputPath().trim();
-
-            fileL = getFiles(inputPathString);
-        }
-
-        try {
-            parseFilesInDir(fileL, outputPathString);
-        } catch (Exception e) {
-            System.err.println("Error parseFilesInDir in main: " + e.getMessage());
-            e.printStackTrace();
-        }
-        System.out.println("Done parsing");
-        gui.closeGUI();
-        ModuleBuilder moduleBuilder = new ModuleBuilder(outputPathString);
-
-     //   new PVView();
+        PVView view = new PVView();
+//        new ModuleBuilder(view.getOutputPathString());
     }
 }

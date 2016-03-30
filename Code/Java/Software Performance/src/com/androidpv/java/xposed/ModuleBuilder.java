@@ -11,7 +11,6 @@ import java.util.*;
 public class ModuleBuilder {
 
     private File sourceFile;
-    private File outputFile;
 
     private boolean DO_NOT_PRINT = false;
 
@@ -113,6 +112,7 @@ public class ModuleBuilder {
         String className = methodInfo[MBConstants.CLASS_INDEX];
         List<String> parentList = convertStringToList(methodInfo[MBConstants.PARENT_INDEX]);
         List<String> anonClassList = convertStringToList(methodInfo[MBConstants.ANON_CLASS_INDEX]);
+        List<String> parentModifiersList = convertStringToList(methodInfo[MBConstants.PARENT_MODIFIERS_INDEX]);
         String methodName = methodInfo[MBConstants.METHOD_INDEX];
         String parameters = methodInfo[MBConstants.PARAMETERS_INDEX];
         String modifiers = methodInfo[MBConstants.MODIFIERS_INDEX];
@@ -143,10 +143,15 @@ public class ModuleBuilder {
 
         if (isConstructor) {
             if (nestedClassBoolean) {
-                // replaces methodName with call to super instance
-                int lastDollarSign = classParentChain.lastIndexOf("$");
-                String classChain = classParentChain.substring(0,lastDollarSign);
-                methodName = packageName + "." + classChain;
+                if (parentModifiersList.contains("static")) {
+                    methodName = "";
+                }
+                else {
+                    // replaces methodName with call to super instance
+                    int lastDollarSign = classParentChain.lastIndexOf("$");
+                    String classChain = classParentChain.substring(0, lastDollarSign);
+                    methodName = packageName + "." + classChain;
+                }
             }
             else {
                 methodName = "";
@@ -222,6 +227,12 @@ public class ModuleBuilder {
             listString = listString.replace("]", "");
 
             list = Arrays.asList(listString.split(","));
+        }
+        int i = 0;
+        for (String item : list) {
+            item = item.trim();
+            list.set(i, item);
+            i++;
         }
 
         return list;
