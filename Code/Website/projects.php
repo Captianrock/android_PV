@@ -13,7 +13,18 @@
   </head>
   <body>
  	<?php include ('header.html'); ?>
- <!--	<input name="Button" type="button" id="submit" onclick="test.php?runFunction=hello" value="Button" /> -->
 
+ 	<!-- Drop down menu populated with the names of applicaton in database
+ 	 -->
+ 	 <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Application Select
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="alarmklock.php">Alarm Klock</a></li>
+        <li><a href="#">App 2</a></li>
+        <li><a href="#">App 3</a></li>
+      </ul>
+    </div>
+	
   </body>
   </html>
