@@ -27,7 +27,6 @@ public class PVGUI {
         Called when GUI receives bad input
      */
     public void resetGUI() {
-
         buttonPressed = false;
 
         // will eventually want to change to mimic TextPrompt
