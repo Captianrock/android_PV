@@ -1,5 +1,3 @@
-alert("Welcome to the site!");
-
 function buildCSV() {
 
 	console.log(jsArray);
@@ -28,6 +26,26 @@ function buildCSV() {
 
 function buildPDF() {
 
+	console.log(jsArray);
 
+	var doc = new jsPDF();
+	
+	var array = JSON.parse(JSON.stringify(jsArray));
+	var str = '';
+
+	for (var i = 0; i < array.length; i++) {
+		var line = '';
+		for (var index in array[i]) {
+			if (line != '') {
+				line +=',';
+			}
+			line += array[i][index];
+		}
+		str += line + '\r\n';
+	}
+
+	doc.text(20, 20, str);
+
+	doc.save('Test.pdf');
 	
 }
