@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -39,26 +40,31 @@ public class dataBaseListener {
                    br = new BufferedReader(new FileReader(oldFileName));
                    String line;
                    String[] splitline;
-                   HashMap<String,String> stack = new HashMap<>();
+                   HashMap<String,ArrayList<String>> stack = new HashMap<>();
                    while ((line = br.readLine()) != null) {
                        splitline = line.split("::");
                        String[] temp = splitline[0].split(" ");
                        String currentName = temp[temp.length - 1];
                        if(splitline.length == 3){
                            if(stack.containsKey(currentName)){
-                              // System.out.println(dup);
-                               if( Long.parseLong(splitline[2]) > dup){
+                               if(splitline[1].equals("methodStart")){
+                                   stack.get(currentName).add(splitline[2]);
+                               }
+                               else{
                                    rs.moveToInsertRow();
                                    rs.updateString(1, currentName);
-                                   rs.updateLong(2, Long.parseLong(stack.get(currentName)));
+                                   rs.updateLong(2, Long.parseLong(stack.get(currentName).remove(0)));
                                    rs.updateLong(3, Long.parseLong(splitline[2]));
                                    rs.insertRow();
                                    rs.moveToCurrentRow();
-                                   stack.remove(currentName);
+                                   if(stack.get(currentName).size() == 0){
+                                       stack.remove(currentName);
+                                   }
                                }
                            }
                            else{
-                               stack.put(currentName,splitline[2]);
+                               stack.put(currentName,new ArrayList<String>());
+                               stack.get(currentName).add(splitline[2]);
                            }
                        }
                    }
