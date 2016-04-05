@@ -29,9 +29,9 @@ public class ModuleBuilder {
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.java")));
 
-            List<Map<String, List<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
+            List<Map<String, ArrayList<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
             List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");
-            Map<String, List<String>> anonClassMap = packagesAndAnonClasses.get(1);
+            Map<String, ArrayList<String>> anonClassMap = packagesAndAnonClasses.get(1);
 
             writer.println(MBConstants.MODULE_PACKAGE_NAME);
             writer.println(MBConstants.IMPORTS);
@@ -62,12 +62,13 @@ public class ModuleBuilder {
                     System.out.println(packageName);
                 }
 
-                int anonClassNum = anonClassCheck(splitString, anonClassMap);
+                List<int[]> anonClassNums = anonClassCheck(splitString, anonClassMap);
                 String findHook = "";
-                if ((anonClassNum != 0) && (anonClassNum != 1)){
-                    for (int tryIter = 1; tryIter <= anonClassNum; tryIter++) {
+                if (anonClassNums != null) {
+               // if ((anonClassNum != 0) && (anonClassNum != 1)){
+                    for (int tryIter = 0; tryIter < anonClassNums.size(); tryIter++) {
                         writer.println(MBConstants.TRY_BLOCK_BEGINNING);
-                        findHook = addFindHook(splitString, anonClassMap, tryIter);
+                        findHook = addFindHook(splitString, anonClassMap, anonClassNums.get(tryIter));
                         if (!DO_NOT_PRINT) {
                             writer = addHookMethodBlock(writer, findHook, splitString);
                         }
@@ -75,7 +76,7 @@ public class ModuleBuilder {
                     }
                 }
                 else {
-                    findHook = addFindHook(splitString, anonClassMap, anonClassNum);
+                    findHook = addFindHook(splitString, anonClassMap, new int[0]);
                     if (!DO_NOT_PRINT) {
                         writer = addHookMethodBlock(writer, findHook, splitString);
                     }
@@ -102,7 +103,7 @@ public class ModuleBuilder {
      * @param methodInfo  each line of the parsed file outputted by Parser split into a String array
      * @return  the findAndHookMethod/Constructor as String
      */
-    private String addFindHook(String[] methodInfo, Map<String, List<String>> anonMap, int anonNum) {
+    private String addFindHook(String[] methodInfo, Map<String, ArrayList<String>> anonMap, int[] anonNums) {
 
         DO_NOT_PRINT = false;
 
@@ -135,7 +136,7 @@ public class ModuleBuilder {
         }
 
         String findHookInit;
-        String classParentChain = getParentString(parentList, anonMap, anonNum);
+        String classParentChain = getParentString(parentList, anonMap, anonNums);
 
         if (classParentChain.contains("$")) {
             nestedClassBoolean = true;
@@ -182,15 +183,17 @@ public class ModuleBuilder {
     }
 
 
-    private String getParentString(List<String> parentsList, Map<String, List<String>> anonMap, int anonNum) {
+    private String getParentString(List<String> parentsList, Map<String, ArrayList<String>> anonMap, int[] anonNum) {
         String parentString = "";
         String className = parentsList.get(parentsList.size()-1).trim();
+        int anonNumIter = 0;
         for (int i = parentsList.size()-1; i >= 0; i--) {
             String parent = parentsList.get(i).trim();
             if (anonMap.containsKey(className)) {
                 if (anonMap.get(className).contains(parent)) {
                     // parent is anonymous class
-                    parent = String.valueOf(anonNum);
+                    parent = String.valueOf(anonNum[anonNumIter]);
+                    anonNumIter++;
                 }
             }
             parentString += parent;
@@ -313,9 +316,9 @@ public class ModuleBuilder {
      * @param file  the file containing the output of Parser
      * @return  a list of all the packages in the source code
      */
-    private List<Map<String, List<String>>> getPackagesAndAnonClasses(File file) {
-        List<String> packageNamesList = new ArrayList<>();
-        Map<String, List<String>> anonMap = new HashMap<>(); // [parent: [anonClass1, anonClass2, ...]]
+    private List<Map<String, ArrayList<String>>> getPackagesAndAnonClasses(File file) {
+        ArrayList<String> packageNamesList = new ArrayList<>();
+        Map<String, ArrayList<String>> anonMap = new HashMap<>(); // [parent: [anonClass1, anonClass2, ...]]
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -326,7 +329,7 @@ public class ModuleBuilder {
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(MBConstants.PARSED_FILE_SEPARATOR);
                 String className = splitString[MBConstants.CLASS_INDEX];
-                List<String> anonClassList = convertStringToList(splitString[MBConstants.ANON_CLASS_INDEX]);
+                ArrayList<String> anonClassList = new ArrayList<>(convertStringToList(splitString[MBConstants.ANON_CLASS_INDEX]));
                 if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
                     packageName = splitString[MBConstants.PACKAGE_INDEX];
                     packageNamesList.add(packageName);
@@ -342,8 +345,8 @@ public class ModuleBuilder {
             e.printStackTrace();
         }
 
-        List<Map<String, List<String>>> packagesAndAnonClasses = new ArrayList<>();
-        Map<String, List<String>> packageMap = new HashMap<>();
+        List<Map<String, ArrayList<String>>> packagesAndAnonClasses = new ArrayList<>();
+        Map<String, ArrayList<String>> packageMap = new HashMap<>();
         packageMap.put("0", packageNamesList);
         packagesAndAnonClasses.add(packageMap);
         packagesAndAnonClasses.add(anonMap);
@@ -360,7 +363,7 @@ public class ModuleBuilder {
      * @param anonClassMap
      * @return
      */
-    private Map<String, List<String>> addAnonClass(String className, List<String> anonClassList, Map<String, List<String>> anonClassMap) {
+    private Map<String, ArrayList<String>> addAnonClass(String className, ArrayList<String> anonClassList, Map<String, ArrayList<String>> anonClassMap) {
 
         if (anonClassMap.containsKey(className)) {
             for (String anon : anonClassList) {
@@ -384,16 +387,27 @@ public class ModuleBuilder {
      * @param anonClassMap
      * @return
      */
-    private int anonClassCheck(String[] methodInfo, Map<String, List<String>> anonClassMap) {
+    private List<int[]> anonClassCheck(String[] methodInfo, Map<String, ArrayList<String>> anonClassMap) {
 
         String className = methodInfo[MBConstants.CLASS_INDEX];
+        List<String> anonClasses = convertStringToList(methodInfo[MBConstants.ANON_CLASS_INDEX]);
 
-        if (!anonClassMap.containsKey(className)) {
-            return 0;
+        if (anonClasses.isEmpty()) {
+            return null;
         }
         else {  // we have anonymous classes
-            return anonClassMap.get(className).size();
+
+            Permutation permutation = new Permutation(anonClassMap.get(className).size());
+            List<int[]> subsections;
+
+            if (anonClasses.size() == 1) {
+                subsections = Arrays.asList(permutation.getBasicArray());
+            }
+            else {
+                subsections = permutation.getSubsections(anonClasses.size());
+            }
+
+            return subsections;
         }
     }
-
 }

@@ -42,9 +42,9 @@ public final class MBConstants {
     public static final String END_OF_IF_CLAUSE = "\t\t}\n\n";
 
     // if we need try block for findAndHookMethods
-    public static final String TRY_BLOCK_BEGINNING = "\t\t\t\ttry {";
-    public static final String TRY_BLOCK_END_FULL = "\t\t\t\t}\n" +
-            "\t\t\t\tcatch (Throwable t) {\n\t\t\t\t\tSystem.err.println(t.getMessage());\n\t\t\t\t}";
+    public static final String TRY_BLOCK_BEGINNING = "\t\ttry {";
+    public static final String TRY_BLOCK_END_FULL = "\t\t}\n" +
+            "\t\tcatch (Throwable t) {\n\t\t\tSystem.err.println(t.getMessage());\n\t\t}\n";
 
     // Constants for addHook methods
     public static final String ADD_HOOK_METHOD_BEGINNING = "\t\t\t\t@Override\n\t\t\t\tprotected void ";

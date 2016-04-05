@@ -65,6 +65,7 @@ public class Parser {
                 SimpleName name = node.getName();
                 List classes = cu.types();
                 TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
+                String mainClassName = typeDec.getName().toString();
 
                 try {
                     isInterface = ((TypeDeclaration) node.getParent()).isInterface();
@@ -73,7 +74,7 @@ public class Parser {
 
                 }
 
-                List<List<String>> parentsAnonClassList = getParents(node);
+                List<List<String>> parentsAnonClassList = getParents(node, mainClassName);
                 List<String> parentList = parentsAnonClassList.get(0);
                 List<String> anonClassList = parentsAnonClassList.get(1);
 
@@ -97,12 +98,13 @@ public class Parser {
                 }
 
                 printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                        ";" + typeDec.getName().toString() + ";" + parentList + ";" + anonClassList + ";" +
+                        ";" + mainClassName + ";" + parentList + ";" + anonClassList + ";" +
                         name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
                         parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
 
                 this.names.add(name.getIdentifier());
-                return false; // do not continue
+                return true;
+               // return false; // do not continue
             }
         });
     }
@@ -110,183 +112,38 @@ public class Parser {
     /**
      * This method returns the chain of parents as a list.
      *
-     * @param node
+     * @param originalNode
      * @return
      */
-    private static List<List<String>> getParents(MethodDeclaration node) {
+    private static List<List<String>> getParents(MethodDeclaration originalNode, String mainClassName) {
+
+        ASTNode astNode = originalNode;
 
         List<String> parentsList = new ArrayList<>();
         List<String> anonClassList = new ArrayList<>();
 
-        TypeDeclaration parentTypeDec = null;
-        ClassInstanceCreation parentClassInstanceDec = null;
-        EnumDeclaration parentEnumDec = null;
-
         boolean lastParentFound = false;
-        String parentString;
-
-        // first run through is with node
-        boolean parentSet = false;
-        try {
-            parentTypeDec = (TypeDeclaration) node.getParent();
-            parentString = parentTypeDec.getName().toString();
-            parentsList.add(parentString);
-            parentSet = true;
-        } catch (Throwable throwable) {
-
-        }
-        if (!parentSet) {
-            try {
-                parentClassInstanceDec = ((ClassInstanceCreation) node.getParent().getParent());
-                parentString = parentClassInstanceDec.getType().toString();
-                parentsList.add(parentString);
-                anonClassList.add(parentString);
-                parentSet = true;
-            } catch (Throwable throwable) {
-
-            }
-        }
-        if (!parentSet) {
-            try {
-                parentEnumDec = (EnumDeclaration) node.getParent();
-                parentString = parentEnumDec.getName().toString();
-                parentsList.add(parentString);
-            } catch (Throwable throwable) {
-
-            }
-        }
 
         while (!lastParentFound) {
+            ASTNode node = astNode.getParent();
+            Class parentClass = node.getClass();
 
-            parentSet = false;
-
-            if (parentTypeDec != null) {
-                try {
-                    parentTypeDec = (TypeDeclaration) parentTypeDec.getParent();
-                    parentString = parentTypeDec.getName().toString();
-                    parentsList.add(parentString);
-                    parentSet = true;
-
-                    parentClassInstanceDec = null;
-                    parentEnumDec = null;
-
-                } catch (Throwable throwable) {
-
-                }
-                if (!parentSet) {
-                    try {
-                        parentClassInstanceDec = (ClassInstanceCreation) parentTypeDec.getParent().getParent();
-                        parentString = parentClassInstanceDec.getType().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        parentTypeDec = null;
-                        parentEnumDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
-                }
-                if (!parentSet) {
-                    try {
-                        parentEnumDec = (EnumDeclaration) parentTypeDec.getParent();
-                        parentString = parentEnumDec.getName().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        parentTypeDec = null;
-                        parentClassInstanceDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
+            if (parentClass.getName().equals("org.eclipse.jdt.core.dom.TypeDeclaration")) {
+                parentsList.add(((TypeDeclaration) node).getName().toString());
+                if (((TypeDeclaration) node).getName().toString().equals(mainClassName)) {
+                    lastParentFound = true;
                 }
             }
-            else if (parentClassInstanceDec != null) {
-                try {
-                    parentTypeDec = (TypeDeclaration) parentClassInstanceDec.getParent().getParent().getParent();
-                    parentString = parentTypeDec.getName().toString();
-                    parentsList.add(parentString);
-                    parentSet = true;
-
-                    parentClassInstanceDec = null;
-                    parentEnumDec = null;
-
-                } catch (Throwable throwable) {
-
-                }
-                if (!parentSet) {
-                    try {
-                        parentClassInstanceDec = (ClassInstanceCreation) parentClassInstanceDec.getParent().getParent().getParent();
-                        parentString = parentClassInstanceDec.getType().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        anonClassList.add(parentString);
-                        parentTypeDec = null;
-                        parentEnumDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
-                }
-                if (!parentSet) {
-                    try {
-                        parentEnumDec = (EnumDeclaration) parentClassInstanceDec.getParent().getParent().getParent();
-                        parentString = parentEnumDec.getName().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        parentTypeDec = null;
-                        parentClassInstanceDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
-                }
+            else if (parentClass.getName().equals("org.eclipse.jdt.core.dom.ClassInstanceCreation")) {
+                parentsList.add(((ClassInstanceCreation) node).getType().toString());
+                anonClassList.add(((ClassInstanceCreation) node).getType().toString());
             }
-            else if (parentEnumDec != null) {
-                try {
-                    parentTypeDec = (TypeDeclaration) parentEnumDec.getParent();
-                    parentString = parentTypeDec.getName().toString();
-                    parentsList.add(parentString);
-                    parentSet = true;
-
-                    parentClassInstanceDec = null;
-                    parentEnumDec = null;
-
-                } catch (Throwable throwable) {
-
-                }
-                if (!parentSet) {
-                    try {
-                        parentClassInstanceDec = (ClassInstanceCreation) parentEnumDec.getParent().getParent();
-                        parentString = parentClassInstanceDec.getType().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        anonClassList.add(parentString);
-                        parentTypeDec = null;
-                        parentEnumDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
-                }
-                if (!parentSet) {
-                    try {
-                        parentEnumDec = (EnumDeclaration) parentEnumDec.getParent();
-                        parentString = parentEnumDec.getName().toString();
-                        parentsList.add(parentString);
-                        parentSet = true;
-
-                        parentTypeDec = null;
-                        parentClassInstanceDec = null;
-                    } catch (Throwable throwable) {
-
-                    }
-                }
+            else if (parentClass.getName().equals("org.eclipse.jdt.core.dom.EnumDeclaration")) {
+                parentsList.add(((EnumDeclaration) node).getName().toString());
             }
-            if (!parentSet) {
-                // we've hit the end of the parent chain
-                lastParentFound = true;
-            }
+            astNode = node;
         }
+
         List<List<String>> parentsAnonClassList = new ArrayList<>();
         parentsAnonClassList.add(parentsList);
         parentsAnonClassList.add(anonClassList);
@@ -374,6 +231,6 @@ public class Parser {
 
     public static void main(String[] args) {
         PVView view = new PVView();
-//        new ModuleBuilder(view.getOutputPathString());
+
     }
 }
