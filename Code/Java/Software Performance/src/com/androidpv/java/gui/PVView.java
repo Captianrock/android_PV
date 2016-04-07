@@ -21,7 +21,10 @@ public class PVView extends JFrame {
     private JButton dirButton;
     private JButton parseButton;
     private JTextArea outputArea;
+    private JTextField jarField;
+    private JButton jarButton;
     private File selectedFile;
+    private File jarDir;
     private String parsedDataOutputPathString;
 
     public PVView(){
@@ -48,20 +51,36 @@ public class PVView extends JFrame {
                 }
             });
 
+            jarButton.addActionListener(ae -> {
+                JFileChooser fileChooser = new JFileChooser("C:/Users/");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    jarDir = fileChooser.getSelectedFile();
+                    jarField.setText(jarDir.getAbsolutePath());
+                    appendNewText("A Directory Has Been Selected");
+                    appendNewText(jarDir.getAbsolutePath());
+                }
+            });
+
             // Parser Class set to Parse Button
             parseButton.addActionListener(new ActionListener() {
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
+
+                    if (getfilePath().equals(null)){
+                        appendNewText("Please Choose a file or Directory!");
+                    }
                     appendNewText("Parsing now...");
                     Path inputPath = Paths.get(getfilePath());
-
                     // Handles ".apk" File inputs
                     if (APKParser.isAPK(inputPath)) try {
                         APKParser.parse(inputPath.toFile());
                         List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
                         Parser.parseFilesInDir(fileL, outputPathString);
-
-                    } catch (JadxException j) {
+                        }
+                    catch (JadxException j) {
                         System.err.println("Error JadxException in main: " + j.getMessage());
                         j.printStackTrace();
                     }
@@ -69,7 +88,6 @@ public class PVView extends JFrame {
                     // Parses Given Directory for Java Files
                     if (inputPath.toFile().isDirectory()){
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
-
                         try {
                             Parser.parseFilesInDir(fileL, outputPathString);
                         } catch (Exception except) {
@@ -77,7 +95,6 @@ public class PVView extends JFrame {
                             except.printStackTrace();
                         }
                         appendNewText("Done parsing directory!");
-
 
                     }
                     fileField.setText("");
@@ -102,6 +119,10 @@ public class PVView extends JFrame {
 
     public String getfilePath(){
         return ((!selectedFile.getAbsolutePath().isEmpty()? selectedFile.getAbsolutePath() : null ));
+    }
+
+    public String getJars(){
+        return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }
 
     public String getOutputPathString() {
