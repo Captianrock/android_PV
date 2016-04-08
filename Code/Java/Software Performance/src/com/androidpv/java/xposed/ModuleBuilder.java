@@ -192,6 +192,9 @@ public class ModuleBuilder {
             if (anonMap.containsKey(className)) {
                 if (anonMap.get(className).contains(parent)) {
                     // parent is anonymous class
+                    if (anonNum.length == 0) {
+                        System.err.println("className: " + className + " parent: " + parent);
+                    }
                     parent = String.valueOf(anonNum[anonNumIter]);
                     anonNumIter++;
                 }
@@ -396,18 +399,8 @@ public class ModuleBuilder {
             return null;
         }
         else {  // we have anonymous classes
-
-            Permutation permutation = new Permutation(anonClassMap.get(className).size());
-            List<int[]> subsections;
-
-            if (anonClasses.size() == 1) {
-                subsections = Arrays.asList(permutation.getBasicArray());
-            }
-            else {
-                subsections = permutation.getSubsections(anonClasses.size());
-            }
-
-            return subsections;
+            Permutation permutation = new Permutation(anonClassMap.get(className).size(), anonClasses.size());
+            return permutation.getAnonOptions();
         }
     }
 }

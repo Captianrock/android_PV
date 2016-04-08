@@ -103,8 +103,8 @@ public class Parser {
                         parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
 
                 this.names.add(name.getIdentifier());
-                return true;
-               // return false; // do not continue
+//                return true;
+                return false; // do not continue
             }
         });
     }

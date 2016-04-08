@@ -13,12 +13,12 @@ public class Permutation {
     private int[] nArray;
 
 
-    public Permutation(int nAnon) {
+    public Permutation(int nAnon, int end) {
         nArray = new int[nAnon];
         for (int nIter = 0; nIter < nArray.length; nIter++) {
             nArray[nIter] = nIter+1;
         }
-        getPermutations(nArray);
+        getPermutations(nArray, end);
     }
 
 
@@ -30,14 +30,14 @@ public class Permutation {
         return nArray;
     }
 
-    private void getPermutations(int[] input) {
-        permute(input, 0);
+    private void getPermutations(int[] input, int end) {
+        permute(input, 0, end);
     }
 
 
-    private void permute(int[] inputArray, int startIndex) {
-        if (inputArray.length == startIndex) {
-            anonOptions.add(inputArray);
+    private void permute(int[] inputArray, int startIndex, int end) {
+        if (end == startIndex) {
+            anonOptions.add(Arrays.copyOfRange(inputArray, 0, end));
         }
         else {
             for (int i = startIndex; i < inputArray.length; i++) {
@@ -45,7 +45,7 @@ public class Permutation {
                 int temp = input2[i];
                 input2[i] = input2[startIndex];
                 input2[startIndex] = temp;
-                permute(input2, startIndex + 1);
+                permute(input2, startIndex + 1, end);
 
             }
         }
