@@ -18,21 +18,7 @@ public class dataBaseListener {
     private Connection connection;
 
     public dataBaseListener(){
-        String url = "jdbc:mysql://localhost:3306/membership";
-        String username = "root";
-        String password = "";
-        System.out.println("Connecting database...");
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Database connected!");
 
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
     }
     public static String getMD5(String input) {
         try {
@@ -54,21 +40,33 @@ public class dataBaseListener {
         Statement stmt;
         ResultSet rs;
         BufferedReader br = null;
-        try {
-            stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' and password = '" + getMD5(password) + "'");
-            if (!rs.isBeforeFirst()) {
-                System.out.println("No data in applications");
+        String url = "jdbc:mysql://localhost:3306/membership";
+        String usernames = "root";
+        String passwords = "";
+        try (Connection connection = DriverManager.getConnection(url, usernames, passwords)) {
+            System.out.println("Database connected!");
+            try {
+                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                rs = stmt.executeQuery("SELECT * FROM users WHERE username = '" + username + "' and password = '" + getMD5(password) + "'");
+                if (!rs.isBeforeFirst()) {
+                    System.out.println("Not a member!");
+                    return false;
+                }
+                return true;
+            }
+            catch(SQLException e){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+                System.out.println("VendorError: " + e.getErrorCode());
                 return false;
             }
-            return true;
-        }
-        catch(SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
-            return false;
+            throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
 
@@ -81,100 +79,114 @@ public class dataBaseListener {
         BufferedReader br = null;
         BufferedWriter bw = null;
 
+        String url = "jdbc:mysql://localhost:3306/membership";
+        String username = "root";
+        String password = "";
         //Working values
         String currentUser = "altonKim";
         String application = "AlarmKlock";
-        String traceNumber = "1";
+        String traceNumber = "3";
         String traceId = currentUser + application + traceNumber;
-        try{
-            stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            userRs = stmt.executeQuery("SELECT * FROM applications WHERE username = '" + currentUser + "' and application = '" + application+"'");
-            if (!userRs.isBeforeFirst() ) {
-                System.out.println("No data in applications");
-                userRs.moveToInsertRow();
-                userRs.updateString(2,currentUser);
-                userRs.updateString(3,application);
-                userRs.insertRow();
-                userRs.moveToCurrentRow();
-            }
-            stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            userRs = stmt.executeQuery("SELECT * FROM traces WHERE traceId = '"+traceId+"'");
-            if (!userRs.isBeforeFirst() ) {
-                System.out.println("No data in traces");
-                userRs.moveToInsertRow();
-                userRs.updateString(2,currentUser);
-                userRs.updateString(3,application);
-                userRs.updateString(4,traceId);
-                userRs.insertRow();
-                userRs.moveToCurrentRow();
-            }
-            stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            rs = stmt.executeQuery("SELECT * FROM data WHERE traceId = '"+traceId+"'");
-            if(rs.isBeforeFirst()){
-                System.out.println("Data already exists in traces");
-            }
-            else {
-                try {
-                    System.out.println("Inputting to database");
-                    rs = stmt.executeQuery("SELECT * FROM data");
-                    br = new BufferedReader(new FileReader(oldFileName));
-                    String line;
-                    String[] splitline;
-                    HashMap<String, ArrayList<String>> stack = new HashMap<>();
-                    while ((line = br.readLine()) != null) {
-                        splitline = line.split("::");
-                        String[] temp = splitline[0].split(" ");
-                        String currentName = temp[temp.length - 1];
-                        if (splitline.length == 3) {
-                            if (stack.containsKey(currentName)) {
-                                if (splitline[1].equals("methodStart")) {
-                                    stack.get(currentName).add(splitline[2]);
-                                } else {
-                                    rs.moveToInsertRow();
-                                    rs.updateString(2, traceId);
-                                    rs.updateString(3, currentName);
-                                    rs.updateLong(4, Long.parseLong(stack.get(currentName).remove(0)));
-                                    rs.updateLong(5, Long.parseLong(splitline[2]));
-                                    rs.insertRow();
-                                    rs.moveToCurrentRow();
-                                    if (stack.get(currentName).size() == 0) {
-                                        stack.remove(currentName);
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            System.out.println("Database connected!");
+            try{
+                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                userRs = stmt.executeQuery("SELECT * FROM applications WHERE username = '" + currentUser + "' and application = '" + application+"'");
+                if (!userRs.isBeforeFirst() ) {
+                    System.out.println("No data in applications");
+                    userRs.moveToInsertRow();
+                    userRs.updateString(2,currentUser);
+                    userRs.updateString(3,application);
+                    userRs.insertRow();
+                    userRs.moveToCurrentRow();
+                }
+                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                userRs = stmt.executeQuery("SELECT * FROM traces WHERE traceId = '"+traceId+"'");
+                if (!userRs.isBeforeFirst() ) {
+                    System.out.println("No data in traces");
+                    userRs.moveToInsertRow();
+                    userRs.updateString(2,currentUser);
+                    userRs.updateString(3,application);
+                    userRs.updateString(4,traceId);
+                    userRs.insertRow();
+                    userRs.moveToCurrentRow();
+                }
+                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                rs = stmt.executeQuery("SELECT * FROM data WHERE traceId = '"+traceId+"'");
+                if(rs.isBeforeFirst()){
+                    System.out.println("Data already exists in traces");
+                }
+                else {
+                    try {
+                        System.out.println("Inputting to database");
+                        rs = stmt.executeQuery("SELECT * FROM data");
+                        br = new BufferedReader(new FileReader(oldFileName));
+                        String line;
+                        String[] splitline;
+                        HashMap<String, ArrayList<String>> stack = new HashMap<>();
+                        while ((line = br.readLine()) != null) {
+                            splitline = line.split("::");
+                            String[] temp = splitline[0].split(" ");
+                            String currentName = temp[temp.length - 1];
+                            if (splitline.length == 3) {
+                                if (stack.containsKey(currentName)) {
+                                    if (splitline[1].equals("methodStart")) {
+                                        stack.get(currentName).add(splitline[2]);
+                                    } else {
+                                        rs.moveToInsertRow();
+                                        rs.updateString(2, traceId);
+                                        rs.updateString(3, currentName);
+                                        rs.updateLong(4, Long.parseLong(stack.get(currentName).remove(0)));
+                                        rs.updateLong(5, Long.parseLong(splitline[2]));
+                                        rs.insertRow();
+                                        rs.moveToCurrentRow();
+                                        if (stack.get(currentName).size() == 0) {
+                                            stack.remove(currentName);
+                                        }
                                     }
+                                } else {
+                                    stack.put(currentName, new ArrayList<String>());
+                                    stack.get(currentName).add(splitline[2]);
                                 }
-                            } else {
-                                stack.put(currentName, new ArrayList<String>());
-                                stack.get(currentName).add(splitline[2]);
                             }
                         }
-                    }
-                    System.out.println("Completed!");
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                    return;
-                } finally {
-                    try {
-                        if (br != null)
-                            br.close();
-                    } catch (IOException e) {
-                        //
-                    }
-                    try {
-                        if (bw != null)
-                            bw.close();
-                    } catch (IOException e) {
-                        //
+                        System.out.println("Completed!");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                        return;
+                    } finally {
+                        try {
+                            if (br != null)
+                                br.close();
+                        } catch (IOException e) {
+                            //
+                        }
+                        try {
+                            if (bw != null)
+                                bw.close();
+                        } catch (IOException e) {
+                            //
+                        }
                     }
                 }
+
+            }
+            catch (SQLException e){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+                System.out.println("VendorError: " + e.getErrorCode());
             }
 
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
+            throw new IllegalStateException("Cannot connect the database!", e);
         }
+
     }
 }

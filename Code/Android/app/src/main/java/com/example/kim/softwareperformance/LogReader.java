@@ -16,8 +16,11 @@ public final class LogReader {
 
         Process process = null;
         try {
-            process = Runtime.getRuntime().exec("logcat -d");
+            process = Runtime.getRuntime().exec("logcat -d *:I");
+            process.waitFor();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         BufferedReader bufferedReader = new BufferedReader(
