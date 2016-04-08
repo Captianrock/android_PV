@@ -108,6 +108,7 @@ public class PVView extends JFrame {
                 }
             });
 
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
             setVisible(true);
         });
     }
