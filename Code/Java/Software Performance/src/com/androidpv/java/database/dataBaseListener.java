@@ -24,7 +24,8 @@ public class dataBaseListener {
         System.out.println("Connecting database...");
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+        try  {
+            connection = DriverManager.getConnection(url, username, password);
             System.out.println("Database connected!");
 
         } catch (SQLException e) {

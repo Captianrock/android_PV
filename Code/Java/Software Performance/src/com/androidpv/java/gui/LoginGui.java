@@ -1,5 +1,7 @@
 package com.androidpv.java.gui;
 
+import com.androidpv.java.database.dataBaseListener;
+
 import javax.swing.*;
 
 /**
@@ -20,12 +22,11 @@ public class LoginGui extends JFrame{
     }
     public LoginGui(){
         super("Login Authentication");
-
+        dataBaseListener db = new dataBaseListener();
         blogin = new JButton("Login");
         loginpanel = new JPanel();
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
-        newUSer = new JButton("New User?");
         username = new JLabel("User - ");
         password = new JLabel("Pass - ");
 
@@ -36,14 +37,12 @@ public class LoginGui extends JFrame{
         txuser.setBounds(70,30,150,20);
         pass.setBounds(70,65,150,20);
         blogin.setBounds(110,100,80,20);
-        newUSer.setBounds(110,135,80,20);
         username.setBounds(20,28,80,20);
         password.setBounds(20,63,80,20);
 
         loginpanel.add(blogin);
         loginpanel.add(txuser);
         loginpanel.add(pass);
-        loginpanel.add(newUSer);
         loginpanel.add(username);
         loginpanel.add(password);
 
@@ -54,13 +53,13 @@ public class LoginGui extends JFrame{
 
         blogin.addActionListener(e -> {
                 String puname = txuser.getText();
-                String ppaswd = pass.getText();
+                String ppasswd = pass.getText();
 
-                if(puname.equals("username") && ppaswd.equals("password")) {
+                if(db.checkMembership(puname , ppasswd)) {
                    new PVView();
                     dispose();
                 }
-                else if(puname.equals("") && ppaswd.equals("")){
+                else if(puname.equals("") && ppasswd.equals("")){
                     JOptionPane.showMessageDialog(null,"Please insert Username and Password");
                 }
                 else {
