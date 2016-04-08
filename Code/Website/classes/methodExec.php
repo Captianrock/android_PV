@@ -7,7 +7,7 @@ class methodExec {
 	public $timesList;
 
 	function __construct(){
-		$this->conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD, DB_TIMES) or 
+		$this->conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD, DB_NAME) or 
 				die('There was a problem with the database connection.');
 	}
 
@@ -15,7 +15,7 @@ class methodExec {
 
 		$timesList = [];
 		$query = "SELECT *
-					FROM times";
+					FROM data";
 					
 		$result = $this->conn->query($query);
 
