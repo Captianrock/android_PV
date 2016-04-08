@@ -147,9 +147,8 @@ public class PVView extends JFrame {
                 }
             });
 
-
             // Listens for the data file to be created, checks every 5 seconds
-            String FOLDER = System.getProperty("user.dir");
+            String FOLDER = System.getProperty("user.dir" + "AndroidTest/build/outputs/apk/");
             final long pollingInterval = 5 * 1000;
             File folder = new File(FOLDER);
             if (!folder.exists()) {
@@ -164,18 +163,15 @@ public class PVView extends JFrame {
                 @Override
                 public void onFileCreate(File file) {
                     // "file" is the reference to the newly created file
-                    try {
-                        if (file.equals("APK FILE")){
-                            //TODO: Switch to new gui view and dispose of this view
-
-                        }
+                    try { //TODO: Get path to apk
                             System.out.println("File created: "
                                     + file.getCanonicalPath());
+                            new DataSubmit();
+                            dispose();
                     } catch (IOException e) {
                         e.printStackTrace(System.err);
                     }
                 }
-
             };
             observer.addListener(listener);
             monitor.addObserver(observer);
