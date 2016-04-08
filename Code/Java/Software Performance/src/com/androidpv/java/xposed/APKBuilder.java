@@ -15,7 +15,7 @@ public class APKBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + MBConstants.ANDROID_TEST_DIR + "/local.properties")));
-            writer.println(sdkLoc);
+            writer.println("sdk.dir = " + sdkLoc);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

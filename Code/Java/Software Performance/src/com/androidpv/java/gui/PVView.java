@@ -143,7 +143,7 @@ public class PVView extends JFrame {
                     appendNewText("Building module");
                     new ModuleBuilder(outputPathString);
                     appendNewText("Building apk");
-                    new APKBuilder();
+                    new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                 }
             });
 
