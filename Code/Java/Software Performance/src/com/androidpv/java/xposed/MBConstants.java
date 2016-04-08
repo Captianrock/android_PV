@@ -10,6 +10,11 @@ import java.util.List;
  */
 public final class MBConstants {
 
+    // for APKBuilder
+    public static final String USER_DIR = "user.dir";
+    public static final String ANDROID_TEST_DIR = "/AndroidTest";
+
+
     // JAR_FILES is used in Parser
     public static final String JAR_FILES = "/parseLibs";
 

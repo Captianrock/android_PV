@@ -386,11 +386,13 @@ public class ModuleBuilder {
 
 
     /**
-     * Helper method
+     * Helper method that checks whether the method we are analyzing lives in an anonymous
      *
-     * @param methodInfo
-     * @param anonClassMap
-     * @return
+     * @param methodInfo  the parsed output file in list format
+     * @param anonClassMap  a map with key as parent class and value a list of the anonymous classes in that parent class
+     *
+     * @return null if we have no anonymous class, a list of list integers containing all of the possible combinations
+     *          of nested anonymous classes
      */
     private List<int[]> anonClassCheck(String[] methodInfo, Map<String, ArrayList<String>> anonClassMap) {
 

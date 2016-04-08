@@ -11,10 +11,10 @@ public class APKBuilder {
 
     public APKBuilder(String adbLoc, String sdkLoc) {
 
-        String currentDir = System.getProperty("user.dir");
+        String currentDir = System.getProperty(MBConstants.USER_DIR);
 
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + "/AndroidTest/local.properties")));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + MBConstants.ANDROID_TEST_DIR + "/local.properties")));
             writer.println(sdkLoc);
             writer.close();
         } catch (IOException e) {
@@ -24,9 +24,9 @@ public class APKBuilder {
         // to build apk
         List<String> commandsList = new ArrayList<>();
         ProcessBuilder pb = new ProcessBuilder();
-        File wd = new File(currentDir + "/AndroidTest");
+        File wd = new File(currentDir + MBConstants.ANDROID_TEST_DIR);
         pb.directory(wd);
-        File f = new File(currentDir + "/AndroidTest/gradlew");
+        File f = new File(currentDir + MBConstants.ANDROID_TEST_DIR + "/gradlew");
         if (f.exists()) {
             System.out.println("trueeeeee");
         }
@@ -74,7 +74,7 @@ public class APKBuilder {
         deployCommands.add(deployPB.directory().getAbsolutePath() + "/adb");
         deployCommands.add("install");
         deployCommands.add("-r");
-        deployCommands.add(currentDir + "/AndroidTest/build/outputs/apk/AndroidTest-debug.apk");
+        deployCommands.add(currentDir + MBConstants.ANDROID_TEST_DIR + "/build/outputs/apk/AndroidTest-debug.apk");
         deployPB.command(deployCommands);
         System.out.println(deployPB.directory().getAbsolutePath());
 
