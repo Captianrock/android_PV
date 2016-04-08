@@ -8,6 +8,7 @@ var start = [];
 var end = [];
 var diff = [];
 var pie = [];
+var indieRun = [];
 var max = 0;
 var maxMethod = "None";
 
@@ -16,8 +17,8 @@ for (var i = 0; i < jsArray.length; i++)
     var tempElem = method.indexOf(jsArray[i]["methodName"]);
 	if(tempElem == -1){
        method.push(jsArray[i]["methodName"]);
-	   start.push(parseInt(jsArray[i]["timeStart"]));
-	   end.push(parseInt(jsArray[i]["timeEnd"]));
+	   start.push((parseInt(jsArray[i]["timeStart"]))/1000);
+	   end.push((parseInt(jsArray[i]["timeEnd"]))/1000);
 	   diff.push(end[i] - start[i]);
         if(end[i] - start[i] > max){
             max = end[i] - start[i];
@@ -25,8 +26,8 @@ for (var i = 0; i < jsArray.length; i++)
         }
     }
     else{
-        start.push(parseInt(jsArray[i]["timeStart"]));
-        end.push(parseInt(jsArray[i]["timeEnd"]));
+        start.push((parseInt(jsArray[i]["timeStart"]))/1000);
+        end.push((parseInt(jsArray[i]["timeEnd"]))/1000);
         diff[tempElem] += end[i] - start[i];
         if(diff[tempElem] > max){
             max = end[i] - start[i];
@@ -58,6 +59,7 @@ for (i = 0; i < method.length; i++)
 {
     pie.push({
         y: diff[i],
+		color: colors[i%10],
         drilldown: {
             categories: method[i],
             data: donutDic[method[i]],
@@ -65,32 +67,34 @@ for (i = 0; i < method.length; i++)
         }
     });
 }
+
 $(function () {
 
-    categories = method;
+	categories = method;
     data = pie;
-    browserData = [];
-    versionsData = [];
+    totalRun = [];
     dataLen = data.length;
 
     // Build the data arrays
     for (var i = 0; i < dataLen; i += 1) {
 
         // add browser data
-        browserData.push({
+        totalRun.push({
             name: categories[i],
             y: data[i].y,
-            color: data[i].color
+            color: data[i].color,
+			id: i
         });
 
         // add version data
         drillDataLen = data[i].drilldown.data.length;
         for (var j = 0; j < drillDataLen; j += 1) {
             brightness = 0.2 - (j / drillDataLen) / 5;
-            versionsData.push({
+            indieRun.push({
                 name: data[i].drilldown.categories,
                 y: data[i].drilldown.data[j],
-                color: Highcharts.Color(data[i].color).brighten(brightness).get()
+                color: Highcharts.Color(data[i].color).brighten(brightness).get(),
+				parentId: i
             });
         }
     }
@@ -100,9 +104,9 @@ $(function () {
         chart: {
             type: 'pie'
         },
-        title: {
-            text: 'Method Runtimes'
-        },
+		title: {
+			text: null
+		},
         yAxis: {
             title: {
                 text: 'Total percent market share'
@@ -115,23 +119,45 @@ $(function () {
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
-                    enabled: false
+                    enabled: false,
+					format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                },
+			},
+			series: {
+				point: {
+					events: {
+						legendItemClick: function () {
+							var id = this.id,
+							indieRun = this.series.chart.series[0].data;
+							$.each(indieRun, function (i, point) {
+								console.log(i);
+								console.log(point);
+								if (point.parentId == id) {
+									if(point.visible)
+										point.setVisible(false);
+									else
+										point.setVisible(true);
+								}
+							});
+						}
+					}
                 }
-            }
+            },
+        },
+		tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
         },
         series: [{
-            name: 'Browsers',
-            data: browserData,
-            size: '55%',
-            colorByPoint: true,
-           
+            name: 'Total Runtime',
+            data: totalRun,
+            size: '60%',
+			showInLegend: true,
         }, {
-            name: 'Versions',
-            data: versionsData,
+            name: 'Individual Runtimes',
+            data: indieRun,
             size: '90%',
             innerSize: '70%',
-           // colorByPoint: true,
-            
+			showInLegend: false,
         }]
     });
 });
@@ -141,16 +167,16 @@ $(function () {
         chart: {
             type: 'bar'
         },
-        title: {
-            text: 'Method Runtimes'
-        },
+		title: {
+			text: null
+		},
         xAxis: {
             categories: method
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'time (nanoseconds)',
+                text: 'time (microseconds)',
                 align: 'high'
             },
             labels: {
@@ -158,7 +184,8 @@ $(function () {
             }
         },
         tooltip: {
-            valueSuffix: ' nanoseconds'
+            valueSuffix: ' microseconds',
+			pointFormat: '{series.name}: <b>{point.y:.0f} microseconds</b>'
         },
         plotOptions: {
             bar: {
@@ -167,7 +194,11 @@ $(function () {
                 }
             }
         },
+				legend: {
+			enabled: false
+		},
         series: [{
+			name: "Runtime",
 			colorByPoint: true,
             data: diff
         }]
@@ -177,18 +208,18 @@ $(function () {
 $(function () {
     $('#container3').highcharts({
         chart: {
-            type: 'bar'
+            type: 'column'
         },
-        title: {
-            text: 'Method Runtimes'
-        },
+		title: {
+			text: null
+		},
         xAxis: {
             categories: method
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'time (nanoseconds)',
+                text: 'time (microseconds)',
                 align: 'high'
             },
             labels: {
@@ -196,18 +227,23 @@ $(function () {
             }
         },
         tooltip: {
-            valueSuffix: ' nanoseconds'
+            valueSuffix: ' microseconds',
+			pointFormat: '{series.name}: <b>{point.y:.0f} microseconds</b>'
         },
         plotOptions: {
-            bar: {
+            column: {
                 dataLabels: {
                     enabled: false
                 }
             }
         },
+		legend: {
+			enabled: false
+		},
         series: [{
+			name: "Runtime",
 			colorByPoint: true,
-            data: diff
+            data: indieRun
         }]
     });
 });
@@ -216,7 +252,7 @@ var highestMethod = function() {
     return maxMethod;    
 };
 var highestTime = function() {
-    return max;    
+    return max.toFixed(2);    
 };
 
 document.getElementById( 'highestMethod' ).innerHTML = highestMethod();

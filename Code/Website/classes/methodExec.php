@@ -7,15 +7,16 @@ class methodExec {
 	public $timesList;
 
 	function __construct(){
-		$this->conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD, DB_NAME) or 
+		$this->conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD, DB_NAME) or
 				die('There was a problem with the database connection.');
 	}
 
-	function getTimes(){
+	function getTimes(){// ($trace)
 
 		$timesList = [];
 		$query = "SELECT *
-					FROM data";
+					FROM data
+					WHERE traceId = 'altonKimAlarmKlock2'";// = '$trace'";
 					
 		$result = $this->conn->query($query);
 
@@ -29,10 +30,12 @@ class methodExec {
 	}
 }
 
+//function startUp($trace)
+//{
 $methodExecVar = new methodExec();
-$timesList = $methodExecVar->getTimes();
+$timesList = $methodExecVar->getTimes();// ($trace)
+//}
 
 ?>
-
 
 <script type="text/javascript" src="js/main.js"></script>
