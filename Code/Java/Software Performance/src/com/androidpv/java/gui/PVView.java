@@ -3,10 +3,15 @@ import com.androidpv.java.codeParser.Parser;
 import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
+import org.apache.commons.io.monitor.FileAlterationListener;
+import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -23,11 +28,17 @@ public class PVView extends JFrame {
     private JTextArea outputArea;
     private JTextField jarField;
     private JButton jarButton;
+    private JTextField sdkField;
+    private JButton sdkButton;
+    private JTextField adbField;
+    private JButton adbButton;
     private File selectedFile;
     private File jarDir;
+    private File sdkDir;
+    private File adbDir;
     private String parsedDataOutputPathString;
 
-    public PVView(){
+    public PVView() {
         super("File Chooser");
 
         parsedDataOutputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
@@ -37,7 +48,7 @@ public class PVView extends JFrame {
             pack();
             setDefaultCloseOperation(PVView.EXIT_ON_CLOSE);
 
-            // JFileChooser set to  Directory Button
+            // JFileChooser set to Directory Button
             dirButton.addActionListener(ae -> {
                 JFileChooser fileChooser = new JFileChooser("C:/Users/");
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -51,6 +62,7 @@ public class PVView extends JFrame {
                 }
             });
 
+            // JFileChooser for Jar Files Directory
             jarButton.addActionListener(ae -> {
                 JFileChooser fileChooser = new JFileChooser("C:/Users/");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -64,12 +76,40 @@ public class PVView extends JFrame {
                 }
             });
 
+            // JFileChooser for SDK Directory
+            sdkButton.addActionListener(ae -> {
+                JFileChooser fileChooser = new JFileChooser("C:/Users/");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    sdkDir = fileChooser.getSelectedFile();
+                    sdkField.setText(sdkDir.getAbsolutePath());
+                    appendNewText("A SDK Directory Has Been Selected");
+                    appendNewText(sdkDir.getAbsolutePath());
+                }
+            });
+
+            // JFileCHooser for ADB Directory
+            adbButton.addActionListener(ae -> {
+                JFileChooser fileChooser = new JFileChooser("C:/Users/");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    adbDir = fileChooser.getSelectedFile();
+                    adbField.setText(adbDir.getAbsolutePath());
+                    appendNewText("An ADB Directory Has Been Selected");
+                    appendNewText(adbDir.getAbsolutePath());
+                }
+            });
+
             // Parser Class set to Parse Button
             parseButton.addActionListener(new ActionListener() {
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
 
-                    if (getfilePath().equals(null)){
+                    if (getfilePath() == null){
                         appendNewText("Please Choose a file or Directory!");
                     }
                     appendNewText("Parsing now...");
@@ -104,6 +144,44 @@ public class PVView extends JFrame {
                 }
             });
 
+
+            // Listens for the data file to be created, checks every 5 seconds
+            String FOLDER = System.getProperty("user.dir");
+            final long pollingInterval = 5 * 1000;
+            File folder = new File(FOLDER);
+            if (!folder.exists()) {
+                // Test to see if monitored folder exists
+                throw new RuntimeException("Directory not found: " + FOLDER);
+            }
+            FileAlterationObserver observer = new FileAlterationObserver(folder);
+            FileAlterationMonitor monitor =
+                    new FileAlterationMonitor(pollingInterval);
+            FileAlterationListener listener = new FileAlterationListenerAdaptor() {
+                // Is triggered when a file is created in the monitored folder
+                @Override
+                public void onFileCreate(File file) {
+                    // "file" is the reference to the newly created file
+                    try {
+                        if (file.equals("APK FILE")){
+                            //TODO: Switch to new gui view and dispose of this view
+
+                        }
+                            System.out.println("File created: "
+                                    + file.getCanonicalPath());
+                    } catch (IOException e) {
+                        e.printStackTrace(System.err);
+                    }
+                }
+
+            };
+            observer.addListener(listener);
+            monitor.addObserver(observer);
+            try {
+                monitor.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setVisible(true);
         });
@@ -117,11 +195,9 @@ public class PVView extends JFrame {
         thread.start();
     }
 
-
     public String getfilePath(){
         return ((!selectedFile.getAbsolutePath().isEmpty()? selectedFile.getAbsolutePath() : null ));
     }
-
     public String getJars(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }
@@ -133,8 +209,6 @@ public class PVView extends JFrame {
     public static void main(String[] args) {
         PVView pvView = new PVView();
     }
-
-
 }
 
 
