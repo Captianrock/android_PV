@@ -7,4 +7,9 @@ $membership = New membership();
 $membership->confirmMember();
 ?>
 
-<?php include ('header.html'); ?>
+<!DOCTYPE html>
+<html lang="en">
+		  <h1>
+		  	Welcome To The Site!!!
+		  </h1>
+</html>

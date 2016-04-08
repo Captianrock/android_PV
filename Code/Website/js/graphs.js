@@ -41,34 +41,10 @@ for (var i = 0; i < method.length; i++)
     });
 }
 
-$(function () { 
-	
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Method Runtimes'
-        },
-        xAxis: {
-            categories: method
-        },
-        yAxis: {
-            title: {
-                text: 'time (ns)'
-            }
-        },
-        series: [{
-			colorByPoint: true,
-            data: diff
-        }]
-    });
-});
-
 $(function () {
     $(document).ready(function () {
         // Build the chart
-        $('#container2').highcharts({
+        $('#container').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -97,6 +73,82 @@ $(function () {
                 data: pie
             }]
         });
+    });
+});
+
+$(function () {
+    $('#container2').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Method Runtimes'
+        },
+        xAxis: {
+            categories: method
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'time (nanoseconds)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' nanoseconds'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        series: [{
+			colorByPoint: true,
+            data: diff
+        }]
+    });
+});
+
+$(function () {
+    $('#container3').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Method Runtimes'
+        },
+        xAxis: {
+            categories: method
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'time (nanoseconds)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' nanoseconds'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        series: [{
+			colorByPoint: true,
+            data: diff
+        }]
     });
 });
 
