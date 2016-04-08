@@ -1,6 +1,7 @@
 package com.androidpv.java.gui;
 import com.androidpv.java.codeParser.Parser;
 import com.androidpv.java.apkParser.APKParser;
+import com.androidpv.java.xposed.APKBuilder;
 import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
 
@@ -69,6 +70,7 @@ public class PVView extends JFrame {
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
 
+
                     if (getfilePath().equals(null)){
                         appendNewText("Please Choose a file or Directory!");
                     }
@@ -101,6 +103,8 @@ public class PVView extends JFrame {
                     appendNewText("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
                     appendNewText("Building module");
                     new ModuleBuilder(outputPathString);
+                    appendNewText("Building apk");
+                    new APKBuilder();
                 }
             });
 

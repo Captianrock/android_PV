@@ -27,7 +27,9 @@ public class ModuleBuilder {
         boolean beginningOfFile = true;
 
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("moduleFile.java")));
+
+            String currentDir = System.getProperty("user.dir");
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + "/AndroidTest/src/main/java/com/test/Tutorial.java")));
 
             List<Map<String, ArrayList<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
             List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");

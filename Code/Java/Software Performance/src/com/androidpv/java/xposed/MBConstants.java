@@ -60,7 +60,7 @@ public final class MBConstants {
 
 
     // Constants for creating code header
-    public static final String MODULE_PACKAGE_NAME = "package com.example.kim.softwareperformance;\n";
+    public static final String MODULE_PACKAGE_NAME = "package com.test;\n";
     public static final String IMPORTS = "import de.robv.android.xposed.IXposedHookLoadPackage;\n" +
         "import de.robv.android.xposed.XC_MethodHook;\n" +
         "import de.robv.android.xposed.XSharedPreferences;\n" +
