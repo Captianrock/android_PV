@@ -16,36 +16,28 @@ public class DataSubmit extends JFrame{
     private JPanel panel;
 
     public DataSubmit(){
-        SwingUtilities.invokeLater(() -> {
             setContentPane(panel);
             pack();
             setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
-
             // Back button to previous view
-
-    });}
-
-    private void createUIComponents() {
         // TODO: place custom component creation code here
         usrnameField = new JFormattedTextField(new String("Enter User Name"));
         appField = new JFormattedTextField(new String("Enter Application Name"));
-
         dataButton.addActionListener(ae ->{
             //TODO: Get create button to get data from android device and submit data to database
             String username = usrnameField.getValue().toString();
             String appname = appField.getValue().toString();
-
             dataBaseListener bd = new dataBaseListener();
             bd.enterToDatabase();
 
         });
-
         backButton.addActionListener(ae -> {
             new PVView();
             dispose();
         });
-
-
-
+        setVisible(true);
+    }
+    public static void main(String... args){
+        new DataSubmit();
     }
 }

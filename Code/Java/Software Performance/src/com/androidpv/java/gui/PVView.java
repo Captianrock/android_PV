@@ -58,8 +58,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
                     fileField.setText(selectedFile.getAbsolutePath());
-                    appendNewText("A File Has Been Selected");
-                    appendNewText(selectedFile.getAbsolutePath());
+                    outputArea.append("A File Has Been Selected");
+                    outputArea.append(selectedFile.getAbsolutePath());
                 }
             });
 
@@ -72,8 +72,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     jarDir = fileChooser.getSelectedFile();
                     jarField.setText(jarDir.getAbsolutePath());
-                    appendNewText("A Directory Has Been Selected");
-                    appendNewText(jarDir.getAbsolutePath());
+                    outputArea.append("A Directory Has Been Selected");
+                    outputArea.append(jarDir.getAbsolutePath());
                 }
             });
 
@@ -86,8 +86,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     sdkDir = fileChooser.getSelectedFile();
                     sdkField.setText(sdkDir.getAbsolutePath());
-                    appendNewText("A SDK Directory Has Been Selected");
-                    appendNewText(sdkDir.getAbsolutePath());
+                    outputArea.append("A SDK Directory Has Been Selected");
+                    outputArea.append(sdkDir.getAbsolutePath());
                 }
             });
 
@@ -100,8 +100,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     adbDir = fileChooser.getSelectedFile();
                     adbField.setText(adbDir.getAbsolutePath());
-                    appendNewText("An ADB Directory Has Been Selected");
-                    appendNewText(adbDir.getAbsolutePath());
+                    outputArea.append("An ADB Directory Has Been Selected");
+                    outputArea.append(adbDir.getAbsolutePath());
                 }
             });
 
@@ -111,12 +111,13 @@ public class PVView extends JFrame {
                 public void actionPerformed(ActionEvent e) {
 
                     if (getfilePath() == null){
-                        appendNewText("Please Choose a file or Directory!");
+                        outputArea.append("Please Choose a file or Directory!");
                     }
-                    appendNewText("Parsing now...");
+
                     Path inputPath = Paths.get(getfilePath());
                     // Handles ".apk" File inputs
                     if (APKParser.isAPK(inputPath)) try {
+                        outputArea.append("Parsing now...");
                         APKParser.parse(inputPath.toFile());
                         List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
                         Parser.parseFilesInDir(fileL, outputPathString);
@@ -132,54 +133,32 @@ public class PVView extends JFrame {
                         try {
                             Parser.parseFilesInDir(fileL, outputPathString);
                         } catch (Exception except) {
-                            System.err.println("Error parseFilesInDir in main: " + except.getMessage());
+                            outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
                         }
-                        appendNewText("Done parsing directory!");
+                        outputArea.append("Done parsing directory!");
 
                     }
                     fileField.setText("");
-                    appendNewText("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
-                    appendNewText("Building module");
+                    outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
+                    outputArea.append("Building module");
+
                     new ModuleBuilder(outputPathString);
-                    appendNewText("Building apk");
+                    outputArea.append("Building apk");
+
                     new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                    outputArea.append("APK has ben build");
+
+                    try {
+                        Thread.sleep(6000); //1000 milliseconds is one second.
+                        new DataSubmit();
+                        dispose();
+                    } catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             });
 
-            // Listens for the data file to be created, checks every 5 seconds
-            String FOLDER = System.getProperty("user.dir" + "AndroidTest/build/outputs/apk/");
-            final long pollingInterval = 5 * 1000;
-            File folder = new File(FOLDER);
-            if (!folder.exists()) {
-                // Test to see if monitored folder exists
-                throw new RuntimeException("Directory not found: " + FOLDER);
-            }
-            FileAlterationObserver observer = new FileAlterationObserver(folder);
-            FileAlterationMonitor monitor =
-                    new FileAlterationMonitor(pollingInterval);
-            FileAlterationListener listener = new FileAlterationListenerAdaptor() {
-                // Is triggered when a file is created in the monitored folder
-                @Override
-                public void onFileCreate(File file) {
-                    // "file" is the reference to the newly created file
-                    try { //TODO: Get path to apk
-                            System.out.println("File created: "
-                                    + file.getCanonicalPath());
-                            new DataSubmit();
-                            dispose();
-                    } catch (IOException e) {
-                        e.printStackTrace(System.err);
-                    }
-                }
-            };
-            observer.addListener(listener);
-            monitor.addObserver(observer);
-            try {
-                monitor.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setVisible(true);
@@ -187,15 +166,9 @@ public class PVView extends JFrame {
     }
 
     // Updates Output text Area on sperate thread to not block EDT
-    public void appendNewText (String txt) {
-        Thread thread = new Thread(() -> {
-            outputArea.append(txt + "\n");
-        });
-        thread.start();
-    }
 
     public String getfilePath(){
-        return ((!selectedFile.getAbsolutePath().isEmpty()? selectedFile.getAbsolutePath() : null ));
+        return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
     }
     public String getJars(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
