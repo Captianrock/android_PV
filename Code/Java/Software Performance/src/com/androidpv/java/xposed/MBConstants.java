@@ -76,7 +76,7 @@ public final class MBConstants {
     public static final String CLASS_NAME_MAIN_METHOD = "public class Tutorial implements IXposedHookLoadPackage {\n" +
         "\tlong startTime,endTime;\n" +
         "\tpublic void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {\n" +
-        "\t\tXposedBridge.log(\"Loaded app: \" + lpparam.packageName);\n";
+        "\t\tXposedBridge.log(\"  Loaded app: \" + lpparam.packageName);\n";
     public static final String PREFERENCES = "\t\tfinal XSharedPreferences pref = new XSharedPreferences(" +
         "\"com.example.kim.softwareperformance\", \"user_settings\");\n\t\tpref.makeWorldReadable();\n" +
         "\t\tpref.reload();\n";

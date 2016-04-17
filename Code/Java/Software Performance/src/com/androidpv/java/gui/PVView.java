@@ -142,45 +142,48 @@ public class PVView extends JFrame {
                     appendNewText("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
                     appendNewText("Building module");
                     new ModuleBuilder(outputPathString);
-                    appendNewText("Building apk");
+                    appendNewText("Module built.\nBuilding apk.");
                     new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                    appendNewText("APK built.");
+                    new DataSubmit();
+                            dispose();
                 }
             });
 
             // Listens for the data file to be created, checks every 5 seconds
-            String FOLDER = System.getProperty("user.dir" + "AndroidTest/build/outputs/apk/");
-            final long pollingInterval = 5 * 1000;
-            File folder = new File(FOLDER);
-            if (!folder.exists()) {
-                // Test to see if monitored folder exists
-                throw new RuntimeException("Directory not found: " + FOLDER);
-            }
-            FileAlterationObserver observer = new FileAlterationObserver(folder);
-            FileAlterationMonitor monitor =
-                    new FileAlterationMonitor(pollingInterval);
-            FileAlterationListener listener = new FileAlterationListenerAdaptor() {
-                // Is triggered when a file is created in the monitored folder
-                @Override
-                public void onFileCreate(File file) {
-                    // "file" is the reference to the newly created file
-                    try { //TODO: Get path to apk
-                            System.out.println("File created: "
-                                    + file.getCanonicalPath());
-                            new DataSubmit();
-                            dispose();
-                    } catch (IOException e) {
-                        e.printStackTrace(System.err);
-                    }
-                }
-            };
-            observer.addListener(listener);
-            monitor.addObserver(observer);
-            try {
-                monitor.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+//            String FOLDER = System.getProperty("user.dir") + ("/AndroidTest/build/outputs/apk/");
+//            final long pollingInterval = 5 * 1000;
+//            File folder = new File(FOLDER);
+//            if (!folder.exists()) {
+//                // Test to see if monitored folder exists
+//                throw new RuntimeException("Directory not found: " + FOLDER);
+//            }
+//            FileAlterationObserver observer = new FileAlterationObserver(folder);
+//            FileAlterationMonitor monitor =
+//                    new FileAlterationMonitor(pollingInterval);
+//            FileAlterationListener listener = new FileAlterationListenerAdaptor() {
+//                // Is triggered when a file is created in the monitored folder
+//                @Override
+//                public void onFileCreate(File file) {
+//                    // "file" is the reference to the newly created file
+//                    try { //TODO: Get path to apk
+//                            System.out.println("File created: "
+//                                    + file.getCanonicalPath());
+//                            new DataSubmit();
+//                            dispose();
+//                    } catch (IOException e) {
+//                        e.printStackTrace(System.err);
+//                    }
+//                }
+//            };
+//            observer.addListener(listener);
+//            monitor.addObserver(observer);
+//            try {
+//                monitor.start();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setVisible(true);
         });

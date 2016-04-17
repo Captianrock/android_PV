@@ -21,29 +21,47 @@ public class DataSubmit extends JFrame{
             pack();
             setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
 
+            usrnameField = new JFormattedTextField(new String("Enter User Name"));
+            appField = new JFormattedTextField(new String("Enter Application Name"));
+
+            dataButton.addActionListener(ae ->{
+                //TODO: Get create button to get data from android device and submit data to database
+                String username = usrnameField.getValue().toString();
+                String appname = appField.getValue().toString();
+
+                dataBaseListener bd = new dataBaseListener();
+                bd.enterToDatabase();
+
+            });
+
+            backButton.addActionListener(ae -> {
+                new PVView();
+                dispose();
+            });
+
             // Back button to previous view
 
     });}
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-        usrnameField = new JFormattedTextField(new String("Enter User Name"));
-        appField = new JFormattedTextField(new String("Enter Application Name"));
-
-        dataButton.addActionListener(ae ->{
-            //TODO: Get create button to get data from android device and submit data to database
-            String username = usrnameField.getValue().toString();
-            String appname = appField.getValue().toString();
-
-            dataBaseListener bd = new dataBaseListener();
-            bd.enterToDatabase();
-
-        });
-
-        backButton.addActionListener(ae -> {
-            new PVView();
-            dispose();
-        });
+//        // TODO: place custom component creation code here
+//        usrnameField = new JFormattedTextField(new String("Enter User Name"));
+//        appField = new JFormattedTextField(new String("Enter Application Name"));
+//
+//        dataButton.addActionListener(ae ->{
+//            //TODO: Get create button to get data from android device and submit data to database
+//            String username = usrnameField.getValue().toString();
+//            String appname = appField.getValue().toString();
+//
+//            dataBaseListener bd = new dataBaseListener();
+//            bd.enterToDatabase();
+//
+//        });
+//
+//        backButton.addActionListener(ae -> {
+//            new PVView();
+//            dispose();
+//        });
 
 
 

@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import com.androidpv.java.gui.LoginGui;
 import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.MBConstants;
 import org.eclipse.jdt.core.JavaCore;
@@ -230,7 +231,7 @@ public class Parser {
 
 
     public static void main(String[] args) {
-        PVView view = new PVView();
+        new LoginGui();
 
     }
 }
