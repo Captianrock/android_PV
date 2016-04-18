@@ -37,6 +37,23 @@ public class dataBaseListener {
         }
     }
 
+    public boolean addtoMembership(String username, String password){
+        Statement stmt;
+        ResultSet rs;
+        BufferedReader br = null;
+        String url = "jdbc:mysql://localhost:3306/membership";
+        String usernames = "root";
+        String passwords = "";
+        try (Connection connection = DriverManager.getConnection(url, usernames, passwords)) {
+            System.out.println("Database connected!");
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+            return false;
+        }
+    }
     public boolean checkMembership(String username, String password){
         Statement stmt;
         ResultSet rs;

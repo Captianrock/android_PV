@@ -12,12 +12,13 @@ import java.util.*;
 
 import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.MBConstants;
+import com.androidpv.java.xposed.ModuleBuilder;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
 import javax.swing.*;
 
-public class Parser extends SwingWorker<Void,Void> {
+public class Parser {
 
     //use ASTParse to parse string
     public static void parse(String str, String outputFile, File sourceFile) {
@@ -113,6 +114,12 @@ public class Parser extends SwingWorker<Void,Void> {
                     }
                 });
                 return null;
+            }
+
+            @Override
+            protected void done(){
+                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
+                new ModuleBuilder(outputPathString);
             }
         };
         worker.execute();
@@ -237,10 +244,6 @@ public class Parser extends SwingWorker<Void,Void> {
         return path;
     }
 
-    @Override
-    protected Void doInBackground() throws Exception {
-        return null;
-    }
 
     public static void main(String[] args) {
         PVView view = new PVView();

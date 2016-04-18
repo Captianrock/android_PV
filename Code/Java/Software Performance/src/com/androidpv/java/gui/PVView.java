@@ -137,15 +137,16 @@ public class PVView extends JFrame {
                             except.printStackTrace();
                         }
                         outputArea.append("Done parsing directory!");
+                        outputArea.append("Building module");
 
                     }
                     fileField.setText("");
                     outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
-                    outputArea.append("Building module");
+                    //outputArea.append("Building module");
 
-                    new ModuleBuilder(outputPathString);
+                    // new ModuleBuilder(outputPathString);
+
                     outputArea.append("Building apk");
-
                     new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                     outputArea.append("APK has ben build");
 
