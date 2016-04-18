@@ -18,6 +18,7 @@ class membership{
 		$ensureCredentials = $mysql->verifyUsernameandPass($un,md5($pwd));
 		if($ensureCredentials){
 			$_SESSION['status'] = 'authorized';
+			$_SESSION['user'] = $un;
 			header("location: index.php");
 		}
 		else{
@@ -25,7 +26,6 @@ class membership{
 		}
 	}
 	function confirmMember(){
-		session_start();
 		if($_SESSION['status'] != 'authorized'){
 			header("location: login.php");
 		}
