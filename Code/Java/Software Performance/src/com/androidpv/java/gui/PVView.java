@@ -136,6 +136,8 @@ public class PVView extends JFrame {
                     // Parses Given Directory for Java Files
                     if (inputPath.toFile().isDirectory()){
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
+                        Parser.setADBDir(adbDir.getAbsolutePath());
+                        Parser.setSDKDir(sdkDir.getAbsolutePath());
                         try {
                             if (jarDir != null) {
                                 Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
@@ -148,22 +150,15 @@ public class PVView extends JFrame {
                             except.printStackTrace();
                         }
                         outputArea.append("Done parsing directory!\n");
-                        outputArea.append("Done parsing directory!");
-                        outputArea.append("Building module");
-
+                        outputArea.append("Building module\n");
                     }
                     fileField.setText("");
                     outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
-                    outputArea.append("Building module\n");
-                    //outputArea.append("Building module");
 
-                   // new ModuleBuilder(outputPathString);
+//                    new ModuleBuilder(outputPathString);
                     outputArea.append("Building apk\n");
 
-                    // new ModuleBuilder(outputPathString);
-
-                    outputArea.append("Building apk");
-                    new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+//                    new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                     outputArea.append("APK has been built\n");
 
                     try {
@@ -189,6 +184,13 @@ public class PVView extends JFrame {
     }
     public String getJars(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
+    }
+
+    public String getADBDir() {
+        return adbDir.getAbsolutePath();
+    }
+    public String getSDKDir() {
+        return sdkDir.getAbsolutePath();
     }
 
     public String getOutputPathString() {
