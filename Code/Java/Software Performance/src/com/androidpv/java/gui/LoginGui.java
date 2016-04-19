@@ -15,7 +15,7 @@ public class LoginGui extends JFrame{
     JPanel loginpanel;
     JTextField txuser;
     JTextField pass;
-    JButton newUSer;
+    JButton newUser;
     JLabel username;
     JLabel password;
 
@@ -29,7 +29,7 @@ public class LoginGui extends JFrame{
         loginpanel = new JPanel();
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
-        newUSer = new JButton("New User?");
+        newUser = new JButton("New User?");
         username = new JLabel("User - ");
         password = new JLabel("Pass - ");
 
@@ -37,7 +37,7 @@ public class LoginGui extends JFrame{
         setLocation(500,280);
         loginpanel.setLayout (null);
 
-        newUSer.setBounds(110,135,80,20);
+        newUser.setBounds(110,135,80,20);
         txuser.setBounds(70,30,150,20);
         pass.setBounds(70,65,150,20);
         blogin.setBounds(110,100,80,20);
@@ -47,7 +47,7 @@ public class LoginGui extends JFrame{
         loginpanel.add(blogin);
         loginpanel.add(txuser);
         loginpanel.add(pass);
-        loginpanel.add(newUSer);
+        loginpanel.add(newUser);
         loginpanel.add(username);
         loginpanel.add(password);
 
@@ -76,13 +76,13 @@ public class LoginGui extends JFrame{
 
         });
 
-        newUSer.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-                NewUser user = new NewUser();
-                dispose();
-
-            }
-        });
+//        newUser.addActionListener(new ActionListener(){
+//            public void actionPerformed(ActionEvent e) {
+//                NewUser.java user = new NewUser.java();
+//                dispose();
+//
+//            }
+//        });
 
     }
  }

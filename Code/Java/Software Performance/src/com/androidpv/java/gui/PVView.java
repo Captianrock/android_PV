@@ -58,8 +58,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
                     fileField.setText(selectedFile.getAbsolutePath());
-                    outputArea.append("A File Has Been Selected");
-                    outputArea.append(selectedFile.getAbsolutePath());
+                    outputArea.append("A File Has Been Selected\n");
+                    outputArea.append(selectedFile.getAbsolutePath() + "\n");
                 }
             });
 
@@ -72,8 +72,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     jarDir = fileChooser.getSelectedFile();
                     jarField.setText(jarDir.getAbsolutePath());
-                    outputArea.append("A Directory Has Been Selected");
-                    outputArea.append(jarDir.getAbsolutePath());
+                    outputArea.append("A Directory Has Been Selected\n");
+                    outputArea.append(jarDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -86,8 +86,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     sdkDir = fileChooser.getSelectedFile();
                     sdkField.setText(sdkDir.getAbsolutePath());
-                    outputArea.append("A SDK Directory Has Been Selected");
-                    outputArea.append(sdkDir.getAbsolutePath());
+                    outputArea.append("A SDK Directory Has Been Selected\n");
+                    outputArea.append(sdkDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -100,8 +100,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     adbDir = fileChooser.getSelectedFile();
                     adbField.setText(adbDir.getAbsolutePath());
-                    outputArea.append("An ADB Directory Has Been Selected");
-                    outputArea.append(adbDir.getAbsolutePath());
+                    outputArea.append("An ADB Directory Has Been Selected\n");
+                    outputArea.append(adbDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -111,7 +111,7 @@ public class PVView extends JFrame {
                 public void actionPerformed(ActionEvent e) {
 
                     if (getfilePath() == null){
-                        outputArea.append("Please Choose a file or Directory!");
+                        outputArea.append("Please Choose a file or Directory!\n");
                     }
 
                     // Handles ".apk" File inputs
@@ -121,7 +121,7 @@ public class PVView extends JFrame {
                             outputArea.append("Parsing now...");
                             APKParser.parse(inputPath.toFile());
                             List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             try {
                                 Thread.sleep(6000); //1000 milliseconds is one second.
                                 new DataSubmit();
@@ -140,7 +140,12 @@ public class PVView extends JFrame {
                         Path inputPath = Paths.get(getfilePath());
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
                         try {
-                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            if (jarDir != null) {
+                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            }
+                            else {
+                                Parser.parseFilesInDir(fileL, outputPathString, null, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            }
                         } catch (Exception except) {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();

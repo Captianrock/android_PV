@@ -14,10 +14,6 @@ public final class MBConstants {
     public static final String USER_DIR = "user.dir";
     public static final String ANDROID_TEST_DIR = "/AndroidTest";
 
-
-    // JAR_FILES is used in Parser
-    public static final String JAR_FILES = "/parseLibs";
-
     public static final int PACKAGE_INDEX = 0;
     public static final int CLASS_INDEX = 1;
     public static final int PARENT_INDEX = 2;
@@ -33,7 +29,7 @@ public final class MBConstants {
     public static final String PARSED_FILE_SEPARATOR = ";";
 
 
-    public static final String END_OF_CODE = "\t\t}\n\t}\n}\n";
+    public static final String END_OF_CODE = "\t\t}\n\n}\n";
 
 
     // Constants for findAndHookMethod
@@ -76,7 +72,7 @@ public final class MBConstants {
     public static final String CLASS_NAME_MAIN_METHOD = "public class Tutorial implements IXposedHookLoadPackage {\n" +
         "\tlong startTime,endTime;\n" +
         "\tpublic void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {\n" +
-        "\t\tXposedBridge.log(\"Loaded app: \" + lpparam.packageName);\n";
+        "\t\tXposedBridge.log(\"  Loaded app: \" + lpparam.packageName);\n";
     public static final String PREFERENCES = "\t\tfinal XSharedPreferences pref = new XSharedPreferences(" +
         "\"com.example.kim.softwareperformance\", \"user_settings\");\n\t\tpref.makeWorldReadable();\n" +
         "\t\tpref.reload();\n";
@@ -84,6 +80,14 @@ public final class MBConstants {
     public static final String MAIN_LPPARAM_PACKAGENAME_EQUALS = "lpparam.packageName.equals(\"";
     public static final String MAIN_PACKAGE_IF_CLAUSE_OR = "\") || ";
     public static final String MAIN_PACKAGE_IF_CLAUSE_END = "\"))) {\n\t\t\treturn;\n\t\t}\n";
+
+
+    // Constants for functions
+    public static final String FUNC_CALL = "\t\t\tfunc";
+    public static final String FUNC_CALL_PARAMS = "(lpparam);\n";
+    public static final String END_OF_FUNC = "\t}\n\n";
+    public static final String FUNC_BEGINNING = "\tpublic void func";
+    public static final String FUNC_SECOND_BEGINNING = "(final LoadPackageParam lpparam) throws Throwable {\n";
 
 
     public static final List<String> PRIMITIVES_LIST = Arrays.asList("boolean", "byte", "char", "short", "int", "long",
