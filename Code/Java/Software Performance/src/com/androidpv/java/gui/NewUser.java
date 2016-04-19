@@ -11,14 +11,14 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-public class NewUserUser extends JFrame {
+public class NewUser extends JFrame {
     JButton create;
     JPanel newUserPanel;
     JTextField usernmae;
     JTextField password;
 
 
-    public NewUserUser(){
+    public NewUser(){
         super("Registration");
         create = new JButton("Create");
         newUserPanel = new JPanel();

@@ -78,7 +78,7 @@ public class LoginGui extends JFrame{
 
 //        newUser.addActionListener(new ActionListener(){
 //            public void actionPerformed(ActionEvent e) {
-//                NewUserUser.java user = new NewUserUser.java();
+//                NewUser.java user = new NewUser.java();
 //                dispose();
 //
 //            }
