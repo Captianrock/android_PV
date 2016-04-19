@@ -114,24 +114,26 @@ public class PVView extends JFrame {
                         outputArea.append("Please Choose a file or Directory!");
                     }
 
-                    Path inputPath = Paths.get(getfilePath());
                     // Handles ".apk" File inputs
-                    if (APKParser.isAPK(inputPath)) try {
-                        outputArea.append("Parsing now...");
-                        APKParser.parse(inputPath.toFile());
-                        List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                        Parser.parseFilesInDir(fileL, outputPathString);
+                    else if (APKParser.isAPK(Paths.get(getfilePath()))) {
+                        try {
+                            Path inputPath = Paths.get(getfilePath());
+                            outputArea.append("Parsing now...");
+                            APKParser.parse(inputPath.toFile());
+                            List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
+                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                        } catch (JadxException j) {
+                            System.err.println("Error JadxException in main: " + j.getMessage());
+                            j.printStackTrace();
                         }
-                    catch (JadxException j) {
-                        System.err.println("Error JadxException in main: " + j.getMessage());
-                        j.printStackTrace();
                     }
 
                     // Parses Given Directory for Java Files
-                    if (inputPath.toFile().isDirectory()){
+                   else if (Paths.get(getfilePath()).toFile().isDirectory()){
+                        Path inputPath = Paths.get(getfilePath());
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
                         try {
-                            Parser.parseFilesInDir(fileL, outputPathString);
+                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                         } catch (Exception except) {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
@@ -146,9 +148,9 @@ public class PVView extends JFrame {
 
                     // new ModuleBuilder(outputPathString);
 
-                    outputArea.append("Building apk");
-                    new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
-                    outputArea.append("APK has ben build");
+                   // outputArea.append("Building apk");
+                   // new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                   // outputArea.append("APK has ben build");
 
                     try {
                         Thread.sleep(6000); //1000 milliseconds is one second.
@@ -166,7 +168,9 @@ public class PVView extends JFrame {
         });
     }
 
-    // Updates Output text Area on sperate thread to not block EDT
+    public void updateOutLog(String str){
+        outputArea.append(str);
+    }
 
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
@@ -177,6 +181,29 @@ public class PVView extends JFrame {
 
     public String getOutputPathString() {
         return parsedDataOutputPathString;
+    }
+    public File getJarDir() {
+        return jarDir;
+    }
+
+    public void setJarDir(File jarDir) {
+        this.jarDir = jarDir;
+    }
+
+    public File getSdkDir() {
+        return sdkDir;
+    }
+
+    public void setSdkDir(File sdkDir) {
+        this.sdkDir = sdkDir;
+    }
+
+    public File getAdbDir() {
+        return adbDir;
+    }
+
+    public void setAdbDir(File adbDir) {
+        this.adbDir = adbDir;
     }
 
     public static void main(String[] args) {

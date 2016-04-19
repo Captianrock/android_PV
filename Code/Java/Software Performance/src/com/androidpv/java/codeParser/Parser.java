@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import com.androidpv.java.gui.PVView;
+import com.androidpv.java.xposed.APKBuilder;
 import com.androidpv.java.xposed.MBConstants;
 import com.androidpv.java.xposed.ModuleBuilder;
 import org.eclipse.jdt.core.JavaCore;
@@ -21,7 +22,7 @@ import javax.swing.*;
 public class Parser {
 
     //use ASTParse to parse string
-    public static void parse(String str, String outputFile, File sourceFile) {
+    public static void parse(String str, String outputFile, File sourceFile, String adbLoc, String sdkLoc) {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
@@ -120,6 +121,7 @@ public class Parser {
             protected void done(){
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 new ModuleBuilder(outputPathString);
+                new APKBuilder(adbLoc, sdkLoc);
             }
         };
         worker.execute();
@@ -184,7 +186,7 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void parseFilesInDir(List<File> files, String outputFile) {
+    public static void parseFilesInDir(List<File> files, String outputFile, String adbLoc, String sdkLoc) {
         String filePath;
         for (File f : files) {
             filePath = f.getAbsolutePath();
@@ -193,7 +195,7 @@ public class Parser {
                 try {
 //                    parse(f, outputFile, inputFile);
 
-                    parse(readFileToString(filePath), outputFile, f);
+                    parse(readFileToString(filePath), outputFile, f, adbLoc, sdkLoc);
                 } catch (Exception e) {
                     System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                     e.printStackTrace();
