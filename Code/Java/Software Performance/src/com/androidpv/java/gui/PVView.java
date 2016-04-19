@@ -148,15 +148,21 @@ public class PVView extends JFrame {
                             except.printStackTrace();
                         }
                         outputArea.append("Done parsing directory!\n");
+                        outputArea.append("Done parsing directory!");
+                        outputArea.append("Building module");
 
                     }
                     fileField.setText("");
                     outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
                     outputArea.append("Building module\n");
+                    //outputArea.append("Building module");
 
-                    new ModuleBuilder(outputPathString);
+                   // new ModuleBuilder(outputPathString);
                     outputArea.append("Building apk\n");
 
+                    // new ModuleBuilder(outputPathString);
+
+                    outputArea.append("Building apk");
                     new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                     outputArea.append("APK has been built\n");
 
@@ -176,11 +182,7 @@ public class PVView extends JFrame {
         });
     }
 
-    // Updates Output text Area on separate thread to not block EDT
-
-    public void updateOutputArea(String text) {
-        outputArea.append(text + "\n");
-    }
+    // Updates Output text Area on sperate thread to not block EDT
 
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));

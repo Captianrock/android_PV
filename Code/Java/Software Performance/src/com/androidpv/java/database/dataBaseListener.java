@@ -37,6 +37,41 @@ public class dataBaseListener {
         }
     }
 
+    public boolean addtoMembership(String username, String password){
+        Statement stmt;
+        String sql;
+        String url = "jdbc:mysql://localhost:3306/membership";
+        String usernames = "root";
+        String passwords = "";
+        try (Connection connection = DriverManager.getConnection(url, usernames, passwords)) {
+            System.out.println("Database connected!");
+            try {
+                System.out.println("Inserting member into the table...");
+                stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                sql = " insert into users (id,username, password)"
+                        + " values (?, ?, ?)";
+                PreparedStatement preparedStmt = connection.prepareStatement(sql);
+                preparedStmt.setString (1, "0");
+                preparedStmt.setString (2, username);
+                preparedStmt.setString (3, getMD5(password));
+                preparedStmt.execute();
+                System.out.println("Member added to the table!");
+                return true;
+            }
+            catch(SQLException e){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+                System.out.println("VendorError: " + e.getErrorCode());
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+            return false;
+        }
+    }
     public boolean checkMembership(String username, String password){
         Statement stmt;
         ResultSet rs;
@@ -72,7 +107,6 @@ public class dataBaseListener {
     }
 
     public void enterToDatabase(){
-
         Statement stmt;
         ResultSet rs;
         ResultSet userRs;

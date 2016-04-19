@@ -27,4 +27,38 @@ class Mysql {
 			}
 		}
 	}
+
+	function verifyUsername($un)
+	{
+		$query = "SELECT *
+					FROM users
+					WHERE username = ?
+					LIMIT 1";
+
+		if($stmt = $this->conn->prepare($query))
+		{
+			$stmt->bind_param('s',$un);
+			$stmt->execute();
+
+			if($stmt->fetch())
+			{
+				$stmt->close();
+				return true;
+			}
+		}
+	}
+
+	function createUsernameandPass($un,$pwd){
+
+		$sql = "INSERT INTO users (id, username, password) 
+					VALUES ('0', '{$un}', '{$pwd}');";
+
+		if($stmt = $this->conn->query($sql))
+		{
+			$this->conn->close();
+			return true;
+		}
+
+		return false;
+	}
 }

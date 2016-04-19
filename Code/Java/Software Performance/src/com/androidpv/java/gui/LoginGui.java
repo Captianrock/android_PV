@@ -3,6 +3,8 @@ package com.androidpv.java.gui;
 import com.androidpv.java.database.dataBaseListener;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by bradley on 4/8/2016.
@@ -27,6 +29,7 @@ public class LoginGui extends JFrame{
         loginpanel = new JPanel();
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
+        newUSer = new JButton("New User?");
         username = new JLabel("User - ");
         password = new JLabel("Pass - ");
 
@@ -34,6 +37,7 @@ public class LoginGui extends JFrame{
         setLocation(500,280);
         loginpanel.setLayout (null);
 
+        newUSer.setBounds(110,135,80,20);
         txuser.setBounds(70,30,150,20);
         pass.setBounds(70,65,150,20);
         blogin.setBounds(110,100,80,20);
@@ -43,6 +47,7 @@ public class LoginGui extends JFrame{
         loginpanel.add(blogin);
         loginpanel.add(txuser);
         loginpanel.add(pass);
+        loginpanel.add(newUSer);
         loginpanel.add(username);
         loginpanel.add(password);
 
@@ -69,6 +74,14 @@ public class LoginGui extends JFrame{
                     txuser.requestFocus();
                 }
 
+        });
+
+        newUSer.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                NewUser user = new NewUser();
+                dispose();
+
+            }
         });
 
     }

@@ -10,23 +10,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import com.androidpv.java.gui.LoginGui;
 import com.androidpv.java.gui.PVView;
 import com.androidpv.java.xposed.MBConstants;
+import com.androidpv.java.xposed.ModuleBuilder;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
 import javax.swing.*;
 
-import static com.androidpv.java.gui.PVView.*;
-
-public class Parser extends SwingWorker<Void,Void> {
+public class Parser {
 
     //use ASTParse to parse string
     public static void parse(String str, String outputFile, File sourceFile, String jarFilesLoc) {
-//        SwingWorker worker = new SwingWorker() {
-//            @Override
-//            protected Object doInBackground() throws Exception {
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
         ASTParser parser = ASTParser.newParser(AST.JLS8);
         String sourcePath = getSourcePath(sourceFile);
 
@@ -134,16 +132,22 @@ public class Parser extends SwingWorker<Void,Void> {
                         name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
                         parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
 
-                this.names.add(name.getIdentifier());
-//                return true;  // true to get the methods nested within methods
-                return false; // do not continue
+                        this.names.add(name.getIdentifier());
+//                return true;
+                        return false; // do not continue
+                    }
+                });
+                return null;
             }
-        });
-//                return null;
+
+            @Override
+            protected void done(){
+                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
+                new ModuleBuilder(outputPathString);
+            }
+        };
+        worker.execute();
     }
-//        };
-//        worker.execute();
-//    }
 
     /**
      * This method returns the chain of parents as a list.
@@ -264,13 +268,9 @@ public class Parser extends SwingWorker<Void,Void> {
         return path;
     }
 
-    @Override
-    protected Void doInBackground() throws Exception {
-        return null;
-    }
 
     public static void main(String[] args) {
-        new LoginGui();
+        PVView view = new PVView();
 
     }
 

@@ -16,7 +16,7 @@ class methodExec {
 		$timesList = [];
 		$query = "SELECT *
 					FROM data
-					WHERE traceId = 'altonKimAlarmKlock2'";// = '$trace'";
+					WHERE traceId = 'altonKimAlarmKlock2'";// = '{$trace}'";
 					
 		$result = $this->conn->query($query);
 
