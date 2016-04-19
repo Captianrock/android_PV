@@ -122,6 +122,13 @@ public class PVView extends JFrame {
                             APKParser.parse(inputPath.toFile());
                             List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
                             Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            try {
+                                Thread.sleep(6000); //1000 milliseconds is one second.
+                                new DataSubmit();
+                                dispose();
+                            } catch(InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
                         } catch (JadxException j) {
                             System.err.println("Error JadxException in main: " + j.getMessage());
                             j.printStackTrace();
@@ -140,10 +147,20 @@ public class PVView extends JFrame {
                         }
                         outputArea.append("Done parsing directory!");
                         outputArea.append("Building module");
-
+                        try {
+                            Thread.sleep(6000); //1000 milliseconds is one second.
+                            new DataSubmit();
+                            dispose();
+                        } catch(InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                    fileField.setText("");
-                    outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
+
+                    else{
+                        JOptionPane.showMessageDialog(null,"Something went wrong! Please make sure all paths are correct!");
+                    }
+                    //fileField.setText("");
+                    //outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
                     //outputArea.append("Building module");
 
                     // new ModuleBuilder(outputPathString);
@@ -152,13 +169,6 @@ public class PVView extends JFrame {
                    // new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                    // outputArea.append("APK has ben build");
 
-                    try {
-                        Thread.sleep(6000); //1000 milliseconds is one second.
-                        new DataSubmit();
-                        dispose();
-                    } catch(InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
                 }
             });
 
