@@ -58,8 +58,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
                     fileField.setText(selectedFile.getAbsolutePath());
-                    outputArea.append("A File Has Been Selected");
-                    outputArea.append(selectedFile.getAbsolutePath());
+                    outputArea.append("A File Has Been Selected\n");
+                    outputArea.append(selectedFile.getAbsolutePath() + "\n");
                 }
             });
 
@@ -72,8 +72,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     jarDir = fileChooser.getSelectedFile();
                     jarField.setText(jarDir.getAbsolutePath());
-                    outputArea.append("A Directory Has Been Selected");
-                    outputArea.append(jarDir.getAbsolutePath());
+                    outputArea.append("A Directory Has Been Selected\n");
+                    outputArea.append(jarDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -86,8 +86,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     sdkDir = fileChooser.getSelectedFile();
                     sdkField.setText(sdkDir.getAbsolutePath());
-                    outputArea.append("A SDK Directory Has Been Selected");
-                    outputArea.append(sdkDir.getAbsolutePath());
+                    outputArea.append("A SDK Directory Has Been Selected\n");
+                    outputArea.append(sdkDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -100,8 +100,8 @@ public class PVView extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     adbDir = fileChooser.getSelectedFile();
                     adbField.setText(adbDir.getAbsolutePath());
-                    outputArea.append("An ADB Directory Has Been Selected");
-                    outputArea.append(adbDir.getAbsolutePath());
+                    outputArea.append("An ADB Directory Has Been Selected\n");
+                    outputArea.append(adbDir.getAbsolutePath() + "\n");
                 }
             });
 
@@ -111,43 +111,54 @@ public class PVView extends JFrame {
                 public void actionPerformed(ActionEvent e) {
 
                     if (getfilePath() == null){
-                        outputArea.append("Please Choose a file or Directory!");
+                        outputArea.append("Please Choose a file or Directory!\n");
                     }
 
                     Path inputPath = Paths.get(getfilePath());
                     // Handles ".apk" File inputs
-                    if (APKParser.isAPK(inputPath)) try {
-                        outputArea.append("Parsing now...");
-                        APKParser.parse(inputPath.toFile());
-                        List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                        Parser.parseFilesInDir(fileL, outputPathString);
+                    if (APKParser.isAPK(inputPath))
+                        try {
+                            outputArea.append("Parsing now...");
+                            APKParser.parse(inputPath.toFile());
+                            List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
+                            if (jarDir != null) {
+                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
+                            }
+                            else {
+                                Parser.parseFilesInDir(fileL, outputPathString, null);
+                            }
                         }
-                    catch (JadxException j) {
-                        System.err.println("Error JadxException in main: " + j.getMessage());
-                        j.printStackTrace();
-                    }
+                        catch (JadxException j) {
+                            System.err.println("Error JadxException in main: " + j.getMessage());
+                            j.printStackTrace();
+                        }
 
                     // Parses Given Directory for Java Files
                     if (inputPath.toFile().isDirectory()){
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
                         try {
-                            Parser.parseFilesInDir(fileL, outputPathString);
+                            if (jarDir != null) {
+                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
+                            }
+                            else {
+                                Parser.parseFilesInDir(fileL, outputPathString, null);
+                            }
                         } catch (Exception except) {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
                         }
-                        outputArea.append("Done parsing directory!");
+                        outputArea.append("Done parsing directory!\n");
 
                     }
                     fileField.setText("");
                     outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
-                    outputArea.append("Building module");
+                    outputArea.append("Building module\n");
 
                     new ModuleBuilder(outputPathString);
-                    outputArea.append("Building apk");
+                    outputArea.append("Building apk\n");
 
                     new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
-                    outputArea.append("APK has ben build");
+                    outputArea.append("APK has been built\n");
 
                     try {
                         Thread.sleep(6000); //1000 milliseconds is one second.
@@ -165,7 +176,11 @@ public class PVView extends JFrame {
         });
     }
 
-    // Updates Output text Area on sperate thread to not block EDT
+    // Updates Output text Area on separate thread to not block EDT
+
+    public void updateOutputArea(String text) {
+        outputArea.append(text + "\n");
+    }
 
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
@@ -181,6 +196,7 @@ public class PVView extends JFrame {
     public static void main(String[] args) {
         PVView pvView = new PVView();
     }
+
 }
 
 

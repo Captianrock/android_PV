@@ -25,11 +25,13 @@ public class ModuleBuilder {
 
         this.sourceFile = new File(fileName);
         boolean beginningOfFile = true;
+        boolean newFunc = true;
 
         try {
 
             String currentDir = System.getProperty("user.dir");
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + "/AndroidTest/src/main/java/com/test/Tutorial.java")));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir +
+                    "/AndroidTest/src/main/java/com/test/Tutorial.java")));
 
             List<Map<String, ArrayList<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
             List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");
@@ -43,10 +45,15 @@ public class ModuleBuilder {
 
             // Header of code done. Now need to write hooks for each method
 
+            // Creates function call in each if. Function index corresponds to packageNamesList index
+            writer.println(addIfFuncs(packageNamesList));
+
+
             BufferedReader reader = new BufferedReader(new FileReader(this.sourceFile));
             String line;
 
             String packageName = ""; // need to check that package name is different
+            int packageIndex = 0;
 
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(MBConstants.PARSED_FILE_SEPARATOR);
@@ -55,14 +62,17 @@ public class ModuleBuilder {
                 }
 
                 if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
+                    // different package - new function
                     if (!beginningOfFile) {
-                        writer.println(MBConstants.END_OF_IF_CLAUSE);
+                        writer.println(MBConstants.END_OF_FUNC);
                     }
                     beginningOfFile = false;
-                    writer.println(addPackageNameCheck(splitString[MBConstants.PACKAGE_INDEX]));
+                    writer.println(addFunction(packageIndex));
+                    packageIndex += 1;
                     packageName = splitString[MBConstants.PACKAGE_INDEX];
                     System.out.println(packageName);
                 }
+
 
                 List<int[]> anonClassNums = anonClassCheck(splitString, anonClassMap);
                 String findHook = "";
@@ -196,9 +206,20 @@ public class ModuleBuilder {
                     // parent is anonymous class
                     if (anonNum.length == 0) {
                         System.err.println("className: " + className + " parent: " + parent);
+                        DO_NOT_PRINT = true;
+                            // FIX LATER
                     }
-                    parent = String.valueOf(anonNum[anonNumIter]);
-                    anonNumIter++;
+                    else {
+                        try {
+                            parent = String.valueOf(anonNum[anonNumIter]);
+                            anonNumIter++;
+                        }
+                        catch(Exception e) {
+                            System.err.println("THIS IS BROKEN");
+                            System.err.println(e.getMessage());
+                            DO_NOT_PRINT = true;
+                        }
+                    }
                 }
             }
             parentString += parent;
@@ -406,5 +427,34 @@ public class ModuleBuilder {
             Permutation permutation = new Permutation(anonClassMap.get(className).size(), anonClasses.size());
             return permutation.getAnonOptions();
         }
+    }
+
+
+    private String addIfFuncs(List<String> packagesList) {
+
+        StringBuilder ifFuncs = new StringBuilder();
+
+        for (int i = 0; i < packagesList.size(); i++) {
+            ifFuncs.append(addPackageNameCheck(packagesList.get(i)));
+            ifFuncs.append(MBConstants.FUNC_CALL);
+            ifFuncs.append(i);
+            ifFuncs.append(MBConstants.FUNC_CALL_PARAMS);
+            ifFuncs.append("\t\t}\n\n");
+        }
+
+        ifFuncs.append(MBConstants.END_OF_FUNC);
+
+        return ifFuncs.toString();
+    }
+
+
+    private String addFunction(int index) {
+        StringBuilder function = new StringBuilder();
+
+        function.append(MBConstants.FUNC_BEGINNING);
+        function.append(index);
+        function.append(MBConstants.FUNC_SECOND_BEGINNING);
+
+        return function.toString();
     }
 }

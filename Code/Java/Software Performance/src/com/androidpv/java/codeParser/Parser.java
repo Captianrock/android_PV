@@ -18,106 +18,132 @@ import org.eclipse.jdt.core.dom.*;
 
 import javax.swing.*;
 
+import static com.androidpv.java.gui.PVView.*;
+
 public class Parser extends SwingWorker<Void,Void> {
 
     //use ASTParse to parse string
-    public static void parse(String str, String outputFile, File sourceFile) {
-        SwingWorker worker = new SwingWorker() {
-            @Override
-            protected Object doInBackground() throws Exception {
-                ASTParser parser = ASTParser.newParser(AST.JLS8);
+    public static void parse(String str, String outputFile, File sourceFile, String jarFilesLoc) {
+//        SwingWorker worker = new SwingWorker() {
+//            @Override
+//            protected Object doInBackground() throws Exception {
+        ASTParser parser = ASTParser.newParser(AST.JLS8);
+        String sourcePath = getSourcePath(sourceFile);
 
-                File currentDirectory = new File(new File(".").getAbsolutePath());
-                File jarFolder = null;
-                try {
-                    jarFolder = new File(currentDirectory.getCanonicalPath() + MBConstants.JAR_FILES);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        String[] classpath;
 
-                String sourcePath = getSourcePath(sourceFile);
+        if (jarFilesLoc != null) {
 
-                File[] jarFiles = jarFolder.listFiles();
+            File jarFolder = new File(jarFilesLoc);
 
-                String[] classpath = new String[jarFiles.length];
 
-                for (int jarIter = 0; jarIter < jarFiles.length; jarIter++) {
-                    classpath[jarIter] = jarFiles[jarIter].getPath();
-                }
+            File[] jarFiles = jarFolder.listFiles();
 
-                Map options = JavaCore.getOptions();
-                JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
-                parser.setCompilerOptions(options);
+            classpath = new String[jarFiles.length];
 
-                parser.setUnitName(sourceFile.getName());
-                parser.setEnvironment(classpath, new String[] {sourcePath}, new String[] {"UTF-8"}, true);
-                parser.setSource(str.toCharArray());
-
-                parser.setResolveBindings(true);
-                parser.setBindingsRecovery(true);
-                parser.setStatementsRecovery(true);
-
-                parser.setKind(ASTParser.K_COMPILATION_UNIT);
-
-                final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-
-                cu.accept(new ASTVisitor() {
-                    Set names = new HashSet();
-
-                    public boolean visit(MethodDeclaration node) {
-
-                        boolean isInterface = false;
-
-                        SimpleName name = node.getName();
-                        List classes = cu.types();
-                        TypeDeclaration typeDec = (TypeDeclaration) classes.get(0);
-                        String mainClassName = typeDec.getName().toString();
-
-                        try {
-                            isInterface = ((TypeDeclaration) node.getParent()).isInterface();
-                        }
-                        catch(Throwable throwable) {
-
-                        }
-
-                        List<List<String>> parentsAnonClassList = getParents(node, mainClassName);
-                        List<String> parentList = parentsAnonClassList.get(0);
-                        List<String> anonClassList = parentsAnonClassList.get(1);
-
-                        int paramLength = node.resolveBinding().getParameterTypes().length;
-                        String[] parameters = new String[paramLength];
-                        for (int paramIndex = 0; paramIndex < paramLength; paramIndex++) {
-                            if (MBConstants.PRIMITIVES_LIST.contains(
-                                    node.resolveBinding().getParameterTypes()[paramIndex].getName())) {
-                                parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getName();
-                            }
-                            else {
-                                parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName();
-                            }
-                        }
-                        List<String> parentModifiers = new ArrayList<String>();
-                        try {
-                            parentModifiers = ((TypeDeclaration) node.getParent()).modifiers();
-                        }
-                        catch (Exception e) {
-
-                        }
-
-                        printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
-                                ";" + mainClassName + ";" + parentList + ";" + anonClassList + ";" +
-                                name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
-                                parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
-
-                        this.names.add(name.getIdentifier());
-//                return true;
-                        return false; // do not continue
-                    }
-                });
-                return null;
+            for (int jarIter = 0; jarIter < jarFiles.length; jarIter++) {
+                classpath[jarIter] = jarFiles[jarIter].getPath();
             }
-        };
-        worker.execute();
+        }
+        else {
+            classpath = new String[]{""};
+        }
+
+        Map options = JavaCore.getOptions();
+        JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
+        parser.setCompilerOptions(options);
+
+        parser.setUnitName(sourceFile.getName());
+        parser.setEnvironment(classpath, new String[] {sourcePath}, new String[] {"UTF-8"}, true);
+        parser.setSource(str.toCharArray());
+
+        parser.setResolveBindings(true);
+        parser.setBindingsRecovery(true);
+        parser.setStatementsRecovery(true);
+
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+
+        final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+
+        cu.accept(new ASTVisitor() {
+            Set names = new HashSet();
+
+            public boolean visit(MethodDeclaration node) {
+
+                boolean isInterface = false;
+
+                SimpleName name = node.getName();
+                List classes = cu.types();
+                TypeDeclaration typeDec;
+                try {
+                    typeDec = (TypeDeclaration) classes.get(0);
+                }
+                catch (Exception e){
+                    System.err.println("Node: " + node.getName());
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                String mainClassName = typeDec.getName().toString();
+
+                try {
+                    isInterface = ((TypeDeclaration) node.getParent()).isInterface();
+                }
+                catch(Throwable throwable) {
+
+                }
+
+                List<List<String>> parentsAnonClassList = getParents(node, mainClassName);
+                List<String> parentList = parentsAnonClassList.get(0);
+                List<String> anonClassList = parentsAnonClassList.get(1);
+
+                int paramLength = node.resolveBinding().getParameterTypes().length;
+                String[] parameters = new String[paramLength];
+                for (int paramIndex = 0; paramIndex < paramLength; paramIndex++) {
+                    if (MBConstants.PRIMITIVES_LIST.contains(
+                            node.resolveBinding().getParameterTypes()[paramIndex].getName())) {
+                        parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getName();
+                    }
+                    else {
+                        if (!node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName().equals(
+                                node.resolveBinding().getParameterTypes()[paramIndex].getName())) {
+                            parameters[paramIndex] = node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName();
+                        }
+                        else {
+                            System.err.println("Missing jar - unable to resolve parameter type bindings for parameter "  +
+                                    node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName() +
+                                    " in method " + name.toString() + "() in class " + mainClassName + ".\n\tMethod " +
+                                    name.toString() + "() will not be analyzed by module.");
+//                            PVView.updateOutputArea("Missing jar for parameter " +
+//                                    node.resolveBinding().getParameterTypes()[paramIndex].getBinaryName() +
+//                                    " in method " + name.toString() + " in class " + mainClassName + ".\n\tMethod " +
+//                                    name.toString() + " will not be analyzed by module.");
+                            return false;
+                        }
+                    }
+                }
+                List<String> parentModifiers = new ArrayList<String>();
+                try {
+                    parentModifiers = ((TypeDeclaration) node.getParent()).modifiers();
+                }
+                catch (Exception e) {
+
+                }
+
+                printtoFile(outputFile, (cu.getPackage() != null ? cu.getPackage().getName().toString() : "Null") +
+                        ";" + mainClassName + ";" + parentList + ";" + anonClassList + ";" +
+                        name.toString() + ";" + Arrays.toString(parameters) + ";" + node.modifiers() + ";" +
+                        parentModifiers + ";" + node.isConstructor() + ";" + isInterface);
+
+                this.names.add(name.getIdentifier());
+//                return true;  // true to get the methods nested within methods
+                return false; // do not continue
+            }
+        });
+//                return null;
     }
+//        };
+//        worker.execute();
+//    }
 
     /**
      * This method returns the chain of parents as a list.
@@ -178,7 +204,7 @@ public class Parser extends SwingWorker<Void,Void> {
     }
 
     //loop directory to get file list
-    public static void parseFilesInDir(List<File> files, String outputFile) {
+    public static void parseFilesInDir(List<File> files, String outputFile, String jarFilesLoc) {
         String filePath;
         for (File f : files) {
             filePath = f.getAbsolutePath();
@@ -187,7 +213,7 @@ public class Parser extends SwingWorker<Void,Void> {
                 try {
 //                    parse(f, outputFile, inputFile);
 
-                    parse(readFileToString(filePath), outputFile, f);
+                    parse(readFileToString(filePath), outputFile, f, jarFilesLoc);
                 } catch (Exception e) {
                     System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                     e.printStackTrace();
