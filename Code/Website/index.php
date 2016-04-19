@@ -194,7 +194,7 @@ $userName = $_SESSION['user'];
                 <!-- /.row -->
 
                 <div class="row">
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -216,7 +216,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <!-- <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-green">
                             <div class="panel-heading">
                                 <div class="row">
@@ -238,7 +238,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
@@ -259,12 +259,12 @@ $userName = $_SESSION['user'];
                                 </div>
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- /.row -->
 
-				<div class="row">
-					<div class="col-md-4" style="padding-top: 50px;">
+				<!-- <div class="row">
+					<div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-red">
                             <div class="panel-heading">
                                 <div class="row">
@@ -286,7 +286,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-purple">
                             <div class="panel-heading">
                                 <div class="row">
@@ -308,7 +308,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -333,8 +333,8 @@ $userName = $_SESSION['user'];
                 </div>
                 <!-- /.row -->
 
-				<div class="row">
-					<div class="col-md-4" style="padding-top: 50px;">
+				<!-- <div class="row">
+					<div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-green">
                             <div class="panel-heading">
                                 <div class="row">
@@ -356,7 +356,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
@@ -378,7 +378,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-red">
                             <div class="panel-heading">
                                 <div class="row">
@@ -403,8 +403,8 @@ $userName = $_SESSION['user'];
                 </div>
                 <!-- /.row -->
 
-				<div class="row">
-                    <div class="col-md-4" style="padding-top: 50px;">
+				<!-- <div class="row">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-purple">
                             <div class="panel-heading">
                                 <div class="row">
@@ -426,7 +426,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -448,7 +448,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-green">
                             <div class="panel-heading">
                                 <div class="row">
@@ -473,8 +473,8 @@ $userName = $_SESSION['user'];
 				</div>
 				<!-- /.row -->
 
-				<div class="row">
-                    <div class="col-md-4" style="padding-top: 50px;">
+				<!-- <div class="row">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
@@ -496,7 +496,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-red">
                             <div class="panel-heading">
                                 <div class="row">
@@ -518,7 +518,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4" style="padding-top: 50px;">
+                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-purple">
                             <div class="panel-heading">
                                 <div class="row">

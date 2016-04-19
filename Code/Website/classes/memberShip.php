@@ -30,4 +30,26 @@ class membership{
 			header("location: login.php");
 		}
 	}
+	function checkUsername($un)
+	{
+		$mysql = New Mysql();
+		$ensureCredentials = $mysql->verifyUsername($un);
+		if($ensureCredentials){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+	function createUser($un, $pwd)
+	{
+		$mysql = New Mysql();
+		$createCredentials = $mysql->createUsernameandPass($un,md5($pwd));
+		if($createCredentials){
+			header("location: login.php");
+		}
+		else{
+			return 1;
+		}
+	}
 }
