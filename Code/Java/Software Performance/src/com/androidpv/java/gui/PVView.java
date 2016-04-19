@@ -121,7 +121,7 @@ public class PVView extends JFrame {
                             outputArea.append("Parsing now...");
                             APKParser.parse(inputPath.toFile());
                             List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             try {
                                 Thread.sleep(6000); //1000 milliseconds is one second.
                                 new DataSubmit();
@@ -140,12 +140,11 @@ public class PVView extends JFrame {
                         Path inputPath = Paths.get(getfilePath());
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
                         try {
-                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             if (jarDir != null) {
-                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
+                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             }
                             else {
-                                Parser.parseFilesInDir(fileL, outputPathString, null);
+                                Parser.parseFilesInDir(fileL, outputPathString, null, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             }
                         } catch (Exception except) {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
