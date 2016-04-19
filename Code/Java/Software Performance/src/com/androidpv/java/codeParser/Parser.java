@@ -21,11 +21,8 @@ import javax.swing.*;
 
 public class Parser {
 
-    private static String adbDir;
-    private static String sdkDir;
-
     //use ASTParse to parse string
-    public static void parse(String str, String outputFile, File sourceFile, String jarFilesLoc) {
+    public static void parse(String str, String outputFile, File sourceFile, String adbLoc, String sdkLoc) {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
@@ -139,11 +136,10 @@ public class Parser {
             }
 
             @Override
-            protected void done() {
-                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt";
+            protected void done(){
+                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 new ModuleBuilder(outputPathString);
-                new APKBuilder(Parser.adbDir, Parser.sdkDir);
-
+                new APKBuilder(adbLoc, sdkLoc);
             }
         };
         worker.execute();
@@ -208,7 +204,7 @@ public class Parser {
     }
 
     //loop directory to get file list
-    public static void parseFilesInDir(List<File> files, String outputFile, String jarFilesLoc) {
+    public static void parseFilesInDir(List<File> files, String outputFile, String adbLoc, String sdkLoc) {
         String filePath;
         for (File f : files) {
             filePath = f.getAbsolutePath();
@@ -217,7 +213,7 @@ public class Parser {
                 try {
 //                    parse(f, outputFile, inputFile);
 
-                    parse(readFileToString(filePath), outputFile, f, jarFilesLoc);
+                    parse(readFileToString(filePath), outputFile, f, adbLoc, sdkLoc);
                 } catch (Exception e) {
                     System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                     e.printStackTrace();
@@ -268,27 +264,10 @@ public class Parser {
         return path;
     }
 
+
     public static void main(String[] args) {
         PVView view = new PVView();
 
-    }
-
-    // Getters and setters
-
-    public static void setADBDir(String adbDir) {
-        Parser.adbDir = adbDir;
-    }
-
-    public static void setSDKDir(String sdkDir) {
-        Parser.sdkDir = sdkDir;
-    }
-
-    public static String getADBDir() {
-        return Parser.adbDir;
-    }
-
-    public static String getSDKDir() {
-        return Parser.sdkDir;
     }
 
 }

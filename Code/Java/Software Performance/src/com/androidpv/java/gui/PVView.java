@@ -114,31 +114,33 @@ public class PVView extends JFrame {
                         outputArea.append("Please Choose a file or Directory!\n");
                     }
 
-                    Path inputPath = Paths.get(getfilePath());
                     // Handles ".apk" File inputs
-                    if (APKParser.isAPK(inputPath))
+                    else if (APKParser.isAPK(Paths.get(getfilePath()))) {
                         try {
+                            Path inputPath = Paths.get(getfilePath());
                             outputArea.append("Parsing now...");
                             APKParser.parse(inputPath.toFile());
                             List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                            if (jarDir != null) {
-                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
+                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            try {
+                                Thread.sleep(6000); //1000 milliseconds is one second.
+                                new DataSubmit();
+                                dispose();
+                            } catch(InterruptedException ex) {
+                                Thread.currentThread().interrupt();
                             }
-                            else {
-                                Parser.parseFilesInDir(fileL, outputPathString, null);
-                            }
-                        }
-                        catch (JadxException j) {
+                        } catch (JadxException j) {
                             System.err.println("Error JadxException in main: " + j.getMessage());
                             j.printStackTrace();
                         }
+                    }
 
                     // Parses Given Directory for Java Files
-                    if (inputPath.toFile().isDirectory()){
+                   else if (Paths.get(getfilePath()).toFile().isDirectory()){
+                        Path inputPath = Paths.get(getfilePath());
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
-                        Parser.setADBDir(adbDir.getAbsolutePath());
-                        Parser.setSDKDir(sdkDir.getAbsolutePath());
                         try {
+                            Parser.parseFilesInDir(fileL, outputPathString,adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
                             if (jarDir != null) {
                                 Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath());
                             }
@@ -149,25 +151,30 @@ public class PVView extends JFrame {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
                         }
-                        outputArea.append("Done parsing directory!\n");
-                        outputArea.append("Building module\n");
+                        outputArea.append("Done parsing directory!");
+                        outputArea.append("Building module");
+                        try {
+                            Thread.sleep(6000); //1000 milliseconds is one second.
+                            new DataSubmit();
+                            dispose();
+                        } catch(InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                    fileField.setText("");
-                    outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
 
-//                    new ModuleBuilder(outputPathString);
-                    outputArea.append("Building apk\n");
-
-//                    new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
-                    outputArea.append("APK has been built\n");
-
-                    try {
-                        Thread.sleep(6000); //1000 milliseconds is one second.
-                        new DataSubmit();
-                        dispose();
-                    } catch(InterruptedException ex) {
-                        Thread.currentThread().interrupt();
+                    else{
+                        JOptionPane.showMessageDialog(null,"Something went wrong! Please make sure all paths are correct!");
                     }
+                    //fileField.setText("");
+                    //outputArea.append("Methods Placed in: " + new File("").getAbsoluteFile().toString() + "/data.txt");
+                    //outputArea.append("Building module");
+
+                    // new ModuleBuilder(outputPathString);
+
+                   // outputArea.append("Building apk");
+                   // new APKBuilder(adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                   // outputArea.append("APK has ben build");
+
                 }
             });
 
@@ -177,7 +184,9 @@ public class PVView extends JFrame {
         });
     }
 
-    // Updates Output text Area on sperate thread to not block EDT
+    public void updateOutLog(String str){
+        outputArea.append(str);
+    }
 
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
@@ -186,21 +195,36 @@ public class PVView extends JFrame {
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }
 
-    public String getADBDir() {
-        return adbDir.getAbsolutePath();
-    }
-    public String getSDKDir() {
-        return sdkDir.getAbsolutePath();
-    }
-
     public String getOutputPathString() {
         return parsedDataOutputPathString;
+    }
+    public File getJarDir() {
+        return jarDir;
+    }
+
+    public void setJarDir(File jarDir) {
+        this.jarDir = jarDir;
+    }
+
+    public File getSdkDir() {
+        return sdkDir;
+    }
+
+    public void setSdkDir(File sdkDir) {
+        this.sdkDir = sdkDir;
+    }
+
+    public File getAdbDir() {
+        return adbDir;
+    }
+
+    public void setAdbDir(File adbDir) {
+        this.adbDir = adbDir;
     }
 
     public static void main(String[] args) {
         PVView pvView = new PVView();
     }
-
 }
 
 
