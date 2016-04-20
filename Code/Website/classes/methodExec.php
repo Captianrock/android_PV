@@ -11,31 +11,36 @@ class methodExec {
 				die('There was a problem with the database connection.');
 	}
 
-	function getTimes(){// ($trace)
-
+	function getTimes($time){
+		#$time = 'altonKimAlarmKlock1';
 		$timesList = [];
 		$query = "SELECT *
 					FROM data
-					WHERE traceId = 'altonKimAlarmKlock2'";// = '{$trace}'";
-					
-		$result = $this->conn->query($query);
-
-		while ($row = $result->fetch_assoc()) {
-			$timesList[] = $row;
+					WHERE traceId=?";// = '$trace'";
+		
+		#$result = $this->conn->query($query);
+		#echo $time;
+		if($result = $this->conn->prepare($query)){
+			$result->bind_param('s',$time);
+			$result->execute();
+			$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd);
+			while($result->fetch()){
+				$timesList[] = array($traceId,$name,$methodStart,$methodEnd);
+			}
+			$result->close();
 		}
-
-		$this->conn->close();
-
+		#while ($row = $result->fetch_assoc()) {
+		#	$timesList[] = $row;
+		#}
+		#$result = $this->conn->query($query);
+		#$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd);
+      	#echo "HELLO\n";
+      	#echo var_dump($id);
+   		$this->conn->close();
+		#echo var_dump($timesList);
 		return $timesList;
 	}
 }
-
-//function startUp($trace)
-//{
-$methodExecVar = new methodExec();
-$timesList = $methodExecVar->getTimes();// ($trace)
-//}
-
 ?>
 
 <script type="text/javascript" src="js/main.js"></script>

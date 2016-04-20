@@ -1,14 +1,6 @@
 <?php
-session_start();
-
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
-
-$membership = New membership();
-
-$membership->confirmMember();
-
-$userName = $_SESSION['user'];
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +66,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -89,7 +81,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -104,7 +96,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -145,7 +137,7 @@ $userName = $_SESSION['user'];
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -206,11 +198,8 @@ $userName = $_SESSION['user'];
                         </div>
                         <div class="panel-body">
                             <div class="list-group">
-								<a href="charts.php" class="list-group-item" <!-- onclick="document.write('startUp('altonKimAlarmKlock2') ?>');" -->>Trace 3   - 6:16 AM, 4/8/16</a>
-								<a href="charts.php" class="list-group-item" <!-- onclick="document.write('startUp('altonKimAlarmKlock1') ?>');" -->>Trace 2   - 3:54 AM, 4/8/16</a>
-								<a href="#" class="list-group-item"></a>
-								<a href="#" class="list-group-item"></a>
-								<a href="#" class="list-group-item"></a>
+								<a href="charts.php?trace=altonKimAlarmKlock2" class="list-group-item" >Trace 2   - 6:16 AM, 4/8/16</a>
+								<a href="charts.php?trace=altonKimAlarmKlock1" class="list-group-item" >Trace 1  - 3:54 AM, 4/8/16</a>
 							</div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 // JavaScript source code
 
-console.log(jsArray);
+//console.log(jsArray);
 
 var method = [];
 var donutDic = {};
@@ -14,42 +14,42 @@ var maxMethod = "None";
 
 for (var i = 0; i < jsArray.length; i++) 
 {
-    var tempElem = method.indexOf(jsArray[i]["methodName"]);
+    var tempElem = method.indexOf(jsArray[i][1]);
 	if(tempElem == -1){
-       method.push(jsArray[i]["methodName"]);
-	   start.push((parseInt(jsArray[i]["timeStart"]))/1000);
-	   end.push((parseInt(jsArray[i]["timeEnd"]))/1000);
+       method.push(jsArray[i][1]);
+	   start.push((parseInt(jsArray[i][2]))/1000);
+	   end.push((parseInt(jsArray[i][3]))/1000);
 	   diff.push(end[i] - start[i]);
         if(end[i] - start[i] > max){
             max = end[i] - start[i];
-            maxMethod = jsArray[i]["methodName"];
+            maxMethod = jsArray[i][1];
         }
     }
     else{
-        start.push((parseInt(jsArray[i]["timeStart"]))/1000);
-        end.push((parseInt(jsArray[i]["timeEnd"]))/1000);
+        start.push((parseInt(jsArray[i][2]))/1000);
+        end.push((parseInt(jsArray[i][3]))/1000);
         diff[tempElem] += end[i] - start[i];
         if(diff[tempElem] > max){
             max = end[i] - start[i];
-            maxMethod = jsArray[i]["methodName"];
+            maxMethod = jsArray[i][1];
         }
     }
-    if(jsArray[i]["methodName"] in donutDic){
-        var temp = (donutDic[jsArray[i]["methodName"]]);
-        if(jsArray[i]["methodName"] == "toString"){
+    if(jsArray[i][1] in donutDic){
+        var temp = (donutDic[jsArray[i][1]]);
+        if(jsArray[i][1] == "toString"){
             var temp = [];
-            temp.push(parseInt(jsArray[i]["timeEnd"])- parseInt(jsArray[i]["timeStart"]));
-            donutDic[jsArray[i]["methodName"]] = temp;
+            temp.push(parseInt(jsArray[i][3])- parseInt(jsArray[i][2]));
+            donutDic[jsArray[i][1]] = temp;
         }
         else{
-            temp.push(parseInt(jsArray[i]["timeEnd"])- parseInt(jsArray[i]["timeStart"]));
-            donutDic[jsArray[i]["methodName"]] = temp;
+            temp.push(parseInt(jsArray[i][3])- parseInt(jsArray[i][2]));
+            donutDic[jsArray[i][1]] = temp;
         }
     }
     else{
         var temp = [];
-        temp.push(parseInt(jsArray[i]["timeEnd"])- parseInt(jsArray[i]["timeStart"]));
-        donutDic[jsArray[i]["methodName"]] = temp;
+        temp.push(parseInt(jsArray[i][3])- parseInt(jsArray[i][2]));
+        donutDic[jsArray[i][1]] = temp;
         
     }
 }
@@ -67,14 +67,12 @@ for (i = 0; i < method.length; i++)
         }
     });
 }
-
 $(function () {
 
 	categories = method;
     data = pie;
     totalRun = [];
     dataLen = data.length;
-
     // Build the data arrays
     for (var i = 0; i < dataLen; i += 1) {
 
@@ -204,7 +202,7 @@ $(function () {
         }]
     });
 });
-
+console.log(indieRun);
 $(function () {
     $('#container3').highcharts({
         chart: {

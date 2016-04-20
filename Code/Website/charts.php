@@ -1,17 +1,13 @@
 <?php
-session_start();
-
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
-
-$membership = New membership();
-
-$membership->confirmMember();
-
-$userName = $_SESSION['user'];
+$methodExecVar = new methodExec();
+if (isset($_GET['trace'])){
+    $traceData = $methodExecVar->getTimes($_GET['trace']);
+}  
 ?>
 
-<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script>
+<script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +29,6 @@ $userName = $_SESSION['user'];
     <link href="css/sb-admin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -75,7 +70,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -90,7 +85,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -105,7 +100,7 @@ $userName = $_SESSION['user'];
                                         <img class="media-object" src="http://placehold.it/50x50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
+                                        <h5 class="media-heading"><strong>John Smith</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
                                         <p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -146,7 +141,7 @@ $userName = $_SESSION['user'];
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -276,7 +271,8 @@ $userName = $_SESSION['user'];
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
-    <script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script>
+ <!--   <script type="text/javascript">var jsArray = "<?php echo json_encode($traceData); ?>;"</script>
+    <script type="text/javascript">var jsArray2 = "<?php echo json_encode($traceData); ?>;"</script> -->
 	<script type="text/javascript" src="js/graphs.js"></script>
 
 </body>
