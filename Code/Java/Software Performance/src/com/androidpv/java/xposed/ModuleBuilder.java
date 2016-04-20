@@ -1,6 +1,7 @@
 package com.androidpv.java.xposed;
 
 import java.io.*;
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -34,26 +35,28 @@ public class ModuleBuilder {
                     "/AndroidTest/src/main/java/com/test/Tutorial.java")));
 
             List<Map<String, ArrayList<String>>> packagesAndAnonClasses = getPackagesAndAnonClasses(this.sourceFile);
-            List<String> packageNamesList = packagesAndAnonClasses.get(0).get("0");
+            Map<String, ArrayList<String>> packageNamesMap = packagesAndAnonClasses.get(0);
             Map<String, ArrayList<String>> anonClassMap = packagesAndAnonClasses.get(1);
+            ArrayList<String> keyList = packageNamesMap.get("0");
+            packageNamesMap.remove("0");
 
             writer.println(MBConstants.MODULE_PACKAGE_NAME);
             writer.println(MBConstants.IMPORTS);
             writer.println(MBConstants.CLASS_NAME_MAIN_METHOD);
-            writer.println(addMainIfClausePackages(packageNamesList));
+            writer.println(addMainIfClausePackages(keyList));
             writer.println(MBConstants.PREFERENCES);
 
             // Header of code done. Now need to write hooks for each method
 
             // Creates function call in each if. Function index corresponds to packageNamesList index
-            writer.println(addIfFuncs(packageNamesList));
+            writer.println(addIfFuncs(keyList));
 
 
             BufferedReader reader = new BufferedReader(new FileReader(this.sourceFile));
             String line;
 
-            String packageName = ""; // need to check that package name is different
             int packageIndex = 0;
+            String packageName = ""; // need to check that package name is different
 
             while ((line = reader.readLine()) != null) {
                 String[] splitString = line.split(MBConstants.PARSED_FILE_SEPARATOR);
@@ -61,7 +64,7 @@ public class ModuleBuilder {
                     splitString[i] = splitString[i].trim();
                 }
 
-                if (!splitString[MBConstants.PACKAGE_INDEX].equals(packageName)) {
+                if (packageName.equals("") || !packageName.equals(findKey(packageNamesMap, splitString[MBConstants.PACKAGE_INDEX]))) {
                     // different package - new function
                     if (!beginningOfFile) {
                         writer.println(MBConstants.END_OF_FUNC);
@@ -69,7 +72,7 @@ public class ModuleBuilder {
                     beginningOfFile = false;
                     writer.println(addFunction(packageIndex));
                     packageIndex += 1;
-                    packageName = splitString[MBConstants.PACKAGE_INDEX];
+                    packageName = findKey(packageNamesMap, splitString[MBConstants.PACKAGE_INDEX]);
                     System.out.println(packageName);
                 }
 
@@ -317,18 +320,21 @@ public class ModuleBuilder {
      * @param
      * @return  the main IF clause containing the package names. Returned as a String
      */
-    private String addMainIfClausePackages(List<String> packageNamesList) {
+    private String addMainIfClausePackages(ArrayList<String> keys) {
         StringBuilder ifClause = new StringBuilder();
         ifClause.append(MBConstants.MAIN_PACKAGE_IF_CLAUSE_BEGINNING + MBConstants.MAIN_LPPARAM_PACKAGENAME_EQUALS);
 
+        int keyLength = keys.size();
         int i = 0;
-        while (i < packageNamesList.size()) {
-            ifClause.append(packageNamesList.get(i));
+
+        for (String key : keys) {
+            ifClause.append(key);
             i++;
-            if (i != packageNamesList.size()) {
+            if (i != keyLength) {
                 ifClause.append(MBConstants.MAIN_PACKAGE_IF_CLAUSE_OR + MBConstants.MAIN_LPPARAM_PACKAGENAME_EQUALS);
             }
         }
+
         ifClause.append(MBConstants.MAIN_PACKAGE_IF_CLAUSE_END);
 
         return ifClause.toString();
@@ -372,12 +378,102 @@ public class ModuleBuilder {
         }
 
         List<Map<String, ArrayList<String>>> packagesAndAnonClasses = new ArrayList<>();
-        Map<String, ArrayList<String>> packageMap = new HashMap<>();
-        packageMap.put("0", packageNamesList);
+        Map<String, ArrayList<String>> packageMap = condensePackageList(packageNamesList);
         packagesAndAnonClasses.add(packageMap);
         packagesAndAnonClasses.add(anonMap);
 
         return packagesAndAnonClasses;
+    }
+
+
+    /**
+     *
+     * @param packageList  all packages, parent and child, of parsed code
+     * @return new packageList with proper parent packages
+     */
+    private Map<String, ArrayList<String>> condensePackageList(ArrayList<String> packageList) {
+
+        Map<String, ArrayList<String>> parentPackages = new HashMap<>();
+        ArrayList<String> keyList = new ArrayList<>();
+
+        // copy packageList information to originalList
+        ArrayList<String> originalList = new ArrayList<>();
+        for (String item : packageList) {
+            originalList.add(item);
+        }
+
+        while (packageList.size() > 0) {
+            String smallestName = getSmallestName(packageList);
+            packageList.remove(smallestName);
+            // remove duplicates
+            while (packageList.contains(smallestName)) {
+                packageList.remove(smallestName);
+            }
+            ArrayList<String> values = new ArrayList<>();
+            values.add(smallestName);
+            parentPackages.put(smallestName, values);
+            keyList.add(smallestName);
+
+            // loop through remaining packageList to see if it is contained in any other names
+            for (int i = 0; i < packageList.size(); i++) {
+                if (packageList.get(i).contains(smallestName)) {
+                    // make sure that smallestName is first part of the package we're considering
+                    if (packageList.get(i).indexOf(smallestName) == 0) {
+                        // now make sure that next character is .
+                        int index = smallestName.length();
+                        if (packageList.get(i).charAt(index) == '.') {
+                            String packageVal = packageList.get(i);
+                            parentPackages.get(smallestName).add(packageVal);
+                            packageList.remove(packageVal);
+                            // we're reformatting packageList, so need to push i back
+                            i -= 1;
+                            while (packageList.contains(packageVal)) {
+                                packageList.remove(packageVal);
+                                // don't need to push i back here because these will occur after index i
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        int[] indexList = new int[keyList.size()];
+        int i = 0;
+        for (String key : keyList) {
+            int index = originalList.indexOf(key);
+            indexList[i] = index;
+            i += 1;
+        }
+        Arrays.sort(indexList);
+
+        ArrayList<String> finalList = new ArrayList<>();
+        for (int j = 0; j < indexList.length; j++) {
+            finalList.add(originalList.get(indexList[j]));
+        }
+
+
+        parentPackages.put("0", finalList);
+
+        return parentPackages;
+    }
+
+
+    /**
+     *
+     * @param packageList
+     * @return
+     */
+    private String getSmallestName(ArrayList<String> packageList) {
+        int min = Integer.MAX_VALUE;
+        int index = -1;
+        for (int i = 0; i < packageList.size(); i++) {
+            if (packageList.get(i).length() < min) {
+                min = packageList.get(i).length();
+                index = i;
+            }
+        }
+        return packageList.get(index);
     }
 
 
@@ -430,16 +526,25 @@ public class ModuleBuilder {
     }
 
 
-    private String addIfFuncs(List<String> packagesList) {
+    /**
+     *  Generates the if blocks to confirm that we're actually in an appropriate package. If so, write function
+     *
+     * @param keys
+     * @return
+     */
+    private String addIfFuncs(ArrayList<String> keys) {
 
         StringBuilder ifFuncs = new StringBuilder();
 
-        for (int i = 0; i < packagesList.size(); i++) {
-            ifFuncs.append(addPackageNameCheck(packagesList.get(i)));
+        int i = 0;
+        for (String key : keys) {
+            ifFuncs.append(addPackageNameCheck(key));
             ifFuncs.append(MBConstants.FUNC_CALL);
             ifFuncs.append(i);
             ifFuncs.append(MBConstants.FUNC_CALL_PARAMS);
             ifFuncs.append("\t\t}\n\n");
+
+            i += 1;
         }
 
         ifFuncs.append(MBConstants.END_OF_FUNC);
@@ -449,6 +554,7 @@ public class ModuleBuilder {
 
 
     private String addFunction(int index) {
+
         StringBuilder function = new StringBuilder();
 
         function.append(MBConstants.FUNC_BEGINNING);
@@ -457,4 +563,27 @@ public class ModuleBuilder {
 
         return function.toString();
     }
+
+
+    /**
+     *  Given a value finds the key corresponding to that value. Assumes values are unique between keys
+     *
+     * @param packageNamesMap
+     * @param val
+     * @return
+     */
+    private String findKey(Map<String, ArrayList<String>> packageNamesMap, String val) {
+
+        Set<String> keys = packageNamesMap.keySet();
+
+        for (String key : keys) {
+            ArrayList values = packageNamesMap.get(key);
+            if (values.contains(val)) {
+                return key;
+            }
+        }
+
+        return "";
+    }
+
 }
