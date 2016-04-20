@@ -27,6 +27,10 @@ public class Parser {
         ASTParser parser = ASTParser.newParser(AST.JLS8);
         String sourcePath = getSourcePath(sourceFile);
 
+        if (sourcePath.equals("")) {
+            return;
+        }
+
         String[] classpath;
 
         if (jarFilesLoc != null) {
@@ -259,8 +263,14 @@ public class Parser {
     private static String getSourcePath(File file) {
         String fullPath = file.getPath();
 
-        int srcIndex = fullPath.indexOf("src");
+        int srcIndex = fullPath.indexOf("src/main/java");
         if (srcIndex == -1) {
+            // RETURN TO GUI AND ASK FOR SOURCE PATH
+
+            // for now, just get src
+//            srcIndex = fullPath.indexOf("src");
+//            String path = fullPath.substring(0, srcIndex + "src".length());
+//            return path;
             return "";
         }
         String path = fullPath.substring(0, srcIndex + "src".length());
