@@ -220,16 +220,17 @@ public class Parser {
                     }
                 }
                 System.out.println("Done Parsing Files!");
-                PVView.getInstance().updateOutLog("Done Parsing Files!"); //Let's see if it Breaks
+                PVView.getInstance().updateOutLog("Done Parsing Files!\n"); //Let's see if it Breaks
+                PVView.getInstance().updateOutLog("");
                 return null;
             }
 
             @Override
             protected void done(){
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt";
-                PVView.getInstance().updateOutLog("Building module...");
+                PVView.getInstance().updateOutLog("Building module...\n");
                 new ModuleBuilder(outputPathString);
-                PVView.getInstance().updateOutLog("Building APK...");
+                PVView.getInstance().updateOutLog("Building APK...\n");
                 new APKBuilder(adbLoc, sdkLoc);
             }
         };
@@ -281,12 +282,6 @@ public class Parser {
         String path = fullPath.substring(0, srcIndex + "src".length());
 
         return path;
-    }
-
-
-    public static void main(String[] args) {
-        PVView view = new PVView();
-
     }
 
 }

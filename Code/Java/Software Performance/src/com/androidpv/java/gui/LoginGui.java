@@ -1,10 +1,11 @@
 package com.androidpv.java.gui;
-
 import com.androidpv.java.database.dataBaseListener;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by bradley on 4/8/2016.
@@ -19,9 +20,8 @@ public class LoginGui extends JFrame{
     JLabel username;
     JLabel password;
 
-    public static void main(String[] args){
-        new LoginGui();
-    }
+    public String puname;
+
     public LoginGui(){
         super("Login Authentication");
         dataBaseListener db = new dataBaseListener();
@@ -35,7 +35,7 @@ public class LoginGui extends JFrame{
 
         setSize(300,200);
         setLocation(500,280);
-        loginpanel.setLayout (null);
+        loginpanel.setLayout(null);
 
         newUser.setBounds(110,135,80,20);
         txuser.setBounds(70,30,150,20);
@@ -57,11 +57,11 @@ public class LoginGui extends JFrame{
 
 
         blogin.addActionListener(e -> {
-                String puname = txuser.getText();
+                puname = txuser.getText();
                 String ppasswd = pass.getText();
 
                 if(db.checkMembership(puname , ppasswd)) {
-                   new PVView();
+                   PVView.instance = new PVView(puname);
                     dispose();
                 }
                 else if(puname.equals("") && ppasswd.equals("")){
@@ -76,14 +76,29 @@ public class LoginGui extends JFrame{
 
         });
 
-//        newUser.addActionListener(new ActionListener(){
-//            public void actionPerformed(ActionEvent e) {
-//                NewUser.java user = new NewUser.java();
-//                dispose();
-//
-//            }
-//        });
+        newUser.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                NewUser user = new NewUser();
+                dispose();
 
+            }
+        });
     }
- }
+    public String getPuname() {
+        return puname;
+    }
+
+    public static void main(String ... args){
+       new LoginGui();
+
+//        int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
+//            new DataSubmit("HI");
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(null, "GOODBYE");
+//            System.exit(0);
+//        }
+    }
+}
 

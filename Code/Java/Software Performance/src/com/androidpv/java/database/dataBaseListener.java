@@ -7,8 +7,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
 import java.security.MessageDigest;
 
 /**
@@ -18,7 +21,6 @@ public class dataBaseListener {
     private Connection connection;
 
     public dataBaseListener(){
-
 
     }
     public static String getMD5(String input) {
@@ -106,7 +108,7 @@ public class dataBaseListener {
         }
     }
 
-    public void enterToDatabase(){
+    public void enterToDatabase(String uName, String appName){
         Statement stmt;
         ResultSet rs;
         ResultSet userRs;
@@ -118,10 +120,14 @@ public class dataBaseListener {
         String username = "root";
         String password = "";
         //Working values
-        String currentUser = "altonKim";
-        String application = "AlarmKlock";
-        String traceNumber = "3";
-        String traceId = currentUser + application + traceNumber;
+        String currentUser = uName;
+        String application = appName;
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm:ss");
+        Date dateobj = new Date();
+        //System.out.println(df.format(dateobj));
+
+        String traceId = currentUser + application  + df.format(dateobj); //TODO: Get current date as traceid
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             System.out.println("Database connected!");
