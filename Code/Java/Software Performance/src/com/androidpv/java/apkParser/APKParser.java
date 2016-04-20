@@ -11,7 +11,6 @@ import java.nio.file.Path;
  * Created by bradley on 2/27/2016.
  */
 public class APKParser {
-    Parser parser = new Parser();
 
     public static void main(String[] args) throws JadxException {
         File f = new File (new File("").getAbsoluteFile().toString() + "/src/BBCNews.apk");

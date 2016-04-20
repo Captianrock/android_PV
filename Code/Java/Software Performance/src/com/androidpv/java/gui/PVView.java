@@ -21,7 +21,7 @@ import javax.swing.*;
 /**
  * Created by bradley on 3/21/2016.
  */
-public class PVView extends JFrame {
+public final class PVView extends JFrame {
     private JPanel rootPanel;
     private JTextField fileField;
     private JButton dirButton;
@@ -38,6 +38,7 @@ public class PVView extends JFrame {
     private File sdkDir;
     private File adbDir;
     private String parsedDataOutputPathString;
+    private static volatile PVView instance;
 
     public PVView() {
         super("File Chooser");
@@ -150,10 +151,10 @@ public class PVView extends JFrame {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
                         }
-                        outputArea.append("Done parsing directory!");
-                        outputArea.append("Building module");
+                        //outputArea.append("Done parsing directory!");
+                       // outputArea.append("Building module");
                         try {
-                            Thread.sleep(6000); //1000 milliseconds is one second.
+                            Thread.sleep(10000); //1000 milliseconds is one second.
                             new DataSubmit();
                             dispose();
                         } catch(InterruptedException ex) {
@@ -177,12 +178,21 @@ public class PVView extends JFrame {
                 }
             });
 
-
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setVisible(true);
         });
     }
 
+    public static PVView getInstance() {
+        if (instance == null ) {
+            synchronized (PVView.class) {
+                if (instance == null) {
+                    instance = new PVView();
+                }
+            }
+        }
+        return instance;
+    }
     public void updateOutLog(String str){
         outputArea.append(str);
     }
@@ -196,29 +206,6 @@ public class PVView extends JFrame {
 
     public String getOutputPathString() {
         return parsedDataOutputPathString;
-    }
-    public File getJarDir() {
-        return jarDir;
-    }
-
-    public void setJarDir(File jarDir) {
-        this.jarDir = jarDir;
-    }
-
-    public File getSdkDir() {
-        return sdkDir;
-    }
-
-    public void setSdkDir(File sdkDir) {
-        this.sdkDir = sdkDir;
-    }
-
-    public File getAdbDir() {
-        return adbDir;
-    }
-
-    public void setAdbDir(File adbDir) {
-        this.adbDir = adbDir;
     }
 
     public static void main(String[] args) {
