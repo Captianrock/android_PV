@@ -1,10 +1,8 @@
 <?php
-session_start();
 
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-$membership = New membership();
 
 $membership->confirmMember();
 
@@ -207,7 +205,7 @@ $userName = $_SESSION['user'];
                                     </div>
                                 </div>
                             </div>
-                            <a href="trace.php">
+                            <a href="trace.php?app=AlarmKlock">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -559,7 +557,7 @@ $userName = $_SESSION['user'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
-    <script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script>
+    <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>
 

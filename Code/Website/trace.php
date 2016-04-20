@@ -1,6 +1,12 @@
 <?php
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
+
+$membership->confirmMember();
+$methodExecVar = new methodExec();
+if (isset($_GET['app'])){
+    $traceData = $methodExecVar->getTraces($_GET['app']);
+} 
 ?>
 
 <!DOCTYPE html>

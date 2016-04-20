@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require 'Mysql.php';
 
 class membership{
@@ -53,3 +53,5 @@ class membership{
 		}
 	}
 }
+
+$membership = new membership();

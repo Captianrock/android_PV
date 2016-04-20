@@ -12,14 +12,12 @@ class methodExec {
 	}
 
 	function getTimes($time){
-		#$time = 'altonKimAlarmKlock1';
+
 		$timesList = [];
 		$query = "SELECT *
 					FROM data
-					WHERE traceId=?";// = '$trace'";
-		
-		#$result = $this->conn->query($query);
-		#echo $time;
+					WHERE traceId=?";
+
 		if($result = $this->conn->prepare($query)){
 			$result->bind_param('s',$time);
 			$result->execute();
@@ -29,16 +27,31 @@ class methodExec {
 			}
 			$result->close();
 		}
-		#while ($row = $result->fetch_assoc()) {
-		#	$timesList[] = $row;
-		#}
-		#$result = $this->conn->query($query);
-		#$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd);
-      	#echo "HELLO\n";
-      	#echo var_dump($id);
+
    		$this->conn->close();
-		#echo var_dump($timesList);
+
 		return $timesList;
+	}
+
+	function getTraces($appName){
+		
+		$traceList = [];
+		$query = "SELECT *
+					FROM traces
+					WHERE application = ?";
+		if($result = $this->conn->prepare($query)){
+			$result->bind_param('s',$appName);
+			$result->execute();
+			$result->bind_result($id,$userName,$application,$traceId,$date);
+			while($result->fetch()){
+				$traceList[] = array($traceId,$date);
+			}
+			$result->close();
+		}
+
+   		$this->conn->close();
+   		echo var_dump($traceList);
+		return $traceList;
 	}
 }
 ?>

@@ -1,10 +1,12 @@
 <?php
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
+$membership->confirmMember();
+
 $methodExecVar = new methodExec();
 if (isset($_GET['trace'])){
     $traceData = $methodExecVar->getTimes($_GET['trace']);
-}  
+} 
 ?>
 
 <script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
