@@ -31,6 +31,9 @@ public class Parser {
             return;
         }
 
+        //PVView instance = PVView.getInstance();
+        //instance.updateOutLog("BRAD DID IT\n");
+
         String[] classpath;
 
         if (jarFilesLoc != null) {
