@@ -35,8 +35,6 @@ $userName = $_SESSION['user'];
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -166,6 +164,9 @@ $userName = $_SESSION['user'];
                         <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
 					<li>
+                        <a href="tables.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    </li>
+					<li>
 						<a role="button" id="csvButton" onclick="buildCSV()"> <i class="fa fa-fw fa-file"></i> Make CSV</a>
 					</li>
 					<li>
@@ -197,14 +198,6 @@ $userName = $_SESSION['user'];
                                 <i class="fa fa-bar-chart-o"></i> Charts
                             </li>
                         </ol>
-                    </div>
-                </div>
-                <!-- /.row -->
-
-                <!-- High Charts -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h2 class="page-header">Highcharts</h2>
                     </div>
                 </div>
                 <!-- /.row -->
