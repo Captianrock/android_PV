@@ -10,7 +10,6 @@ import javax.swing.*;
  */
 public class DataSubmit extends JFrame{
     private JButton backButton;
-    private JFormattedTextField usrnameField;
     private JTextField appField;
     private JButton dataButton;
     private JPanel dataPanel;
@@ -24,9 +23,8 @@ public class DataSubmit extends JFrame{
             pack();
             setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
 
-        usrnameField = new JFormattedTextField();
         userField.setText(uName);
-        appField = new JFormattedTextField(new String("Enter Application Name"));
+        appField.setText("Enter Application Name");
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
             if (!dataCheck){
