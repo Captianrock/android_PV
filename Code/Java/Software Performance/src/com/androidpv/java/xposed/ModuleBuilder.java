@@ -158,6 +158,10 @@ public class ModuleBuilder {
         }
 
         if (isConstructor) {
+            // can't hook private constructors - they really aren't called anyway...
+            if (modifiers.contains("private")) {
+                DO_NOT_PRINT = true;
+            }
             if (nestedClassBoolean) {
                 if (parentModifiersList.contains("static")) {
                     methodName = "";
