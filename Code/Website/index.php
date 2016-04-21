@@ -3,7 +3,6 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-
 $membership->confirmMember();
 
 $userName = $_SESSION['user'];
@@ -190,7 +189,7 @@ $userName = $_SESSION['user'];
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div id="rowContainer">
                 <div class="row">
                     <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-primary">
@@ -258,6 +257,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div> -->
+                </div>
                 </div>
                 <!-- /.row -->
 
