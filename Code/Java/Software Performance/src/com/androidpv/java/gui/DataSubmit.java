@@ -26,7 +26,7 @@ public class DataSubmit extends JFrame{
 
         usrnameField = new JFormattedTextField();
         userField.setText(uName);
-        appField = new JTextField("");
+        appField = new JFormattedTextField(new String("Enter Application Name"));
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
             if (!dataCheck){
