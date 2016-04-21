@@ -92,7 +92,7 @@ $(function () {
                 name: data[i].drilldown.categories,
                 y: data[i].drilldown.data[j],
                 color: Highcharts.Color(data[i].color).brighten(brightness).get(),
-				parentId: i
+				id: i
             });
         }
     }
@@ -126,12 +126,11 @@ $(function () {
 					events: {
 						legendItemClick: function () {
 							var id = this.id,
-							indieRun = this.series.chart.series[0].data;
+							indieRun = this.series.chart.series[1].data;
 							$.each(indieRun, function (i, point) {
-								//console.log(i);
-								//console.log(point);
-								if (point.parentId == id) {
-									if(point.visible)
+								if (point.id == id)
+								{
+									if (point.visible == true)
 										point.setVisible(false);
 									else
 										point.setVisible(true);
