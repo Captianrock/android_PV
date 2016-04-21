@@ -33,7 +33,6 @@ public class DataSubmit extends JFrame{
                 JOptionPane.showMessageDialog(null,"Please stop the data flow first!");
             }
             else {
-                //String username = usrnameField.getValue().toString();
                 String appname = appField.getText();
                 dataBaseListener bd = new dataBaseListener();
                 bd.enterToDatabase(uName, appname);
