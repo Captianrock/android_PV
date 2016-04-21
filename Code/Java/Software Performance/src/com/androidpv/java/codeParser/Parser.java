@@ -72,6 +72,23 @@ public class Parser {
         cu.accept(new ASTVisitor() {
             Set names = new HashSet();
 
+//            public boolean visit(TypeDeclaration typeDeclarationStatement) {
+//
+//                if (!typeDeclarationStatement.isPackageMemberTypeDeclaration()) {
+//                    System.out.println(typeDeclarationStatement.getName());
+//                    // Get more details from the type declaration.
+//                }
+//
+//                return true;
+//            }
+//
+//            public boolean visit(AnonymousClassDeclaration node) {
+//
+//                System.out.println("found anonymous class");
+//
+//                return true;
+//            }
+
             public boolean visit(MethodDeclaration node) {
 
                 boolean isInterface = false;
@@ -294,17 +311,21 @@ public class Parser {
         String fullPath = file.getPath();
 
         int srcIndex = fullPath.indexOf("src/main/java");
-//        int srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
+
         if (srcIndex == -1) {
             // RETURN TO GUI AND ASK FOR SOURCE PATH
-
+            srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
+            if (srcIndex == -1) {
+                return "";
+            }
+            String path = fullPath.substring(0, srcIndex + "com/angrydoughnuts/android/alarmclock".length());
             // for now, just get src
 //            srcIndex = fullPath.indexOf("src");
 //            String path = fullPath.substring(0, srcIndex + "src".length());
 //            return path;
-            return "";
+            return path;
         }
-        String path = fullPath.substring(0, srcIndex + "src".length());
+        String path = fullPath.substring(0, srcIndex + "src/main/java".length());
 
         return path;
     }

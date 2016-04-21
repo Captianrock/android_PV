@@ -26,17 +26,17 @@ public class DataSubmit extends JFrame{
 
         usrnameField = new JFormattedTextField();
         userField.setText(uName);
-        appField = new JFormattedTextField(new String("Enter Application Name"));
+        appField = new JTextField("");
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
             if (!dataCheck){
                 JOptionPane.showMessageDialog(null,"Please stop the data flow first!");
             }
             else {
-                String username = usrnameField.getValue().toString();
+                //String username = usrnameField.getValue().toString();
                 String appname = appField.getText();
                 dataBaseListener bd = new dataBaseListener();
-                bd.enterToDatabase(username, appname);
+                bd.enterToDatabase(uName, appname);
             }
 
         });

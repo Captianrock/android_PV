@@ -29,9 +29,7 @@ public class APKBuilder {
         File wd = new File(currentDir + MBConstants.ANDROID_TEST_DIR);
         pb.directory(wd);
         File f = new File(currentDir + MBConstants.ANDROID_TEST_DIR + "/gradlew");
-        if (f.exists()) {
-            System.out.println("trueeeeee");
-        }
+
         commandsList.add(pb.directory().getAbsolutePath() + "/gradlew");
         commandsList.add("build");
 
@@ -71,9 +69,7 @@ public class APKBuilder {
         File adbLocFile = new File(adbLoc);
         deployPB.directory(adbLocFile);
         File adb = new File(adbLoc + "/adb");
-        if (adb.exists()) {
-            System.out.println("trueeeeee");
-        }
+
         deployCommands.add(deployPB.directory().getAbsolutePath() + "/adb");
         deployCommands.add("install");
         deployCommands.add("-r");
