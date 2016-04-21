@@ -129,7 +129,7 @@ public final class PVView extends JFrame {
                             outputArea.append("");
                             APKParser.parse(inputPath.toFile());
                             List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                            Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                            Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
 
                             //TODO: Create button to switch to SubmitData
                             int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
@@ -152,35 +152,26 @@ public final class PVView extends JFrame {
                         List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
                         try {
                             if (jarDir != null) {
-                                outputArea.append("#########################################################");
+                                outputArea.append("#########################################################\n");
                                 outputArea.append("");
-                                outputArea.append("Parsing now...");
+                                outputArea.append("Parsing now...\n");
                                 outputArea.append("");
-                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
                             }
                             else {
-                                outputArea.append("#########################################################");
+                                outputArea.append("#########################################################\n");
                                 outputArea.append("");
-                                outputArea.append("Parsing now...");
+                                outputArea.append("Parsing now...\n");
                                 outputArea.append("");
-                                Parser.parseFilesInDir(fileL, outputPathString, null, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath());
+                                Parser.parseFilesInDir(fileL, outputPathString, null, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
                             }
                         } catch (Exception except) {
                             outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
                             except.printStackTrace();
                         }
-
-                        //TODO: Create button to switch to SubmitData
-                        int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
-                        if (reply == JOptionPane.OK_OPTION) {
-                            new DataSubmit(uName, adbDir.toString());
-                        }
-                        else {
-                            JOptionPane.showMessageDialog(null, "GOODBYE");
-                        }
                     }
 
-                else{
+                else {
                         JOptionPane.showMessageDialog(null,"Something went wrong! Please make sure all paths are correct!");
                     }
                 }
@@ -192,6 +183,7 @@ public final class PVView extends JFrame {
     }
 
     public static PVView getInstance() {
+
         if (instance == null ) {
             synchronized (PVView.class) {
                 if (instance == null) {
@@ -208,6 +200,7 @@ public final class PVView extends JFrame {
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
     }
+
     public String getJars(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }
