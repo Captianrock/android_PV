@@ -20,7 +20,7 @@ for (var i = 0; i < jsArray.length; i++)
 	   start.push((parseInt(jsArray[i][2]))/1000);
 	   end.push((parseInt(jsArray[i][3]))/1000);
 	   diff.push(end[i] - start[i]);
-        if(end[i] - start[i] > max){
+       if(end[i] - start[i] > max){
             max = end[i] - start[i];
             maxMethod = jsArray[i][1];
         }
@@ -30,7 +30,7 @@ for (var i = 0; i < jsArray.length; i++)
         end.push((parseInt(jsArray[i][3]))/1000);
         diff[tempElem] += end[i] - start[i];
         if(diff[tempElem] > max){
-            max = end[i] - start[i];
+            max = diff[tempElem];
             maxMethod = jsArray[i][1];
         }
     }
@@ -128,8 +128,8 @@ $(function () {
 							var id = this.id,
 							indieRun = this.series.chart.series[0].data;
 							$.each(indieRun, function (i, point) {
-								console.log(i);
-								console.log(point);
+								//console.log(i);
+								//console.log(point);
 								if (point.parentId == id) {
 									if(point.visible)
 										point.setVisible(false);
@@ -202,7 +202,7 @@ $(function () {
         }]
     });
 });
-console.log(indieRun);
+//console.log(indieRun);
 $(function () {
     $('#container3').highcharts({
         chart: {
