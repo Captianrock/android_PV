@@ -33,14 +33,13 @@ class methodExec {
 		return $timesList;
 	}
 
-	function getTraces($appName){
-		
+	function getTraces($appName,$user){
 		$traceList = [];
 		$query = "SELECT *
 					FROM traces
-					WHERE application = ?";
+					WHERE application = ? AND username = ?";
 		if($result = $this->conn->prepare($query)){
-			$result->bind_param('s',$appName);
+			$result->bind_param('ss',$appName,$user);
 			$result->execute();
 			$result->bind_result($id,$userName,$application,$traceId,$date);
 			while($result->fetch()){
@@ -48,9 +47,7 @@ class methodExec {
 			}
 			$result->close();
 		}
-
    		$this->conn->close();
-   		echo var_dump($traceList);
 		return $traceList;
 	}
 }

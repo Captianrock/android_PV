@@ -266,8 +266,6 @@ if (isset($_GET['trace'])){
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
- <!--   <script type="text/javascript">var jsArray = "<?php echo json_encode($traceData); ?>;"</script>
-    <script type="text/javascript">var jsArray2 = "<?php echo json_encode($traceData); ?>;"</script> -->
 	<script type="text/javascript" src="js/graphs.js"></script>
 
 </body>

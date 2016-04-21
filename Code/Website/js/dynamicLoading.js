@@ -1,3 +1,4 @@
+console.log(traces);
 function addTrace() {
 
   var traceContainer = document.getElementById('traceList');
@@ -25,6 +26,11 @@ function addTrace() {
   	newTrace.innerHTML = "Trace " + (i+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
   	newTrace.setAttribute('href','charts.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
+  	traceContainer.appendChild(newTrace);
+  }
+  if (traces.length == 0){
+  	var newTrace = document.createElement('div');
+  	newTrace.innerHTML = "No Traces Found"; 
   	traceContainer.appendChild(newTrace);
   }
 }
