@@ -1,5 +1,7 @@
 package com.androidpv.java.xposed;
 
+import com.androidpv.java.gui.PVView;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,7 @@ public class APKBuilder {
             e.printStackTrace();
         }
 
+        PVView.instance.updateOutLog("APK BUILT");
 
         // to deploy apk
         List<String> deployCommands = new ArrayList<>();
@@ -93,5 +96,6 @@ public class APKBuilder {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }

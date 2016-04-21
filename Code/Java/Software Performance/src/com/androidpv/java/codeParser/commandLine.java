@@ -8,14 +8,14 @@ import java.util.List;
  * Created by kim on 4/8/2016.
  */
 public class commandLine {
-    public commandLine(){
+    public commandLine(String adbPath ){
         String currentDir = System.getProperty("user.dir");
 
         List<String> deployCommands = new ArrayList<>();
         ProcessBuilder deployPB = new ProcessBuilder();
-        File adbLoc = new File("C:/Users/kim/AppData/Local/Android/android-sdk/platform-tools");
+        File adbLoc = new File(adbPath);
         deployPB.directory(adbLoc);
-        File adb = new File("C:/Users/kim/AppData/Local/Android/android-sdk/platform-tools/adb");
+        File adb = new File(adbPath+ "/adb");
         if (adb.exists()) {
             System.out.println("trueeeeee");
         }
