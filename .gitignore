@@ -41,7 +41,6 @@ Code/Java/Software Performance/AndroidTest/build/intermediates/dex/release/class
 *.store
 Code/Java/Software Performance/AndroidTest/build/intermediates/resources/resources-debug.ap_
 *.css
-*.html
 *.bin
 Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/outputFileStates.bin
 *.lock
