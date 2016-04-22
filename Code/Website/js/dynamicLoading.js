@@ -44,9 +44,12 @@ function addApp(){
 			rowNumber++;
 			addRow(rowNumber);
 		}
-		rowsId = rowNumber;
-		for (var i = 1; i <= apps.length; i++){
-			addButton('row1');
+		rowsId = 1;
+		for (var i = 0; i < apps.length; i++){
+			if((i+1) % 3 == 0){
+				rowsId++;
+			}
+			addButton('row'+ rowsId,apps[i][0]);
 		}
 	}
 }
@@ -59,7 +62,7 @@ function addRow(rowNumber){
 }
 
 
-function addButton(newRowId){
+function addButton(newRowId,appNameHeader){
 	var newRow = document.getElementById(newRowId);
 
 	var newPadding = document.createElement('div');
@@ -100,7 +103,12 @@ function addButton(newRowId){
 
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
-	appName.innerHTML = 'AlarmKlock';
+	var appNameArray = appNameHeader.split(/(?=[A-Z])/);
+	var realName = "";
+	for(var j = 0; j < appNameArray.length; j++){
+		realName += appNameArray[j] + " ";
+	}
+	appName.innerHTML = realName;
 
 	newCol2.appendChild(appName);
 
@@ -110,7 +118,8 @@ function addButton(newRowId){
 	newCol2.appendChild(link);
 
 	var newA = document.createElement('a');
-	newA.setAttribute('href',"trace.php?app=" + 'AlarmKlock');
+	console.log(appNameHeader);
+	newA.setAttribute('href',"trace.php?app=".concat(appNameHeader));
 
 	newPanel.appendChild(newA);
 

@@ -9,7 +9,6 @@ $userName = $_SESSION['user'];
 if (isset($_GET['user'])){
     $appList = $methodExecVar->getApplications($_GET['user']);
 } 
-
 ?>
 <script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script>
 
