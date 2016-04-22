@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require 'Mysql.php';
 
 class membership{
@@ -20,7 +19,9 @@ class membership{
 		if($ensureCredentials){
 			$_SESSION['status'] = 'authorized';
 			$_SESSION['user'] = $un;
-			header("location: index.php");
+			$address = 'location: index.php?user=' . $_SESSION['user'];
+			echo($address);
+			header($address);
 		}
 		else{
 			return "Please enter a correct username and password";
@@ -54,3 +55,5 @@ class membership{
 		}
 	}
 }
+
+$membership = new membership();

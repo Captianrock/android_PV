@@ -1,7 +1,5 @@
 <?php
 require_once 'classes/membership.php';
-require_once 'classes/methodExec.php';
-$membership = new membership();
 
 //If User clicks "Log Out"
 if(isset($_GET['status']) && $_GET['status'] == 'loggedout'){
