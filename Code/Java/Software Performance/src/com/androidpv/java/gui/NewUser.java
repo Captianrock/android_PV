@@ -13,6 +13,7 @@ import java.util.*;
 
 public class NewUser extends JFrame {
     JButton create;
+    JButton backBttn;
     JPanel newUserPanel;
     JTextField usernmae;
     JTextField password;
@@ -21,6 +22,7 @@ public class NewUser extends JFrame {
     public NewUser(){
         super("Registration");
         create = new JButton("Create");
+        backBttn = new JButton("Back");
         newUserPanel = new JPanel();
         usernmae = new JTextField(15);
         password = new JPasswordField(15);
@@ -34,8 +36,9 @@ public class NewUser extends JFrame {
         usernmae.setBounds(70,30,150,20);
         password.setBounds(70,65,150,20);
         create.setBounds(110,100,80,20);
-
+        backBttn.setBounds(110,140,80,20);
         newUserPanel.add(create);
+        newUserPanel.add(backBttn);
         newUserPanel.add(usernmae);
         newUserPanel.add(password);
         usernmae.setText("Username");
@@ -72,6 +75,9 @@ public class NewUser extends JFrame {
 
             }
         });
+        backBttn.addActionListener(ae ->{
+            new LoginGui();
+            dispose();
+        });
     }
-
 }
