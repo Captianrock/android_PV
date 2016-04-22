@@ -11,7 +11,8 @@ if (isset($_GET['user'])){
 } 
 
 ?>
-<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
+<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script>
+
 <!DOCTYPE html>
 <html lang="en">
 
