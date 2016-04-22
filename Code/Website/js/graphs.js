@@ -100,7 +100,7 @@ $(function () {
 
 	if (jsArray.length >= 300)
 	{
-		text = 'Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/>';
+		text = '<span style="text-decoration: underline;">Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/></span>';
 	}
 
     // Create the chart
@@ -150,6 +150,11 @@ $(function () {
 		legend: {
 			title: {
                 text: text,
+				style: {
+                    color: 'red',
+					fontWeight: 'bold',
+					fontStyle: 'italic',
+                }
             }
 		},
 		tooltip: {

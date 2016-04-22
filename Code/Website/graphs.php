@@ -1,8 +1,4 @@
-<?php
-
-include ('header.html');
-
-?>
+<?php include ('header.html');?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +17,6 @@ include ('header.html');
 		  </div>
 		</div>
 		</div>
-
 		<script type="text/javascript" src="js/graphs.js"></script>
 	</body>
 </html>

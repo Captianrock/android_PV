@@ -2,13 +2,16 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-$membership = New membership();
-
 $membership->confirmMember();
 
 $userName = $_SESSION['user'];
-?>
 
+if (isset($_GET['user'])){
+    $appList = $methodExecVar->getApplications($_GET['user']);
+} 
+
+?>
+<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -190,7 +193,7 @@ $userName = $_SESSION['user'];
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div id="rowContainer">
                 <div class="row">
                     <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
                         <div class="panel panel-primary">
@@ -205,7 +208,7 @@ $userName = $_SESSION['user'];
                                     </div>
                                 </div>
                             </div>
-                            <a href="trace.php">
+                            <a href="trace.php?app=AlarmKlock">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -258,6 +261,7 @@ $userName = $_SESSION['user'];
                             </a>
                         </div>
                     </div> -->
+                </div>
                 </div>
                 <!-- /.row -->
 
@@ -557,7 +561,9 @@ $userName = $_SESSION['user'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
-    <script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script>
+  <!--  <script src="js/dynamicLoading.js"></script>
+    <script>addApp();</script>-->
+    <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>
 
