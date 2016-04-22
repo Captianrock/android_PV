@@ -10,7 +10,6 @@ import javax.swing.*;
  */
 public class DataSubmit extends JFrame{
     private JButton backButton;
-    private JFormattedTextField usrnameField;
     private JTextField appField;
     private JButton dataButton;
     private JPanel dataPanel;
@@ -24,19 +23,17 @@ public class DataSubmit extends JFrame{
             pack();
             setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
 
-        usrnameField = new JFormattedTextField();
         userField.setText(uName);
-        appField = new JFormattedTextField(new String("Enter Application Name"));
+        appField.setText("Enter Application Name");
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
             if (!dataCheck){
                 JOptionPane.showMessageDialog(null,"Please stop the data flow first!");
             }
             else {
-                String username = usrnameField.getValue().toString();
                 String appname = appField.getText();
                 dataBaseListener bd = new dataBaseListener();
-                bd.enterToDatabase(username, appname);
+                bd.enterToDatabase(uName, appname);
             }
 
         });

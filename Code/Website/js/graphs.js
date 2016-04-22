@@ -11,6 +11,7 @@ var pie = [];
 var indieRun = [];
 var max = 0;
 var maxMethod = "None";
+var text = '';
 
 for (var i = 0; i < jsArray.length; i++) 
 {
@@ -92,10 +93,15 @@ $(function () {
                 name: data[i].drilldown.categories,
                 y: data[i].drilldown.data[j],
                 color: Highcharts.Color(data[i].color).brighten(brightness).get(),
-				parentId: i
+				id: i
             });
         }
     }
+
+	if (jsArray.length >= 300)
+	{
+		text = '<span style="text-decoration: underline;">Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/></span>';
+	}
 
     // Create the chart
     $('#container').highcharts({
@@ -126,12 +132,11 @@ $(function () {
 					events: {
 						legendItemClick: function () {
 							var id = this.id,
-							indieRun = this.series.chart.series[0].data;
+							indieRun = this.series.chart.series[1].data;
 							$.each(indieRun, function (i, point) {
-								//console.log(i);
-								//console.log(point);
-								if (point.parentId == id) {
-									if(point.visible)
+								if (point.id == id)
+								{
+									if (point.visible == true)
 										point.setVisible(false);
 									else
 										point.setVisible(true);
@@ -142,6 +147,16 @@ $(function () {
                 }
             },
         },
+		legend: {
+			title: {
+                text: text,
+				style: {
+                    color: 'red',
+					fontWeight: 'bold',
+					fontStyle: 'italic',
+                }
+            }
+		},
 		tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
         },
