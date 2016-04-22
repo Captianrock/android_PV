@@ -1,0 +1,45 @@
+.center {
+     float: none;
+     margin: 0 auto;
+}
+
+
+
+.panel-purple {
+
+	border-color: #8a5cb7;
+
+}
+
+
+.panel-purple > .panel-heading 
+{
+    
+	border-color: #8a5cb7;
+    
+	color: #fff;
+    
+	background-color: #8a5cb7;
+
+}
+
+
+.panel-purple > a 
+{
+    
+	color: #8a5cb7;
+
+}
+
+
+.panel-purple > a:hover 
+{
+
+	color: #633d8a;
+
+}
+
+.vertical-center 
+{
+  align-items: center;
+}
