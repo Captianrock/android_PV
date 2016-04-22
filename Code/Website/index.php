@@ -5,8 +5,13 @@ require_once 'classes/methodExec.php';
 $membership->confirmMember();
 
 $userName = $_SESSION['user'];
-?>
 
+if (isset($_GET['user'])){
+    $appList = $methodExecVar->getApplications($_GET['user']);
+} 
+
+?>
+<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -556,6 +561,8 @@ $userName = $_SESSION['user'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
+  <!--  <script src="js/dynamicLoading.js"></script>
+    <script>addApp();</script>-->
     <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>

@@ -291,22 +291,22 @@ public class Parser {
     }
 
     private static String getSourcePath(File file) {
-        String fullPath = file.getPath();
-
-        int srcIndex = fullPath.indexOf("src/main/java");
-//        int srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
-        if (srcIndex == -1) {
-            // RETURN TO GUI AND ASK FOR SOURCE PATH
-
-            // for now, just get src
+            String fullPath = file.getPath();
+            int srcIndex = fullPath.indexOf("src/main/java");
+            if (srcIndex == -1) {
+                // RETURN TO GUI AND ASK FOR SOURCE PATH
+                srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
+                if (srcIndex == -1) {
+                    return "";
+                }
+                String path = fullPath.substring(0, srcIndex + "com/angrydoughnuts/android/alarmclock".length());
+                // for now, just get src
 //            srcIndex = fullPath.indexOf("src");
 //            String path = fullPath.substring(0, srcIndex + "src".length());
 //            return path;
-            return "";
+                return path;
+            }
+            String path = fullPath.substring(0, srcIndex + "src/main/java".length());
+            return path;
         }
-        String path = fullPath.substring(0, srcIndex + "src".length());
-
-        return path;
-    }
-
 }

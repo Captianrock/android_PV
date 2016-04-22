@@ -50,7 +50,28 @@ class methodExec {
    		$this->conn->close();
 		return $traceList;
 	}
+
+	function getApplications($user){
+		$traceList = [];
+		$query = "SELECT *
+					FROM applications
+					WHERE username = ?";
+		if($result = $this->conn->prepare($query)){
+			$result->bind_param('s',$user);
+			$result->execute();
+			$result->bind_result($id,$userName,$application);
+			while($result->fetch()){
+				$traceList[] = array($application);
+			}
+			$result->close();
+		}
+		var_dump($traceList);
+   		$this->conn->close();
+		return $traceList;
+	}
 }
+
+$methodExecVar = new methodExec();
 ?>
 
 <script type="text/javascript" src="js/main.js"></script>

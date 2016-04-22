@@ -1,4 +1,3 @@
-console.log(traces);
 function addTrace() {
 
   var traceContainer = document.getElementById('traceList');
@@ -33,4 +32,93 @@ function addTrace() {
   	newTrace.innerHTML = "No Traces Found"; 
   	traceContainer.appendChild(newTrace);
   }
+}
+
+console.log(apps);
+function addRow(){
+	var rowContainer = document.getElementById('rowList');
+	var newRow = document.createElement('div');
+	newRow.setAttribute('class','row');
+	newRow.setAttribute('id','row1');
+
+}
+
+
+function addApp(newRowId){
+	var newRow = document.getElementById(newRowId);
+
+	var newPadding = document.createElement('div');
+	newPadding.setAttribute('class','col-md-4');
+	newPadding.setAttribute('style','padding-top: 50px; padding-left: 20px; padding-right: 20px;');
+
+	newRow.appendChild(newPadding);
+
+	var newPanel = document.createElement('div');
+	newPanel.setAttribute('class','panel panel-primary');
+
+	newPadding.appendChild(newPanel);
+
+	newPanelHeading = document.createElement('div');
+	newPanelHeading.setAttribute('class','panel-heading');
+
+	newPanel.appendChild(newPanelHeading);
+
+	var newInsideRow = document.createElement('div');
+	newInsideRow.setAttribute('class','row');
+
+	newPanelHeading.appendChild(newInsideRow);
+
+	var newCol = document.createElement('div');
+	newCol.setAttribute('class','col-xs-3');
+
+	newInsideRow.appendChild(newCol);
+
+	var newClass = document.createElement('center');
+	var newImg = document.createElement('i');
+	newImg.setAttribute('class','fa fa-area-chart fa-5x');
+	newClass.appendChild(newImg);
+
+	var newCol2 = document.createElement('div');
+	newCol2.setAttribute('class','col-xs-9 text-right');
+
+	newInsideRow.appendChild(newCol2);
+
+	var appName = document.createElement('div');
+	appName.setAttribute('class','huge');
+	appName.innerHTML = 'AlarmKlock';
+
+	newCol2.appendChild(appName);
+
+	var link = document.createElement('div');
+	link.innerHTML = 'View charts';
+
+	newCol2.appendChild(link);
+
+	var newA = document.createElement('a');
+	newA.setAttribute('href',"trace.php?app=" + 'AlarmKlock');
+
+	newPanel.appendChild(newA);
+
+	var classAPanel = document.createElement('div');
+	classAPanel.setAttribute('class','panel-footer');
+	newA.appendChild(classAPanel);
+
+	var span1 = document.createElement('span');
+	span1.setAttribute('class','pull-left');
+	span1.innerHTML = 'View Details';
+
+	classAPanel.appendChild(span1);
+
+	var span2 = document.createElement('span');
+	span1.setAttribute('class','pull-right');
+	
+	var newArrow = document.createElement('i');
+	newArrow.setAttribute('class','fa fa-area-circle-right');
+	span2.appendChild(newArrow);
+
+	classAPanel.appendChild(span2);
+
+	var newFix = document.createElement('div');
+	newFix.setAttribute('class','clearfix');
+	classAPanel.appendChild(newFix);
 }
