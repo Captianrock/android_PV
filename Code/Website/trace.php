@@ -187,7 +187,7 @@ $_SESSION['app'] = $_GET['app'];
                                 <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-bar-chart-o"></i> Trace
+                                <i class="fa fa-database"></i> Trace
                             </li>
                         </ol>
                     </div>
