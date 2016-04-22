@@ -159,14 +159,13 @@ function newTen(elementID)
 
     traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
 
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
     if (traces.length > 10)
     {
         traces.length = 10;
-    }
-
-    for (i = traces.length; i > 0; i--)
-    {
-        traceName[traces.length - i] = i-1;
     }
 
     addTrace();
@@ -181,12 +180,12 @@ function oldTen(elementID)
 
     traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
 
-    if (traces.length > 10) {
-        traces.length = 10;
-    }
-
     for (i = 0; i < traces.length; i++) {
         traceName[i] = i;
+    }
+
+    if (traces.length > 10) {
+        traces.length = 10;
     }
 
     addTrace();
