@@ -197,8 +197,28 @@ $_SESSION['app'] = $_GET['app'];
 				<div class="row col-lg-12">
 					<div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Traces</h3>
-                        </div>
+                            <h3 class="panel-title" style="height:20px;">
+								<div class="col-lg-1">
+									<div class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="#">Ten newest traces</a>
+											</li>
+											<li>
+												<a href="#">Ten oldest traces</a>
+											</li>
+											<li>
+												<a href="#">Newest to Oldest</a>
+											</li>
+											<li>
+												<a href="#">Oldest to Newest</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</h3>
+						</div>
                         <div class="panel-body">
                             <div class="list-group" id="traceList"></div>
                         </div>
