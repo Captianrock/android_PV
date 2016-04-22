@@ -10,6 +10,7 @@ if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
 } 
 
+$_SESSION['app'] = $_GET['app'];
 ?>
 <script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
 <!DOCTYPE html>

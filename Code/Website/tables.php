@@ -162,6 +162,9 @@ $userName = $_SESSION['user'];
                         <a href="index.php?user=<?php echo $userName ?>"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
 					<li>
+						<a href="trace.php?app=<?php echo $_SESSION['app'] ?>"><i class="fa fa-database"></i> Traces</a>
+					</li>
+					<li>
                         <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
 					<li>
@@ -192,6 +195,9 @@ $userName = $_SESSION['user'];
                             <li>
                                 <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
+							<li>
+								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
+							</li>
 							<li>
                                 <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
                             </li>
