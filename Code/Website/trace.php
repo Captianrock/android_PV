@@ -54,7 +54,7 @@ if (isset($_GET['app'])){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Android Performance Visualizer</a>
+                <a class="navbar-brand" href="index.php?user=<?php echo $userName ?>">Android Performance Visualizer</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -161,7 +161,7 @@ if (isset($_GET['app'])){
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class>
-                        <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Home</a>
+                        <a href="index.php?user=<?php echo $userName ?>"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
                     <li>
                         <a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
@@ -183,7 +183,7 @@ if (isset($_GET['app'])){
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php">Home</a>
+                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-bar-chart-o"></i> Trace

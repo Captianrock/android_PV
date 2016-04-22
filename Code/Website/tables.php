@@ -52,7 +52,7 @@ $userName = $_SESSION['user'];
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Android Performance Visualizer</a>
+                <a class="navbar-brand" href="index.php?user=<?php echo $userName ?>">Android Performance Visualizer</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -159,7 +159,7 @@ $userName = $_SESSION['user'];
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Home</a>
+                        <a href="index.php?user=<?php echo $userName ?>"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
 					<li>
                         <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
@@ -190,7 +190,7 @@ $userName = $_SESSION['user'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php">Home</a>
+                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
 							<li>
                                 <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
