@@ -7,3 +7,43 @@ Code/Java/Software Performance/out/production/Software Performance/com/androidpv
 *.class
 Code/Java/Software Performance/out/production/Software Performance/com/androidpv/java/Parser$1.class
 *.class
+*.properties
+Code/Java/Software Performance/.gradle/2.2/taskArtifacts/cache.properties.lock
+*.bin
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileSnapshots.bin
+*.bin
+*.lock
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileHashes.bin
+*.xml
+*.png
+*.jar
+Code/Java/Software Performance/AndroidTest/build/outputs/lint-results.html
+Code/Java/Software Performance/AndroidTest/build/outputs/lint-results_files/hololike.css
+*.txt
+Code/Java/Software Performance/AndroidTest/build/test-results/binary/testRelease/output.bin.idx
+*.idx
+Code/Java/Software Performance/AndroidTest/src/main/java/com/test/Tutorial.java
+*.apk
+Code/Java/Software Performance/AndroidTest/build/reports/tests/release/css/base-style.css
+*.js
+Code/Java/Software Performance/AndroidTest/src/main/java/com/test/Tutorial.java
+*.zip
+Code/Java/Software Performance/AndroidTest/build/intermediates/dex/debug/classes.dex
+*.java
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/outputFileStates.bin
+*.lock
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileHashes.bin
+*.bin
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/outputFileStates.bin
+Code/Java/Software Performance/AndroidTest/build/intermediates/assets/debug/xposed_init
+Code/Java/Software Performance/AndroidTest/build/intermediates/dex/release/classes.dex
+*.aidl
+*.store
+Code/Java/Software Performance/AndroidTest/build/intermediates/resources/resources-debug.ap_
+*.css
+*.html
+*.bin
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/outputFileStates.bin
+*.lock
+*.java
+Code/Java/Software Performance/AndroidTest/src/main/java/com/test/Tutorial.java

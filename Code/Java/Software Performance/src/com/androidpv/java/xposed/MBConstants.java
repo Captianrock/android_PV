@@ -12,7 +12,7 @@ public final class MBConstants {
 
     // for APKBuilder
     public static final String USER_DIR = "user.dir";
-    public static final String ANDROID_TEST_DIR = "/AndroidTest";
+    public static final String ANDROID_TEST_DIR = "\\AndroidTest";
 
     public static final int PACKAGE_INDEX = 0;
     public static final int CLASS_INDEX = 1;
