@@ -309,24 +309,38 @@ public class Parser {
 
     private static String getSourcePath(File file) {
         String fullPath = file.getPath();
+        String path;
 
         int srcIndex = fullPath.indexOf("src/main/java");
+        int srcIndex2 = fullPath.indexOf("src\\main\\java");
 
-        if (srcIndex == -1) {
+        if (srcIndex == -1 && srcIndex2 == -1) {
             // RETURN TO GUI AND ASK FOR SOURCE PATH
             srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
-            if (srcIndex == -1) {
+            srcIndex2 = fullPath.indexOf("com\\angrydoughnuts\\android\\alarmclock");
+            if (srcIndex == -1 && srcIndex2 == -1) {
                 return "";
             }
-            String path = fullPath.substring(0, srcIndex + "com/angrydoughnuts/android/alarmclock".length());
-            // for now, just get src
-//            srcIndex = fullPath.indexOf("src");
-//            String path = fullPath.substring(0, srcIndex + "src".length());
-//            return path;
-            return path;
-        }
-        String path = fullPath.substring(0, srcIndex + "src/main/java".length());
 
+            if (srcIndex != -1) {
+                path = fullPath.substring(0, srcIndex + "com/angrydoughnuts/android/alarmclock".length());
+
+                return path;
+            }
+            else {
+                path = fullPath.substring(0, srcIndex2 + "com\\angrydoughnuts\\android\\alarmclock".length());
+
+                return path;
+            }
+        }
+
+        if (srcIndex != -1) {
+            path = fullPath.substring(0, srcIndex + "src/main/java".length());
+        }
+        else {
+            path = fullPath.substring(0, srcIndex2 + "src\\main\\java".length());
+
+        }
         return path;
     }
 }
