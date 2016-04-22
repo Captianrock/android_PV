@@ -88,7 +88,7 @@ $(function(){
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Tables
+                            <?php echo $_SESSION['app'] ?> <small>Tables</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li>

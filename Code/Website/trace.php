@@ -42,9 +42,6 @@ $(function(){
     <link href="css/sb-admin.css" rel="stylesheet">
 	<link href="css/style2.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -80,7 +77,7 @@ $(function(){
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            AlarmKlock <small>Trace History</small>
+                            <?php echo $_SESSION['app'] ?> <small>Trace History</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -103,16 +100,16 @@ $(function(){
 										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
 										<ul class="dropdown-menu">
 											<li>
-												<a href="#">Ten newest traces</a>
+												<a href="#" onclick="newTen('traceList')">Ten newest traces</a>
 											</li>
 											<li>
-												<a href="#">Ten oldest traces</a>
+												<a href="#" onclick="oldTen('traceList')">Ten oldest traces</a>
 											</li>
 											<li>
-												<a href="#">Newest to Oldest</a>
+												<a href="#" onclick="newAll('traceList')">Newest to Oldest</a>
 											</li>
 											<li>
-												<a href="#">Oldest to Newest</a>
+												<a href="#" onclick="oldAll('traceList')">Oldest to Newest</a>
 											</li>
 										</ul>
 									</div>
@@ -143,7 +140,7 @@ $(function(){
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <script>addTrace();</script>
+    <script>newTen('traceList');</script>
 </body>
 
 </html>

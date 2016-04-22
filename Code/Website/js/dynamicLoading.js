@@ -1,3 +1,6 @@
+var traceName = [];
+var trace2 = traces.slice(0);
+
 function addTrace() {
 
   var traceContainer = document.getElementById('traceList');
@@ -22,7 +25,7 @@ function addTrace() {
  		}
  		AmPm = "A.M";
  	}
-  	newTrace.innerHTML = "Trace " + (i+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
+  	newTrace.innerHTML = "Trace " + (traceName[i]+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
   	newTrace.setAttribute('href','charts.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
   	traceContainer.appendChild(newTrace);
@@ -145,4 +148,74 @@ function addButton(newRowId,appNameHeader){
 	var newFix = document.createElement('div');
 	newFix.setAttribute('class','clearfix');
 	classAPanel.appendChild(newFix);
+}
+
+function newTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    if (traces.length > 10)
+    {
+        traces.length = 10;
+    }
+
+    for (i = traces.length; i > 0; i--)
+    {
+        traceName[traces.length - i] = i-1;
+    }
+
+    addTrace();
+}
+
+function oldTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    if (traces.length > 10) {
+        traces.length = 10;
+    }
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    addTrace();
+}
+
+function newAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+    
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
+    addTrace();
+}
+
+function oldAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+    
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    addTrace();
 }
