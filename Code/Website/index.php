@@ -194,74 +194,7 @@ if (isset($_GET['user'])){
                 </div>
                 <!-- /.row -->
                 <div id="rowContainer">
-                <div class="row">
-                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <center><img src="images/alarmklock.png" alt="fa fa-fw fa-bar-chart-o fa-5x" height="69" width="69"></center>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">AlarmKlock </div>
-                                        <div>View charts</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="trace.php?app=AlarmKlock">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-area-chart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">Undefined </div>
-                                        <div>View charts</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="padding-top: 50px; padding-left: 20px; padding-right: 20px;">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-line-chart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">Undefined </div>
-                                        <div>View charts</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div> -->
-                </div>
+               
                 </div>
                 <!-- /.row -->
 
@@ -561,8 +494,8 @@ if (isset($_GET['user'])){
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
-  <!--  <script src="js/dynamicLoading.js"></script>
-    <script>addApp();</script>-->
+    <script src="js/dynamicLoading.js"></script>
+    <script>addApp();</script>
     <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>

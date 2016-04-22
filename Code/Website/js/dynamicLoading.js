@@ -34,17 +34,32 @@ function addTrace() {
   }
 }
 
-console.log(apps);
-function addRow(){
-	var rowContainer = document.getElementById('rowList');
+function addApp(){
+	var rowNumber = 1;
+	var rowsLeft = apps.length;
+	if(apps.length > 0){
+		rowsLeft = rowsLeft -3;
+		addRow(rowNumber);
+		while(rowsLeft > 0){
+			rowNumber++;
+			addRow(rowNumber);
+		}
+		rowsId = rowNumber;
+		for (var i = 1; i <= apps.length; i++){
+			addButton('row1');
+		}
+	}
+}
+function addRow(rowNumber){
+	var rowContainer = document.getElementById('rowContainer');
 	var newRow = document.createElement('div');
 	newRow.setAttribute('class','row');
-	newRow.setAttribute('id','row1');
-
+	newRow.setAttribute('id','row'+rowNumber);
+	rowContainer.appendChild(newRow);
 }
 
 
-function addApp(newRowId){
+function addButton(newRowId){
 	var newRow = document.getElementById(newRowId);
 
 	var newPadding = document.createElement('div');
