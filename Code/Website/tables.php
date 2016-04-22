@@ -2,6 +2,8 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
+$membership->confirmMember();
+
 $methodExecVar = new methodExec();
 if (isset($_GET['trace']))
 {
@@ -34,14 +36,6 @@ $userName = $_SESSION['user'];
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 
 <body>
@@ -58,7 +52,7 @@ $userName = $_SESSION['user'];
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Android Performance Visualizer</a>
+                <a class="navbar-brand" href="index.php?user=<?php echo $userName ?>">Android Performance Visualizer</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -165,8 +159,11 @@ $userName = $_SESSION['user'];
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Home</a>
+                        <a href="index.php?user=<?php echo $userName ?>"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
+					<li>
+						<a href="trace.php?app=<?php echo $_SESSION['app'] ?>"><i class="fa fa-database"></i> Traces</a>
+					</li>
 					<li>
                         <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
@@ -196,8 +193,11 @@ $userName = $_SESSION['user'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php">Home</a>
+                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
+							<li>
+								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
+							</li>
 							<li>
                                 <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
                             </li>
@@ -211,7 +211,7 @@ $userName = $_SESSION['user'];
 
                 <div class="row">
                     <div class="col-lg-6">
-                        <h2>Top Ten most time consuming methods</h2>
+                        <h2>Ten most time consuming methods</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
@@ -277,7 +277,7 @@ $userName = $_SESSION['user'];
                         </div>
                     </div>
 					<div class="col-lg-6">
-                        <h2>Top Ten least time consuming methods</h2>
+                        <h2>Ten least time consuming methods</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
@@ -346,7 +346,7 @@ $userName = $_SESSION['user'];
 				<!-- /.row -->
 
 				<div class="row">
-					<h2>Top Ten most called methods</h2>
+					<h2>Ten most called methods</h2>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>

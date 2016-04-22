@@ -2,8 +2,11 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
+$membership = New membership();
+
 $membership->confirmMember();
 
+$methodExecVar = new methodExec();
 if (isset($_GET['trace']))
 {
     $traceData = $methodExecVar->getTimes($_GET['trace']);
@@ -164,6 +167,9 @@ $userName = $_SESSION['user'];
 						<a href="trace.php?app=<?php echo $_SESSION['app'] ?>"><i class="fa fa-database"></i> Traces</a>
 					</li>
 					<li>
+                        <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+					<li>
                         <a href="tables.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
                     </li>
 					<li>
@@ -197,8 +203,11 @@ $userName = $_SESSION['user'];
 							<li>
 								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
 							</li>
+                            <li>
+                                <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
+                            </li>
                             <li class="active">
-                                <i class="fa fa-bar-chart-o"></i> Charts
+                                <i class="fa fa-bar-chart-o"></i> Bar Chart
                             </li>
                         </ol>
                     </div>
@@ -211,42 +220,11 @@ $userName = $_SESSION['user'];
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Bar Chart of Total Method Runtimes</h3>
                             </div>
-                            <div class="panel-body" id="container2" style="min-height: 700px"></div>
-							<a href="barChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
+                            <div class="panel-body" id="container2" style="min-height: 300%"></div>
                         </div>
                     </div>
                 </div>
                 <!-- /.row -->
-
-                <div class="row">
-                    <div class="col-lg-5">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Column Chart of Individual Method Runtimes</h3>
-                            </div>
-                            <div class="panel-body" id="container3" style="min-height: 1200px"></div>
-							<a href="columnChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-pie-chart"></i> Pie Chart of Total and Individual Method Runtimes</h3>
-                            </div>
-                            <div class="panel-body" id="container" style="min-height: 1200px"></div>
-							<a href="pieChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-
-				<div class="row">
-					<div class="col-lg-12">
-						<h3 class="page-header">
-		  					<center>The most costly method is <b><span id = "highestMethod"></span></b> with a computation time of <span id = "highestTime"></span> microseconds.</center>
-						</h3>
-					</div>
-				</div>
 
             </div>
             <!-- /.container-fluid -->
@@ -274,5 +252,4 @@ $userName = $_SESSION['user'];
 	<script type="text/javascript" src="js/graphs.js"></script>
 
 </body>
-
 </html>
