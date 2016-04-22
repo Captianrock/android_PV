@@ -11,6 +11,7 @@ var pie = [];
 var indieRun = [];
 var max = 0;
 var maxMethod = "None";
+var text = '';
 
 for (var i = 0; i < jsArray.length; i++) 
 {
@@ -97,6 +98,11 @@ $(function () {
         }
     }
 
+	if (jsArray.length >= 300)
+	{
+		text = 'Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/>';
+	}
+
     // Create the chart
     $('#container').highcharts({
         chart: {
@@ -141,6 +147,11 @@ $(function () {
                 }
             },
         },
+		legend: {
+			title: {
+                text: text,
+            }
+		},
 		tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
         },
