@@ -197,6 +197,8 @@ function newAll(elementID)
     document.getElementById(elementID).innerHTML = "";
     traceName.length = 0;
 
+    traces = trace2.slice();
+
     traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
 
     for (i = traces.length; i > 0; i--) {
