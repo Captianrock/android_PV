@@ -22,13 +22,15 @@ import javax.swing.*;
 
 public class Parser {
 
+    boolean sourcePathFound = false;
+
     //use ASTParse to parse string
     public static void parse(String str, String outputFile, File sourceFile, String jarFilesLoc, String adbLoc, String sdkLoc) {
 
         ASTParser parser = ASTParser.newParser(AST.JLS8);
         String sourcePath = getSourcePath(sourceFile);
 
-        if (sourcePath.equals("")) {
+        if (sourcePath.equals("!*!*!*!*!*!*!*!*!")) {
             return;
         }
 
@@ -72,22 +74,22 @@ public class Parser {
         cu.accept(new ASTVisitor() {
             Set names = new HashSet();
 
-//            public boolean visit(TypeDeclaration typeDeclarationStatement) {
-//
-//                if (!typeDeclarationStatement.isPackageMemberTypeDeclaration()) {
-//                    System.out.println(typeDeclarationStatement.getName());
-//                    // Get more details from the type declaration.
-//                }
-//
-//                return true;
-//            }
-//
-//            public boolean visit(AnonymousClassDeclaration node) {
-//
-//                System.out.println("found anonymous class");
-//
-//                return true;
-//            }
+            public boolean visit(TypeDeclaration typeDeclarationStatement) {
+
+                if (!typeDeclarationStatement.isPackageMemberTypeDeclaration()) {
+                    System.out.println(typeDeclarationStatement.getName());
+                    // Get more details from the type declaration.
+                }
+
+                return true;
+            }
+
+            public boolean visit(AnonymousClassDeclaration node) {
+
+                System.out.println("found anonymous class");
+
+                return true;
+            }
 
             public boolean visit(MethodDeclaration node) {
 
@@ -246,6 +248,7 @@ public class Parser {
 
                             parse(readFileToString(filePath), outputFile, f, jarFilesLoc, adbLoc, sdkLoc);
                         } catch (Exception e) {
+                            System.err.println("Error in\t" + f.getPath());
                             System.err.println("Error parse(readFileToString) in ParseFilesInDir: " + e.getMessage());
                             e.printStackTrace();
                         }
@@ -308,24 +311,39 @@ public class Parser {
     }
 
     private static String getSourcePath(File file) {
+
+        String sourcePath = tryPath("/", file);
+
+        if (sourcePath.equals("!*!*!*!*!*!*!*!*!")) {
+            sourcePath = tryPath("\\", file);
+        }
+
+        return sourcePath;
+    }
+
+
+    private static String tryPath(String slash, File file) {
         String fullPath = file.getPath();
 
-        int srcIndex = fullPath.indexOf("src/main/java");
+        String mainPath = "src" + slash + "main" +slash + "java";
+
+        int srcIndex = fullPath.indexOf(mainPath);
 
         if (srcIndex == -1) {
             // RETURN TO GUI AND ASK FOR SOURCE PATH
-            srcIndex = fullPath.indexOf("com/angrydoughnuts/android/alarmclock");
+//            String alarmClockPath = "android";
+            String alarmClockPath = "main" + slash + "java" + slash + "me" + slash + "kuehle" + slash + "carreport";
+
+            srcIndex = fullPath.indexOf(alarmClockPath);
             if (srcIndex == -1) {
-                return "";
+                return "!*!*!*!*!*!*!*!*!";
             }
-            String path = fullPath.substring(0, srcIndex + "com/angrydoughnuts/android/alarmclock".length());
-            // for now, just get src
-//            srcIndex = fullPath.indexOf("src");
-//            String path = fullPath.substring(0, srcIndex + "src".length());
-//            return path;
+
+            String path = fullPath.substring(0, srcIndex + alarmClockPath.length());
+
             return path;
         }
-        String path = fullPath.substring(0, srcIndex + "src/main/java".length());
+        String path = fullPath.substring(0, srcIndex + mainPath.length());
 
         return path;
     }
