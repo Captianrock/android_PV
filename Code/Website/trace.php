@@ -10,9 +10,12 @@ if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
 } 
 
+$_SESSION['app'] = $_GET['app'];
 ?>
 <script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -32,9 +35,6 @@ if (isset($_GET['app'])){
     <link href="css/sb-admin.css" rel="stylesheet">
 	<link href="css/style2.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -47,6 +47,7 @@ if (isset($_GET['app'])){
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -54,7 +55,7 @@ if (isset($_GET['app'])){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Android Performance Visualizer</a>
+                <a class="navbar-brand" href="index.php?user=<?php echo $userName ?> "> <img class ="pull-left" src="images\logo.png"  align="middle" style=" max-height:150%; max-width:110%" hspace="20"></img> <font size="6">Android Performance Visualizer</font></a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -157,11 +158,12 @@ if (isset($_GET['app'])){
                     </ul>
                 </li>
             </ul>
+<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class>
-                        <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Home</a>
+                        <a href="index.php?user=<?php echo $userName ?>"><i class="fa fa-fw fa-dashboard"></i> Home</a>
                     </li>
                     <li>
                         <a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
@@ -179,14 +181,14 @@ if (isset($_GET['app'])){
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            AlarmKlock <small>Trace History</small>
+                            <?php echo $_SESSION['app'] ?> <small>Trace History</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php">Home</a>
+                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-bar-chart-o"></i> Trace
+                                <i class="fa fa-database"></i> Trace
                             </li>
                         </ol>
                     </div>
@@ -196,8 +198,28 @@ if (isset($_GET['app'])){
 				<div class="row col-lg-12">
 					<div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Traces</h3>
-                        </div>
+                            <h3 class="panel-title" style="height:20px;">
+								<div class="col-lg-1">
+									<div class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="#" onclick="newTen('traceList')">Ten newest traces</a>
+											</li>
+											<li>
+												<a href="#" onclick="oldTen('traceList')">Ten oldest traces</a>
+											</li>
+											<li>
+												<a href="#" onclick="newAll('traceList')">Newest to Oldest</a>
+											</li>
+											<li>
+												<a href="#" onclick="oldAll('traceList')">Oldest to Newest</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</h3>
+						</div>
                         <div class="panel-body">
                             <div class="list-group" id="traceList"></div>
                         </div>
@@ -222,7 +244,7 @@ if (isset($_GET['app'])){
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <script>addTrace();</script>
+    <script>newTen('traceList');</script>
 </body>
 
 </html>

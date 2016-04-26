@@ -65,7 +65,6 @@ class methodExec {
 			}
 			$result->close();
 		}
-		var_dump($traceList);
    		$this->conn->close();
 		return $traceList;
 	}

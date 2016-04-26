@@ -144,7 +144,8 @@ $(function () {
 							});
 						}
 					}
-                }
+                },
+                turboThreshold: jsArray.length+1
             },
         },
 		legend: {
@@ -205,6 +206,9 @@ $(function () {
                 dataLabels: {
                     enabled: false
                 }
+            },
+            series: {
+                turboThreshold: jsArray.length+1
             }
         },
 				legend: {
@@ -248,6 +252,9 @@ $(function () {
                 dataLabels: {
                     enabled: false
                 }
+            },
+            series: {
+                turboThreshold: jsArray.length+1
             }
         },
 		legend: {

@@ -1,3 +1,6 @@
+var traceName = [];
+var trace2 = traces.slice(0);
+
 function addTrace() {
 
   var traceContainer = document.getElementById('traceList');
@@ -22,7 +25,7 @@ function addTrace() {
  		}
  		AmPm = "A.M";
  	}
-  	newTrace.innerHTML = "Trace " + (i+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
+  	newTrace.innerHTML = "Trace " + (traceName[i]+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
   	newTrace.setAttribute('href','charts.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
   	traceContainer.appendChild(newTrace);
@@ -44,9 +47,12 @@ function addApp(){
 			rowNumber++;
 			addRow(rowNumber);
 		}
-		rowsId = rowNumber;
-		for (var i = 1; i <= apps.length; i++){
-			addButton('row1');
+		rowsId = 1;
+		for (var i = 0; i < apps.length; i++){
+			if((i+1) % 3 == 0){
+				rowsId++;
+			}
+			addButton('row'+ rowsId,apps[i][0]);
 		}
 	}
 }
@@ -59,7 +65,7 @@ function addRow(rowNumber){
 }
 
 
-function addButton(newRowId){
+function addButton(newRowId,appNameHeader){
 	var newRow = document.getElementById(newRowId);
 
 	var newPadding = document.createElement('div');
@@ -100,7 +106,12 @@ function addButton(newRowId){
 
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
-	appName.innerHTML = 'AlarmKlock';
+	var appNameArray = appNameHeader.split(/(?=[A-Z])/);
+	var realName = "";
+	for(var j = 0; j < appNameArray.length; j++){
+		realName += appNameArray[j] + " ";
+	}
+	appName.innerHTML = realName;
 
 	newCol2.appendChild(appName);
 
@@ -110,7 +121,8 @@ function addButton(newRowId){
 	newCol2.appendChild(link);
 
 	var newA = document.createElement('a');
-	newA.setAttribute('href',"trace.php?app=" + 'AlarmKlock');
+	console.log(appNameHeader);
+	newA.setAttribute('href',"trace.php?app=".concat(appNameHeader));
 
 	newPanel.appendChild(newA);
 
@@ -136,4 +148,77 @@ function addButton(newRowId){
 	var newFix = document.createElement('div');
 	newFix.setAttribute('class','clearfix');
 	classAPanel.appendChild(newFix);
+}
+
+function newTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
+    if (traces.length > 10)
+    {
+        traces.length = 10;
+    }
+
+    addTrace();
+}
+
+function oldTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    if (traces.length > 10) {
+        traces.length = 10;
+    }
+
+    addTrace();
+}
+
+function newAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
+    addTrace();
+}
+
+function oldAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+    
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    addTrace();
 }
