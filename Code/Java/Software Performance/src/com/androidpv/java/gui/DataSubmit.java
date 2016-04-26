@@ -27,6 +27,7 @@ public class DataSubmit extends JFrame{
         appField.setText("Enter Application Name");
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
+            JOptionPane.showMessageDialog(null,appField.getText());
             if (!dataCheck){
                 JOptionPane.showMessageDialog(null,"Please stop the data flow first!");
             }
@@ -47,7 +48,7 @@ public class DataSubmit extends JFrame{
         );
         // Back button to previous view
         backButton.addActionListener(ae -> {
-            new PVView(uName);
+            PVView.getInstance().setVisible(true);
             dispose();
         });
         setVisible(true);

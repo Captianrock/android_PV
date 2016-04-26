@@ -1,13 +1,12 @@
 package com.androidpv.java.gui;
 import com.androidpv.java.codeParser.Parser;
 import com.androidpv.java.apkParser.APKParser;
-import com.androidpv.java.xposed.APKBuilder;
-import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +32,7 @@ public final class PVView extends JFrame {
     private JButton sdkButton;
     private JTextField adbField;
     private JButton adbButton;
+    private JScrollPane scrollPane;
     private File selectedFile;
     private File jarDir;
     private File sdkDir;
@@ -45,6 +45,7 @@ public final class PVView extends JFrame {
         super("Directory Parser");
         this.usrName = uName;
         parsedDataOutputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
+
 
         SwingUtilities.invokeLater(() -> {
             setContentPane(rootPanel);
@@ -122,7 +123,7 @@ public final class PVView extends JFrame {
                     }
 
                     // Handles ".apk" File inputs
-                    else if (APKParser.isAPK(Paths.get(getfilePath())) && adbDir.isDirectory() && sdkDir.isDirectory() && jarDir.isDirectory()) {
+                    else if (APKParser.isAPK(Paths.get(getfilePath())) && adbDir.isDirectory() && sdkDir.isDirectory()) {
                         try {
                             Path inputPath = Paths.get(getfilePath());
                             outputArea.append("Parsing now...");
@@ -209,10 +210,12 @@ public final class PVView extends JFrame {
         return srcPath;
     }
 
+    @Nullable
     public String getfilePath(){
         return ((selectedFile == null ? null: selectedFile.getAbsolutePath()));
     }
 
+    @Nullable
     public String getJars(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }

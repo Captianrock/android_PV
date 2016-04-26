@@ -30,8 +30,8 @@ public class LoginGui extends JFrame{
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
         newUser = new JButton("New User?");
-        username = new JLabel("User - ");
-        password = new JLabel("Pass - ");
+        username = new JLabel("Username:");
+        password = new JLabel("Password:");
 
         setSize(300,200);
         setLocation(500,280);
@@ -41,8 +41,8 @@ public class LoginGui extends JFrame{
         txuser.setBounds(70,30,150,20);
         pass.setBounds(70,65,150,20);
         blogin.setBounds(110,100,80,20);
-        username.setBounds(20,28,80,20);
-        password.setBounds(20,63,80,20);
+        username.setBounds(5,28,80,20);
+        password.setBounds(5,63,80,20);
 
         loginpanel.add(blogin);
         loginpanel.add(txuser);
@@ -82,14 +82,10 @@ public class LoginGui extends JFrame{
                 dispose();
 
             }
-        });
-    }
-    public String getPuname() {
-        return puname;
-    }
+        });}
 
     public static void main(String ... args){
-       new LoginGui();
+       new NewUser();
 
 //        int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {
