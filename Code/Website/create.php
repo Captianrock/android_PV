@@ -117,6 +117,22 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 			echo '<script type="text/javascript">alert("The passwords you have entered contain spaces, please enter passwords without any whitespace.");</script>';
 		}
 	}
+	else if (empty($_POST['username']) && empty($_POST['password']) && empty($_POST['password2']))
+	{
+		echo '<script type="text/javascript">alert("Please enter a username and password");</script>';
+	}
+	else if (empty($_POST['username']))
+	{
+		echo '<script type="text/javascript">alert("Please enter a username");</script>';
+	}
+	else if (empty($_POST['password']))
+	{
+		echo '<script type="text/javascript">alert("Please enter a password");</script>';
+	}
+	else if (empty($_POST['password2']))
+	{
+		echo '<script type="text/javascript">alert("Please verify your password");</script>';
+	}
 	?>
 </div>
 </body>
