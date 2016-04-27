@@ -12,16 +12,16 @@ public class GetFileExtension {
      * @param args
      */
     public static void main(String[] args) {
-        File file = new File("/Users/pankaj/java.txt");
+        File file = new File("/Users/bradley/java.txt");
         System.out.println("File extension is: "+getFileExtension(file));
         //file name without extension
-        file = new File("/Users/pankaj/temp");
+        file = new File("/Users/bradley/temp");
         System.out.println("File extension is: "+getFileExtension(file));
         //file name with dot
-        file = new File("/Users/pankaj/java.util.txt");
+        file = new File("/Users/bradley/java.util.txt");
         System.out.println("File extension is: "+getFileExtension(file));
         //hidden files without extension
-        file = new File("/Users/pankaj/.htaccess");
+        file = new File("/Users/bradley/.htaccess");
         System.out.println("File extension is: "+getFileExtension(file));
     }
 

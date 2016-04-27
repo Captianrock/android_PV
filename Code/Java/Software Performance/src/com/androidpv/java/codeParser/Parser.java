@@ -17,6 +17,7 @@ import com.androidpv.java.xposed.MBConstants;
 import com.androidpv.java.xposed.ModuleBuilder;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -272,6 +273,7 @@ public class Parser {
                 int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
                     new DataSubmit(uName, adbDir);
+                    PVView.getInstance().setVisible(false);
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "GOODBYE");
@@ -282,6 +284,7 @@ public class Parser {
     }
 
     //Gets files in a given directory
+    @Nullable
     public static List getFiles(String input) {
         Path fp = Paths.get(input);
         PrintFiles pf = new PrintFiles();

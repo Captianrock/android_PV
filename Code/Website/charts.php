@@ -207,6 +207,14 @@ $userName = $_SESSION['user'];
                 </div>
                 <!-- /.row -->
 
+				<div class="row">
+					<div class="col-lg-12">
+						<h3 class="page-header">
+		  					<center>The most costly method is <b><span id = "highestMethod"></span></b> with a computation time of <span id = "highestTime"></span> microseconds.</center>
+						</h3>
+					</div>
+				</div>
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-primary">
@@ -241,14 +249,6 @@ $userName = $_SESSION['user'];
                     </div>
                 </div>
                 <!-- /.row -->
-
-				<div class="row">
-					<div class="col-lg-12">
-						<h3 class="page-header">
-		  					<center>The most costly method is <b><span id = "highestMethod"></span></b> with a computation time of <span id = "highestTime"></span> microseconds.</center>
-						</h3>
-					</div>
-				</div>
 
             </div>
             <!-- /.container-fluid -->

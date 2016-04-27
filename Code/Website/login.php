@@ -41,11 +41,11 @@ if($_POST && !empty($_POST['username']) && !empty($_POST['password'])){
 				</div>
 				<label for="username">Username</label>
 				<br/>
-				<input type="text" name="username" id="username">
+				<input type="text" maxlength="20" name="username" id="username">
 				<br/>
 				<label for="password">Password</label>
 				<br/>
-				<input type="password" name="password" id="password">
+				<input type="password" maxlength="20" name="password" id="password">
 				<br/>
 				<button type="submit" id="submit" value="Login">Sign In</button>
 				<br/>
@@ -54,9 +54,23 @@ if($_POST && !empty($_POST['username']) && !empty($_POST['password'])){
 			</div>
 		</div>
 	</form>
-	<?php if(isset($response)){
-		 echo '<script type="text/javascript">alert("Please enter a valid username and password");</script>';
-	}
+	<?php
+		if(isset($response))
+		{
+			echo '<script type="text/javascript">alert("Please enter a valid username and password");</script>';
+		}
+		else if (empty($_POST['username']) && empty($_POST['password']))
+		{
+			echo '<script type="text/javascript">alert("Please enter a username and password");</script>';
+		}
+		else if (empty($_POST['username']))
+		{
+			echo '<script type="text/javascript">alert("Please enter a username");</script>';
+		}
+		else if (empty($_POST['password']))
+		{
+			echo '<script type="text/javascript">alert("Please enter a password");</script>';
+		}
 	?>
 </div>
 </body>
