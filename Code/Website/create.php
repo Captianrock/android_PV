@@ -9,6 +9,10 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 {
 	$username = $membership->checkUsername($_POST['username']);
 
+	if (strlen($_POST['username']) < 8)
+	{
+		$userLen = 1;
+	}
 	if (strlen($_POST['password']) < 8 || strlen($_POST['password2']) < 8)
 	{
 		$password = 1;
@@ -19,8 +23,9 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 	}
 	else
 	{
+		$userLen = 0;
 		$password = 0;
-		if ($username == 0 && $password == 0)
+		if ($username == 0 && $password == 0 && $userLen == 0)
 		{
 			$membership->createUser($_POST['username'], $_POST['password']);
 		}
@@ -58,15 +63,15 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 				</div>
 				<label for="username">Username</label>
 				<br/>
-				<input type="text" name="username" id="username">
+				<input type="text" maxlength="20" name="username" id="username">
 				<br/>
 				<label for="password">Password</label>
 				<br/>
-				<input type="password" name="password" id="password">
+				<input type="password" maxlength="20" name="password" id="password">
 				<br/>
 				<label for="password2">Verify Password</label>
 				<br/>
-				<input type="password" name="password2" id="password2">
+				<input type="password" maxlength="20" name="password2" id="password2">
 				<br/>
 				<button type="submit" id="submit" value="Finish">Create Account</button>
 				<br/>
@@ -81,6 +86,10 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 		if ($username == 1)
 		{
 			echo '<script type="text/javascript">alert("That username is already taken, please enter another username.");</script>';
+		}
+		else if ($userLen == 1)
+		{
+			echo '<script type="text/javascript">alert("The username you have entered is not long enough, please enter a username with at least 8 characters.");</script>';
 		}
 		else if ($password == 1)
 		{
