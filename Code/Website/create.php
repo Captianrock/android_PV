@@ -8,11 +8,17 @@ $membership->logUserOut();
 if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['password2']))
 {
 	$username = $membership->checkUsername($_POST['username']);
+	$userLen = 0;
 
 	if (strlen($_POST['username']) < 8)
 	{
 		$userLen = 1;
 	}
+	else if (preg_match('/\s/', $_POST['username']))
+	{
+		$userLen = 2;
+	}
+
 	if (strlen($_POST['password']) < 8 || strlen($_POST['password2']) < 8)
 	{
 		$password = 1;
@@ -21,9 +27,12 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 	{
 		$password = 2;
 	}
+	else if (preg_match('/\s/', $_POST['password']) || preg_match('/\s/', $_POST['password2']))
+	{
+		$password = 3;
+	}
 	else
 	{
-		$userLen = 0;
 		$password = 0;
 		if ($username == 0 && $password == 0 && $userLen == 0)
 		{
@@ -91,6 +100,10 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 		{
 			echo '<script type="text/javascript">alert("The username you have entered is not long enough, please enter a username with at least 8 characters.");</script>';
 		}
+		else if ($userLen == 2)
+		{
+			echo '<script type="text/javascript">alert("The username you have entered contains spaces, please enter a username without any whitespace.");</script>';
+		}
 		else if ($password == 1)
 		{
 			echo '<script type="text/javascript">alert("The password you have entered is not long enough, please enter a password with at least 8 characters.");</script>';
@@ -98,6 +111,10 @@ if ($_POST && !empty($_POST['username']) && !empty($_POST['password']) && !empty
 		else if ($password == 2)
 		{
 			echo '<script type="text/javascript">alert("The passwords you have entered do not match, please enter the same password in both fields.");</script>';
+		}
+		else if ($password == 3)
+		{
+			echo '<script type="text/javascript">alert("The passwords you have entered contain spaces, please enter passwords without any whitespace.");</script>';
 		}
 	}
 	?>
