@@ -1,3 +1,7 @@
+Desktop application:
+
+Phone:
+
 Web application:
 
 	- Login page
@@ -46,3 +50,171 @@ Web application:
 		10. Entered a new valid username and password, and verified the password correctly.
 
 		11. Clicked "already have an account?" button to navigate to login page.
+
+	- Index (home) page
+		1. Clicked home button.
+
+		2. Clicked title (acts as home button).
+
+		3. Logged out through sidebar.
+
+		4. Logged out through dropdown.
+
+		5. Clicked on "view details" on an app.
+
+		6. Copied and pasted url when logged out.
+
+		7. Changed username in url to another name.
+			Bug. Did not give error message and/or just switch back to correct page. 
+
+	- Trace page
+		1. Displays traces correctly.
+
+		2. Used dropdown to see newest ten traces.
+
+		3. Used dropdown to see oldest ten traces.
+
+		4. Used dropdown to see all traces sorted by newest.
+			Bug. displays every trace in one page instead of multiple.
+
+		5. Used dropdown to see all traces sorted by oldest.
+			Bug. displays every trace in one page instead of multiple.
+
+		6. Clicked home button.
+
+		7. Clicked title (acts as home button).
+
+		8. Clicked home button in the breadcrumb list.
+
+		9. Logged out through sidebar.
+
+		10. Logged out through dropdown.
+
+		11. Clicked a trace to go to package selection page.
+			Bug. Goes immediately to charts page.
+
+		12. Copied and pasted url when logged out.
+
+		13. Changed app in url to another app.
+
+	- Chart page
+		1. Displays most costly method.
+
+		2. Displays bar, column, and donut charts.
+
+		3. Graph information is correct.
+
+		4. Mouse over graph sections to see full method path and runtime in microseconds.
+			Bug. Does not display full method path.
+
+		5. Use donut chart legend to hide methods.
+			Bug. Freezes webpage when there are a large number of methods.
+
+		6. Clicked home button.
+
+		7. Clicked title (acts as home button).
+
+		8. Clicked home button in the breadcrumb list.
+
+		9. Clicked Traces button on the sidebar.
+
+		10. Clicked Traces button in the breadcrumb list.
+
+		11. Downloaded CSV file from sidebar.
+
+		12. Downloaded PDF file from sidebar.
+
+		13. Logged out through sidebar.
+
+		14. Logged out through dropdown.
+
+		15. Clicked Tables button on sidebar to go to tables page.
+
+		16. Clicked "click for larger view" buttons on graphs to see larger versions.
+
+		17. Printed the charts.
+
+		18. Saved the charts as images.
+
+		19. Copied and pasted url when logged out.
+
+		20. Changed trace in url to another user's trace.
+			Bug. Navigates to trace page when it shouldn't.
+
+	- Tables page
+		1. Displays the ten most time consuming methods.
+
+		2. Displays the ten least time consuming methods.
+
+		3. Displays the ten most called methods.
+
+		4. Clicked home button.
+
+		5. Clicked title (acts as home button).
+
+		6. Clicked home button in the breadcrumb list.
+
+		7. Clicked Traces button on the sidebar.
+
+		8. Clicked Traces button in the breadcrumb list.
+
+		9. Clicked the Charts button in the sidebar.
+
+		10. Clicked the charts button in the breadcrumb list.
+
+		11. Downloaded CSV file from sidebar.
+
+		12. Downloaded PDF file from sidebar.
+
+		13. Logged out through sidebar.
+
+		14. Logged out through dropdown.
+
+		15. Copied and pasted url when logged out.
+
+		16. Changed trace in url to another user's trace.
+			Bug. Navigates to trace page when it shouldn't.
+
+	- Large charts pages
+		2. Displays bar, column, or donut chart.
+
+		3. Graph information is correct.
+
+		4. Mouse over graph sections to see full method path and runtime in microseconds.
+			Bug. Does not display full method path.
+
+		5. Use donut chart legend to hide methods.
+			Bug. Freezes webpage when there are a large number of methods.
+
+		6. Clicked home button.
+
+		7. Clicked title (acts as home button).
+
+		8. Clicked home button in the breadcrumb list.
+
+		9. Clicked Traces button on the sidebar.
+
+		10. Clicked Traces button in the breadcrumb list.
+
+		11. Clicked the Charts button in the sidebar.
+
+		12. Clicked the charts button in the breadcrumb list.
+
+		13. Downloaded CSV file from sidebar.
+
+		14. Downloaded PDF file from sidebar.
+
+		15. Logged out through sidebar.
+
+		16. Logged out through dropdown.
+
+		17. Clicked Tables button on sidebar to go to tables page.
+
+		18. Printed the charts.
+
+		19. Saved the charts as images.
+
+		20. Copied and pasted url when logged out.
+
+		21. Changed trace in url to another user's trace.
+			Bug. Navigates to trace page when it shouldn't.
