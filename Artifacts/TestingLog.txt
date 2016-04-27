@@ -1,0 +1,48 @@
+Web application:
+
+	- Login page
+		1. Pressed sign in without input. 
+			Bug. Did not log in, but did not give error message. *Fixed*
+
+		2. Entered random username and no password. 
+			Bug. Did not log in, but did not give error message. *Fixed*
+
+		3. Entered random password and no username. 
+			Bug. Did not log in, but did not give error message. *Fixed*
+
+		4. Entered valid username and invalid password.
+
+		5. Entered invalid username and valid password.
+
+		6. Entered valid username and password.
+
+		7. Clicked "create account" button to navigate to create account page.
+
+	- Create account page
+		1. Pressed create account without input. 
+			Bug. Did not do anything, but did not give error message. *Fixed*
+
+		2. Entered random username and no password. 
+			Bug. Did not do anything, but did not give error message. *Fixed*
+
+		3. Entered random password and no username. 
+			Bug. Did not do anything, but did not give error message. *Fixed*
+
+		4. Entered random username and password, but did not verify password. 
+			Bug. Did not do anything, but did not give error message. *Fixed*
+
+		5. Entered a username less than 8 characters.
+			Bug. Was fine with username. *Fixed*
+
+		6. Entered a password less than 8 characters.
+		7. Entered a username or password of more than 20 characters.
+			Bug. Was fine with long input. *Fixed*
+
+		8. Entered username of another account.
+
+		9. Entered a username or password with whitespace characters in it.
+			Bug. Was fine with input. *Fixed*
+
+		10. Entered a new valid username and password, and verified the password correctly.
+
+		11. Clicked "already have an account?" button to navigate to login page.
