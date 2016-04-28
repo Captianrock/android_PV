@@ -45,8 +45,6 @@ public final class PVView extends JFrame {
         super("Directory Parser");
         this.usrName = uName;
         parsedDataOutputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
-        fileField = new JTextField();
-
         SwingUtilities.invokeLater(() -> {
             setContentPane(rootPanel);
             pack();
@@ -79,7 +77,7 @@ public final class PVView extends JFrame {
                     outputArea.append("A Directory Has Been Selected\n");
                     outputArea.append(jarDir.getAbsolutePath() + "\n");
                     outputArea.append("");
-                }
+                };
             });
 
             // JFileChooser for SDK Directory
@@ -116,6 +114,7 @@ public final class PVView extends JFrame {
             parseButton.addActionListener(new ActionListener() {
                 String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
+                   // updateOutLog(fileField.getText());
 
                     if (getfilePath() == null || adbDir == null || sdkDir == null || jarDir == null  ){
                         outputArea.append("Please complete the file fields!\n");
@@ -210,7 +209,7 @@ public final class PVView extends JFrame {
     }
 
     public String getfileField() {
-        return fileField.getText().toString() ;
+        return fileField.getText();
     }
 }
 
