@@ -85,7 +85,7 @@ public class LoginGui extends JFrame{
         });}
 
     public static void main(String ... args){
-       new NewUser();
+       new LoginGui();
 
 //        int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {

@@ -1,5 +1,6 @@
 package com.androidpv.java.database;
 
+import javax.swing.*;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -104,7 +105,10 @@ public class dataBaseListener {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
-            throw new IllegalStateException("Cannot connect the database!", e);
+            JOptionPane.showMessageDialog(null,"Cannot connect the database! Please consult your System Admin");
+            //throw new IllegalStateException("Cannot connect the database!", e);
+            return false;
+
         }
     }
 
@@ -226,7 +230,9 @@ public class dataBaseListener {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
+            JOptionPane.showMessageDialog(null,"Cannot connect the database! Please consult your System Admin");
             throw new IllegalStateException("Cannot connect the database!", e);
+
         }
 
     }
