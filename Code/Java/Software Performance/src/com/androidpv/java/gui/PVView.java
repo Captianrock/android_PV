@@ -45,7 +45,7 @@ public final class PVView extends JFrame {
         super("Directory Parser");
         this.usrName = uName;
         parsedDataOutputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
-
+        fileField = new JTextField();
 
         SwingUtilities.invokeLater(() -> {
             setContentPane(rootPanel);
@@ -53,19 +53,19 @@ public final class PVView extends JFrame {
             setDefaultCloseOperation(PVView.EXIT_ON_CLOSE);
 
             // JFileChooser set to Directory Button
-            dirButton.addActionListener(ae -> {
-                JFileChooser fileChooser = new JFileChooser("C:/Users/");
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fileChooser.setAcceptAllFileFilterUsed(false);
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    selectedFile = fileChooser.getSelectedFile();
-                    fileField.setText(selectedFile.getAbsolutePath());
-                    outputArea.append("A File Has Been Selected\n");
-                    outputArea.append(selectedFile.getAbsolutePath() + "\n");
-                    outputArea.append("");
-                }
-            });
+//            dirButton.addActionListener(ae -> {
+//                JFileChooser fileChooser = new JFileChooser("C:/Users/");
+//                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+//                fileChooser.setAcceptAllFileFilterUsed(false);
+//                int returnValue = fileChooser.showOpenDialog(null);
+//                if (returnValue == JFileChooser.APPROVE_OPTION) {
+//                    selectedFile = fileChooser.getSelectedFile();
+//                    fileField.setText(selectedFile.getAbsolutePath());
+//                    outputArea.append("A File Has Been Selected\n");
+//                    outputArea.append(selectedFile.getAbsolutePath() + "\n");
+//                    outputArea.append("");
+//                }
+//            });
 
             // JFileChooser for Jar Files Directory
             jarButton.addActionListener(ae -> {
@@ -198,17 +198,6 @@ public final class PVView extends JFrame {
         outputArea.append(str);
     }
 
-    public Path getsrcPath(){
-        Path srcPath = null;
-        JFileChooser fileChooser = new JFileChooser("C:/Users/");
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION){
-            srcPath=  fileChooser.getSelectedFile().toPath();
-        }
-        return srcPath;
-    }
 
     @Nullable
     public String getfilePath(){
@@ -216,12 +205,12 @@ public final class PVView extends JFrame {
     }
 
     @Nullable
-    public String getJars(){
+    public String get(){
         return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
     }
 
-    public String getOutputPathString() {
-        return parsedDataOutputPathString;
+    public String getfileField() {
+        return fileField.getText().toString() ;
     }
 }
 
