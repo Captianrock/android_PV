@@ -13,11 +13,20 @@ public class APKBuilder {
 
     public APKBuilder(String adbLoc, String sdkLoc) {
 
+        boolean success = buildAPK(adbLoc, sdkLoc, "/", "gradlew");
+
+        if (!success) {
+            buildAPK(adbLoc, sdkLoc, "\\", "gradlew.bat");
+        }
+
+    }
+
+    private boolean buildAPK(String adbLoc, String sdkLoc, String slash, String gradle) {
         String currentDir = System.getProperty(MBConstants.USER_DIR);
 
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + MBConstants.ANDROID_TEST_DIR + "\\local.properties")));
-            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "local.properties")));
+            writer.println("sdk.dir = " + sdkLoc);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,32 +35,22 @@ public class APKBuilder {
         // to build apk
         List<String> commandsList = new ArrayList<>();
         ProcessBuilder pb = new ProcessBuilder();
-        File wd = new File(currentDir + MBConstants.ANDROID_TEST_DIR);
+        File wd = new File(currentDir + slash + MBConstants.ANDROID_TEST_DIR);
         pb.directory(wd);
-        File f = new File(currentDir + MBConstants.ANDROID_TEST_DIR + "\\gradlew.bat");
+        File f = new File(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + gradle);
 
-//        List<String> makeExec = new ArrayList<>();
-//        makeExec.add("chmod");
-//        makeExec.add("+x");
-//        makeExec.add(pb.directory().getAbsolutePath() + "\\gradlew");
-
-
-        commandsList.add(pb.directory().getAbsolutePath() + "\\gradlew.bat");
+        commandsList.add(pb.directory().getAbsolutePath() + slash + gradle);
         commandsList.add("build");
 
         List<String> makeAPK = new ArrayList<>();
-        makeAPK.add(pb.directory().getAbsolutePath() + "\\gradlew.bat");
+        makeAPK.add(pb.directory().getAbsolutePath() + slash + gradle);
         makeAPK.add("assembleDebug");
-        System.out.println(pb.directory().getAbsolutePath());
-
-//        pb.command(makeExec);
         pb.command(commandsList);
-
+        System.out.println(pb.directory().getAbsolutePath());
 
         try {
             Process p = pb.start();
             p.waitFor();
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String s;
             System.out.println(p);
@@ -67,8 +66,10 @@ public class APKBuilder {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            return false;
         }
 
         PVView.instance.updateOutLog("APK BUILT");
@@ -78,12 +79,13 @@ public class APKBuilder {
         ProcessBuilder deployPB = new ProcessBuilder();
         File adbLocFile = new File(adbLoc);
         deployPB.directory(adbLocFile);
-        File adb = new File(adbLoc + "\\adb");
+        File adb = new File(adbLoc + slash + "adb");
 
-        deployCommands.add(deployPB.directory().getAbsolutePath() + "\\adb");
+        deployCommands.add(deployPB.directory().getAbsolutePath() + slash + "adb");
         deployCommands.add("install");
         deployCommands.add("-r");
-        deployCommands.add(currentDir + MBConstants.ANDROID_TEST_DIR + "\\build\\outputs\\apk\\AndroidTest-debug.apk");
+        deployCommands.add(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "build" + slash + "outputs" + slash +
+                "apk" + slash + "AndroidTest-debug.apk");
         deployPB.command(deployCommands);
         System.out.println(deployPB.directory().getAbsolutePath());
 
@@ -103,5 +105,6 @@ public class APKBuilder {
             e.printStackTrace();
         }
 
+        return true;
     }
 }
