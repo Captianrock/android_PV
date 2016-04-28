@@ -1,17 +1,12 @@
 package com.androidpv.java.gui;
-import com.androidpv.java.codeParser.Parser;
 import com.androidpv.java.apkParser.APKParser;
+import com.androidpv.java.xposed.ModuleBuilder;
 import jadx.core.utils.exceptions.JadxException;
-import org.apache.commons.io.monitor.FileAlterationListener;
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
-import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -27,14 +22,14 @@ public final class PVView extends JFrame {
     private JButton parseButton;
     private JTextArea outputArea;
     private JTextField jarField;
-    private JButton jarButton;
+    private JButton apkButton;
     private JTextField sdkField;
     private JButton sdkButton;
     private JTextField adbField;
     private JButton adbButton;
     private JScrollPane scrollPane;
     private File selectedFile;
-    private File jarDir;
+    private File apk;
     private File sdkDir;
     private File adbDir;
     private String parsedDataOutputPathString;
@@ -65,17 +60,17 @@ public final class PVView extends JFrame {
 //                }
 //            });
 
-            // JFileChooser for Jar Files Directory
-            jarButton.addActionListener(ae -> {
+            // JFileChooser for APK
+            apkButton.addActionListener(ae -> {
                 JFileChooser fileChooser = new JFileChooser("C:/Users/");
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    jarDir = fileChooser.getSelectedFile();
-                    jarField.setText(jarDir.getAbsolutePath());
+                    apk = fileChooser.getSelectedFile();
+                    jarField.setText(apk.getAbsolutePath());
                     outputArea.append("A Directory Has Been Selected\n");
-                    outputArea.append(jarDir.getAbsolutePath() + "\n");
+                    outputArea.append(apk.getAbsolutePath() + "\n");
                     outputArea.append("");
                 };
             });
@@ -112,67 +107,16 @@ public final class PVView extends JFrame {
 
             // Parser Class set to Parse Button
             parseButton.addActionListener(new ActionListener() {
-                String outputPathString = new File("").getAbsoluteFile().toString() + "/parseData.txt" ;
                 public void actionPerformed(ActionEvent e) {
                    // updateOutLog(fileField.getText());
 
-                    if (getfilePath() == null || adbDir == null || sdkDir == null || jarDir == null  ){
+                    if (getfileField().equals("") || adbDir == null || sdkDir == null  ){
                         outputArea.append("Please complete the file fields!\n");
                         outputArea.append("");
                     }
-
-                    // Handles ".apk" File inputs
-                    else if (APKParser.isAPK(Paths.get(getfilePath())) && adbDir.isDirectory() && sdkDir.isDirectory()) {
-                        try {
-                            Path inputPath = Paths.get(getfilePath());
-                            outputArea.append("Parsing now...");
-                            outputArea.append("");
-                            APKParser.parse(inputPath.toFile());
-                            List<File> fileL = Parser.getFiles(new File("").getAbsoluteFile().toString() + "/decompiledSource");
-                            Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
-
-                            //TODO: Create button to switch to SubmitData
-                            int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
-                            if (reply == JOptionPane.OK_OPTION) {
-                                new DataSubmit(uName,adbDir.toString());
-                            }
-                            else {
-                                JOptionPane.showMessageDialog(null, "Okay");
-                            }
-
-                        } catch (JadxException j) {
-                            System.err.println("Error JadxException in main: " + j.getMessage());
-                            j.printStackTrace();
-                        }
-                    }
-
                     // Parses Given Directory for Java Files
-                   else if (Paths.get(getfilePath()).toFile().isDirectory() && adbDir.isDirectory() && sdkDir.isDirectory() && jarDir.isDirectory()){
-                        Path inputPath = Paths.get(getfilePath());
-                        List<File> fileL = Parser.getFiles(inputPath.toFile().toString());
-                        try {
-                            if (jarDir != null) {
-                                outputArea.append("#########################################################\n");
-                                outputArea.append("");
-                                outputArea.append("Parsing now...\n");
-                                outputArea.append("");
-                                Parser.parseFilesInDir(fileL, outputPathString, jarDir.getAbsolutePath(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
-                            }
-                            else {
-                                outputArea.append("#########################################################\n");
-                                outputArea.append("");
-                                outputArea.append("Parsing now...\n");
-                                outputArea.append("");
-                                Parser.parseFilesInDir(fileL, outputPathString, null, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
-                            }
-                        } catch (Exception except) {
-                            outputArea.append("Error parseFilesInDir in main: " + except.getMessage());
-                            except.printStackTrace();
-                        }
-                    }
-
-                else {
-                        JOptionPane.showMessageDialog(null,"Something went wrong! Please make sure all paths are correct!");
+                   else {
+                        new ModuleBuilder(getfileField(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
                     }
                 }
             });
@@ -205,7 +149,7 @@ public final class PVView extends JFrame {
 
     @Nullable
     public String get(){
-        return ((!jarDir.getAbsolutePath().isEmpty()? jarDir.getAbsolutePath() : null ));
+        return ((!apk.getAbsolutePath().isEmpty()? apk.getAbsolutePath() : null ));
     }
 
     public String getfileField() {

@@ -177,7 +177,7 @@ public class dataBaseListener {
                             splitline = line.split("::");
                             String[] temp = splitline[0].split(" ");
                             String currentName = temp[temp.length - 1];
-                            if (splitline.length == 3) {
+                            if (splitline.length == 4) {
                                 if (stack.containsKey(currentName)) {
                                     if (splitline[1].equals("methodStart")) {
                                         stack.get(currentName).add(splitline[2]);
