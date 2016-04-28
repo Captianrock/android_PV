@@ -1,13 +1,10 @@
 package com.androidpv.java.database;
 
 import javax.swing.*;
+import java.io.*;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,27 +163,32 @@ public class dataBaseListener {
                     System.out.println("Data already exists in traces");
                 }
                 else {
+                    // Enter data into database
                     try {
                         System.out.println("Inputting to database");
                         rs = stmt.executeQuery("SELECT * FROM data");
+
                         br = new BufferedReader(new FileReader(oldFileName));
                         String line;
                         String[] splitline;
                         HashMap<String, ArrayList<String>> stack = new HashMap<>();
                         while ((line = br.readLine()) != null) {
                             splitline = line.split("::");
-                            String[] temp = splitline[0].split(" ");
-                            String currentName = temp[temp.length - 1];
                             if (splitline.length == 4) {
+                                String[] temp = splitline[0].split(" ");
+                                String methodName = splitline[1];
+                                String packageName = temp[temp.length - 1];
+                                String currentName = packageName + "." + methodName;
                                 if (stack.containsKey(currentName)) {
-                                    if (splitline[1].equals("methodStart")) {
-                                        stack.get(currentName).add(splitline[2]);
+                                    if (splitline[2].equals("methodStart")) {
+                                        stack.get(currentName).add(splitline[3]);
                                     } else {
                                         rs.moveToInsertRow();
                                         rs.updateString(2, traceId);
-                                        rs.updateString(3, currentName);
+                                        rs.updateString(3, methodName);
                                         rs.updateLong(4, Long.parseLong(stack.get(currentName).remove(0)));
-                                        rs.updateLong(5, Long.parseLong(splitline[2]));
+                                        rs.updateLong(5, Long.parseLong(splitline[3]));
+                                        rs.updateString(6, packageName);
                                         rs.insertRow();
                                         rs.moveToCurrentRow();
                                         if (stack.get(currentName).size() == 0) {
@@ -195,7 +197,7 @@ public class dataBaseListener {
                                     }
                                 } else {
                                     stack.put(currentName, new ArrayList<String>());
-                                    stack.get(currentName).add(splitline[2]);
+                                    stack.get(currentName).add(splitline[3]);
                                 }
                             }
                         }
@@ -207,6 +209,8 @@ public class dataBaseListener {
                         try {
                             if (br != null)
                                 br.close();
+                                File file = new File(oldFileName);
+                                file.deleteOnExit();
                         } catch (IOException e) {
                             //
                         }
@@ -234,6 +238,5 @@ public class dataBaseListener {
             throw new IllegalStateException("Cannot connect the database!", e);
 
         }
-
     }
 }

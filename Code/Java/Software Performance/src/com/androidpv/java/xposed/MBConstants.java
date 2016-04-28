@@ -11,6 +11,7 @@ public final class MBConstants {
     public static final String USER_DIR = "user.dir";
     public static final String ANDROID_TEST_DIR = "AndroidTest";
 
+    // To build module
     public static final String FIRST_HALF = "package com.test;\n\n" +
             "import java.lang.reflect.Method;\n" +
             "import java.lang.reflect.Modifier;\n" +
@@ -62,7 +63,7 @@ public final class MBConstants {
             "\n" +
             "                        startTime = System.nanoTime();\n" +
             "                        XposedBridge.log(clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
-            "                                \".constructor::methodEnd::\" + endTime);\n" +
+            "                                \".constructor::methodStart::\" + startTime);\n" +
             "                    }\n" +
             "\n" +
             "                    @Override\n" +
