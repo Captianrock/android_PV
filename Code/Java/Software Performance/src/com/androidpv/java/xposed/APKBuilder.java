@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class APKBuilder {
 
-    public APKBuilder(String adbLoc, String sdkLoc) {
+    public APKBuilder() { }
 
+    public void tryToBuildAPK(String adbLoc, String sdkLoc) {
         boolean success = buildAPK(adbLoc, sdkLoc, "/", "gradlew");
 
         if (!success) {
             buildAPK(adbLoc, sdkLoc, "\\", "gradlew.bat");
         }
-
     }
 
     private boolean buildAPK(String adbLoc, String sdkLoc, String slash, String gradle) {
@@ -48,6 +48,9 @@ public class APKBuilder {
         pb.command(commandsList);
         System.out.println(pb.directory().getAbsolutePath());
 
+        PVView.getInstance().updateOutLog("Building APK...\n");
+
+
         try {
             Process p = pb.start();
             p.waitFor();
@@ -72,7 +75,27 @@ public class APKBuilder {
             return false;
         }
 
-        PVView.instance.updateOutLog("APK BUILT");
+        PVView.instance.updateOutLog("APK Built.  Installing....\n");
+
+        String apkLoc = currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "build" + slash + "outputs" + slash +
+                "apk" + slash + "AndroidTest-debug.apk";
+
+        installAPK(adbLoc, apkLoc, slash);
+
+        return true;
+    }
+
+
+    public void tryToInstallAPK(String adbLoc, String apkLoc) {
+        boolean success = installAPK(adbLoc, apkLoc, "/");
+
+        if (!success) {
+            installAPK(adbLoc, apkLoc, "\\");
+        }
+    }
+
+
+    public boolean installAPK(String adbLoc, String apkLoc, String slash) {
 
         // to deploy apk
         List<String> deployCommands = new ArrayList<>();
@@ -84,8 +107,7 @@ public class APKBuilder {
         deployCommands.add(deployPB.directory().getAbsolutePath() + slash + "adb");
         deployCommands.add("install");
         deployCommands.add("-r");
-        deployCommands.add(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "build" + slash + "outputs" + slash +
-                "apk" + slash + "AndroidTest-debug.apk");
+        deployCommands.add(apkLoc);
         deployPB.command(deployCommands);
         System.out.println(deployPB.directory().getAbsolutePath());
 
@@ -101,8 +123,10 @@ public class APKBuilder {
             System.out.println("installed?");
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            return false;
         }
 
         return true;

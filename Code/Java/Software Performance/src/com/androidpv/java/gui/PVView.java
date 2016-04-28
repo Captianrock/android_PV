@@ -116,7 +116,13 @@ public final class PVView extends JFrame {
                     }
                     // Parses Given Directory for Java Files
                    else {
-                        new ModuleBuilder(getfileField(), adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
+
+                        String apkString = "";
+                        if (apk != null) {
+                            apkString = apk.getAbsolutePath();
+                        }
+
+                        new ModuleBuilder(getfileField(), apkString, adbDir.getAbsolutePath(), sdkDir.getAbsolutePath(), uName, adbDir.toString());
                     }
                 }
             });

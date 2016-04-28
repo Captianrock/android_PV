@@ -20,7 +20,7 @@ public class ModuleBuilder {
      *
      * @param packageString
      */
-    public ModuleBuilder(String packageString, String adbLoc, String sdkLoc, String uName, String adbDir) {
+    public ModuleBuilder(String packageString, String apk, String adbLoc, String sdkLoc, String uName, String adbDir) {
 
         System.out.println("in module builder");
 
@@ -29,7 +29,6 @@ public class ModuleBuilder {
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-
 
                 try {
                     String currentDir = System.getProperty("user.dir");
@@ -40,7 +39,7 @@ public class ModuleBuilder {
 
                     for (int i = 0; i < packageList.length; i++) {
                         if (i > 0) {
-                            writer.print("||");
+                            writer.print(" || ");
                         }
                         writer.print(packageList[i].trim());
                     }
@@ -57,10 +56,18 @@ public class ModuleBuilder {
 
             @Override
             protected void done() {
-                PVView.getInstance().updateOutLog("Building APK...\n");
-                new APKBuilder(adbLoc, sdkLoc);
 
-                int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
+                APKBuilder builder = new APKBuilder();
+
+                if (!apk.equals("")) {
+                    builder.tryToInstallAPK(adbLoc, apk);
+                    PVView.getInstance().updateOutLog("APK installed at " + adbLoc + ".\n");
+                }
+
+                PVView.getInstance().updateOutLog("Building module...\n");
+                builder.tryToBuildAPK(adbLoc, sdkLoc);
+
+                int reply = JOptionPane.showConfirmDialog(null, "Your module is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
                     new DataSubmit(uName, adbDir);
                     PVView.getInstance().setVisible(false);
