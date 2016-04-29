@@ -10,6 +10,7 @@ public final class MBConstants {
     // for APKBuilder
     public static final String USER_DIR = "user.dir";
     public static final String ANDROID_TEST_DIR = "AndroidTest";
+    public static final String BUILD_FAILED = "BUILD FAILED";
 
     // To build module
     public static final String FIRST_HALF = "package com.test;\n\n" +

@@ -38,7 +38,7 @@ public class commandLine {
 
         try {
             Process p = deployPB.start();
-            p.waitFor();
+            System.out.println("done waiting");
             FileWriter fw = new FileWriter(dataFile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -48,8 +48,6 @@ public class commandLine {
             }
             bw.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
