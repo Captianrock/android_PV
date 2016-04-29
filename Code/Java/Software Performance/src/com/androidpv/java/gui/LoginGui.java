@@ -60,7 +60,8 @@ public class LoginGui extends JFrame{
                 puname = txuser.getText();
                 String ppasswd = pass.getText();
 
-                if(db.checkMembership(puname , ppasswd)) {
+                if(db.checkMembership(puname , ppasswd) && !containsWhiteSpace(puname) && !containsWhiteSpace( ppasswd) ) {
+                    createNotice("Please make sure Xposed is installed or else the framewwork will not work!");
                    PVView.instance = new PVView(puname);
                     dispose();
                 }
@@ -73,7 +74,6 @@ public class LoginGui extends JFrame{
                     pass.setText("");
                     txuser.requestFocus();
                 }
-
         });
 
         newUser.addActionListener(new ActionListener(){
@@ -84,17 +84,26 @@ public class LoginGui extends JFrame{
             }
         });}
 
+    public static boolean containsWhiteSpace(final String testCode){
+        if(testCode != null){
+            for(int i = 0; i < testCode.length(); i++){
+                if(Character.isWhitespace(testCode.charAt(i))){
+                    System.out.println("TRUE");
+                    return true;
+                }
+            }
+        }
+        System.out.println("FALSE");
+        return false;
+    }
+
+    public static void createNotice(String str){
+        JOptionPane.showMessageDialog(null, str);
+    }
+
     public static void main(String ... args){
        new LoginGui();
-
-//        int reply = JOptionPane.showConfirmDialog(null, "Your APK is ready, would you like to switch views ", "Submit View", JOptionPane.YES_NO_OPTION);
-//        if (reply == JOptionPane.YES_OPTION) {
-//            new DataSubmit("HI");
-//        }
-//        else {
-//            JOptionPane.showMessageDialog(null, "GOODBYE");
-//            System.exit(0);
-//        }
     }
+
 }
 

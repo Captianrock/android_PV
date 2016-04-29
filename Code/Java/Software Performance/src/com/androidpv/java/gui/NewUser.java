@@ -61,10 +61,14 @@ public class NewUser extends JFrame {
 
         create.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(usernmae.getText().isEmpty() && password.getText().isEmpty() || usernmae.getText().isEmpty() || password.getText().isEmpty() ){
-                    JOptionPane.showMessageDialog(null,"Please insert Username and Password");
+                if(usernmae.getText().isEmpty() || password.getText().isEmpty() || containsWhiteSpace( usernmae.getText()) ||containsWhiteSpace( password.getText())) {
+                    JOptionPane.showMessageDialog(null,"Please insert valid Username and Password");
                 }
 
+                else if ( !isCorrectLength(usernmae.getText()) ||  !isCorrectLength(password.getText())){
+                    JOptionPane.showMessageDialog(null,"Please insert Username and Password of length between 8 and 20");
+                    return;
+                }
                 else if(db.checkMembership(usernmae.getText() , password.getText())) {
                     JOptionPane.showMessageDialog(null,"Username is already in use");
                     usernmae.setText("");
@@ -93,5 +97,30 @@ public class NewUser extends JFrame {
             new LoginGui();
             dispose();
         });
+    }
+
+    public static boolean containsWhiteSpace(final String testCode){
+        if(testCode != null){
+            for(int i = 0; i < testCode.length(); i++){
+                if(Character.isWhitespace(testCode.charAt(i))){
+                    System.out.println("TRUE");
+                    return true;
+                }
+            }
+        }
+        System.out.println("FALSE");
+        return false;
+    }
+
+    public static boolean isCorrectLength (String str){
+        if (str.length() >= 8 && str.length() <= 20)
+            return true;
+        else {
+            return false;
+        }
+    }
+
+    public static void createNotice(String str){
+        JOptionPane.showMessageDialog(null, str);
     }
 }

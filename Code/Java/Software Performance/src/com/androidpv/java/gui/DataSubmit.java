@@ -15,14 +15,15 @@ public class DataSubmit extends JFrame{
     private JPanel dataPanel;
     private JTextField userField;
     private JButton stopDataBttn;
+    private JTextArea outputArea;
     private boolean dataCheck = false;
+    public static volatile DataSubmit instance;
 
     public DataSubmit(String uName, String adbPath){
-            super("Data Submit");
-            setContentPane(dataPanel);
-            pack();
-            setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
-
+        super("Data Submit");
+        setContentPane(dataPanel);
+        pack();
+        setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
         userField.setText(uName);
         appField.setText("Enter Application Name");
         dataButton.setVisible(false);
@@ -52,6 +53,21 @@ public class DataSubmit extends JFrame{
             dispose();
         });
         setVisible(true);
+    }
+
+    public static DataSubmit getInstance() {
+
+        if (instance == null ) {
+            synchronized (PVView.class) {
+                if (instance == null) {
+                    instance = new DataSubmit("User" , "Password");
+                }
+            }
+        }
+        return instance;
+    }
+    public void updateOutLog(String str){
+        outputArea.append(str);
     }
 
     private void createUIComponents() {
