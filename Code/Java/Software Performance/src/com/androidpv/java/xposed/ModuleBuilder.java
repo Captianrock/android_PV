@@ -59,20 +59,29 @@ public class ModuleBuilder {
 
                 APKBuilder builder = new APKBuilder();
 
-                if (!apk.equals("")) {
-                    builder.tryToInstallAPK(adbLoc, apk);
-                    PVView.getInstance().updateOutLog("APK installed at " + adbLoc + ".\n");
+                boolean pingSuccess = builder.tryPing(adbLoc);
+                if (pingSuccess) {
+
+                    if (!apk.equals("")) {
+                        builder.tryToInstallAPK(adbLoc, apk);
+                        PVView.getInstance().updateOutLog("APK installed at " + adbLoc + ".\n");
+                    }
+
+                    PVView.getInstance().updateOutLog("Building module...\n");
+                    builder.tryToBuildAPK(adbLoc, sdkLoc);
+
+                    int reply = JOptionPane.showConfirmDialog(null, "Your module is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
+                    if (reply == JOptionPane.OK_OPTION) {
+                        new DataSubmit(uName, adbDir);
+                        PVView.getInstance().setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "GOODBYE");
+                    }
                 }
-
-                PVView.getInstance().updateOutLog("Building module...\n");
-                builder.tryToBuildAPK(adbLoc, sdkLoc);
-
-                int reply = JOptionPane.showConfirmDialog(null, "Your module is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
-                if (reply == JOptionPane.OK_OPTION) {
-                    new DataSubmit(uName, adbDir);
-                    PVView.getInstance().setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(null, "GOODBYE");
+                else {
+                    System.err.println("Device not connected.");
+                    PVView.getInstance().updateOutLog("No device detected. Please connect device and try again.\n");
+                    JOptionPane.showMessageDialog(null, "No device detected.\nPlease connect device\nand try again.\n");
                 }
             }
         };
