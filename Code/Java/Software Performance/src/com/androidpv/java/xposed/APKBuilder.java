@@ -1,8 +1,10 @@
 package com.androidpv.java.xposed;
 
+import com.androidpv.java.codeParser.GetFileExtension;
 import com.androidpv.java.gui.PVView;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,12 +66,16 @@ public class APKBuilder {
         return true;
     }
 
-    public void tryToBuildAPK(String adbLoc, String sdkLoc) {
+    public boolean tryToBuildAPK(String adbLoc, String sdkLoc) {
         boolean success = buildAPK(adbLoc, sdkLoc, "/", "gradlew");
 
         if (!success) {
-            buildAPK(adbLoc, sdkLoc, "\\", "gradlew.bat");
+            success = buildAPK(adbLoc, sdkLoc, "\\", "gradlew.bat");
+            if (!success) {
+                return false;
+            }
         }
+        return true;
     }
 
     private boolean buildAPK(String adbLoc, String sdkLoc, String slash, String gradle) {
@@ -110,6 +116,9 @@ public class APKBuilder {
             System.out.println(p);
             while ((s = reader.readLine()) != null) {
                 System.out.println(s);
+                if (s.equals(MBConstants.BUILD_FAILED)) {
+                    return false;
+                }
             }
             pb.command(makeAPK);
             p = pb.start();
@@ -136,13 +145,33 @@ public class APKBuilder {
         return true;
     }
 
+    public static boolean isAPK (Path p) {
+        String ext = GetFileExtension.getFileExtension(p.toFile());
+        if (ext.equals("apk")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    public void tryToInstallAPK(String adbLoc, String apkLoc) {
+
+    public boolean tryToInstallAPK(String adbLoc, String apkLoc) {
+
+        File f = new File (apkLoc);
+        boolean isapk = isAPK(f.toPath());
+        if (!isapk) {
+            return false;
+        }
+
         boolean success = installAPK(adbLoc, apkLoc, "/");
 
         if (!success) {
-            installAPK(adbLoc, apkLoc, "\\");
+            success = installAPK(adbLoc, apkLoc, "\\");
+            if (!success) {
+                return false;
+            }
         }
+        return true;
     }
 
 
