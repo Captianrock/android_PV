@@ -25,12 +25,10 @@ public class DataSubmit extends JFrame{
         pack();
         setDefaultCloseOperation(DataSubmit.EXIT_ON_CLOSE);
         userField.setText(uName);
-        appField.setText("Enter Application Name");
         dataButton.setVisible(false);
         dataButton.addActionListener(ae ->{
-            JOptionPane.showMessageDialog(null,appField.getText());
-            if (!dataCheck){
-                JOptionPane.showMessageDialog(null,"Please stop the data flow first!");
+            if (!dataCheck || appField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null,"Please Enter the Application Name!");
             }
             else {
                 String appname = appField.getText();
@@ -44,6 +42,7 @@ public class DataSubmit extends JFrame{
                 new commandLine(adbPath);
                 dataCheck = true;
                 dataButton.setVisible(true);
+                stopDataBttn.setVisible(false);
 
                 }
         );
