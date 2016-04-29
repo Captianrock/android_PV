@@ -56,30 +56,50 @@ public class ModuleBuilder {
             @Override
             protected void done() {
 
+                boolean stop = false;
+
                 APKBuilder builder = new APKBuilder();
 
                 boolean pingSuccess = builder.tryPing(adbLoc);
                 if (pingSuccess) {
 
                     if (!apk.equals("")) {
-                        builder.tryToInstallAPK(adbLoc, apk);
-                        PVView.getInstance().updateOutLog("APK installed at " + adbLoc + ".\n");
+                        boolean installation = builder.tryToInstallAPK(adbLoc, apk);
+                        if (!installation) {
+                            PVView.getInstance().updateOutLog("Failed to install APK at " + adbLoc + ".\n" +
+                                    "Please provide correct APK or do not provide at all.\n");
+                            JOptionPane.showMessageDialog(null, "APK failed to install.");
+                            stop = true;
+                        }
+                        else {
+                            PVView.getInstance().updateOutLog("Installed APK at " + apk + ".\n");
+                        }
                     }
+                    if (!stop) {
 
-                    PVView.getInstance().updateOutLog("Building module...\n");
-                    builder.tryToBuildAPK(adbLoc, sdkLoc);
+                        PVView.getInstance().updateOutLog("Building module...\n");
+                        boolean apkSuccess = builder.tryToBuildAPK(adbLoc, sdkLoc);
 
-                    int reply = JOptionPane.showConfirmDialog(null, "Your module is ready.\nWould you like to switch views?", "Submit View", JOptionPane.OK_OPTION);
-                    if (reply == JOptionPane.OK_OPTION) {
-                        DataSubmit.instance = new DataSubmit(uName, adbDir);
-                        PVView.getInstance().setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "GOODBYE");
+                        if (apkSuccess) {
+
+                            int reply = JOptionPane.showConfirmDialog(null, "Your module is ready.\nPlease restart device.\nWould you like to switch views?", "Submit View", JOptionPane.OK_OPTION);
+                            if (reply == JOptionPane.OK_OPTION) {
+                                DataSubmit.instance = new DataSubmit(uName, adbDir);
+                                PVView.getInstance().setVisible(false);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "GOODBYE");
+                            }
+                        } else {
+                            PVView.getInstance().updateOutLog("Build failed. Please provide proper directory to\n" +
+                                    "android sdks. Directory must include android 23.");
+                            JOptionPane.showMessageDialog(null, "Build failed. Please provide proper directory to\n" +
+                                    "android sdks. Directory must include android 23.");
+                        }
                     }
                 }
                 else {
                     System.err.println("Device not connected.");
-                    PVView.getInstance().updateOutLog("No device detected or incorrect path to adb. " +
+                    PVView.getInstance().updateOutLog("No device detected or incorrect path to adb.\n" +
                             "Please connect device or update correct path and try again.\n");
                     JOptionPane.showMessageDialog(null, "No device detected\n or incorrect path to adb.\n" +
                             "Please connect device\n or provide correct path\nand try again.\n");
