@@ -67,6 +67,7 @@ public class DataSubmit extends JFrame{
     }
     public void updateOutLog(String str){
         outputArea.append(str);
+        outputArea.append("");
     }
 
     private void createUIComponents() {

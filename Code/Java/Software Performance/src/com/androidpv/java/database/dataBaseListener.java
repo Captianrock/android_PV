@@ -1,5 +1,7 @@
 package com.androidpv.java.database;
 
+import com.androidpv.java.gui.DataSubmit;
+
 import javax.swing.*;
 import java.io.*;
 import java.math.BigInteger;
@@ -116,6 +118,7 @@ public class dataBaseListener {
         String oldFileName = "data.txt";
         BufferedReader br = null;
         BufferedWriter bw = null;
+        DataSubmit ds = DataSubmit.instance;
 
         String url = "jdbc:mysql://localhost:3306/membership";
         String username = "root";
@@ -202,8 +205,10 @@ public class dataBaseListener {
                             }
                         }
                         System.out.println("Completed!");
+                        ds.updateOutLog("Data Successfully pushed to Database");
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
+                        JOptionPane.showMessageDialog(null,"Something went wrong submitting the Data! Please try again!");
                         return;
                     } finally {
                         try {
@@ -228,6 +233,7 @@ public class dataBaseListener {
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
                 System.out.println("VendorError: " + e.getErrorCode());
+                JOptionPane.showMessageDialog(null,"Something went wrong submitting the Data! Please try again!");
             }
 
         } catch (SQLException e) {

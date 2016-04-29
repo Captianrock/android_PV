@@ -1,15 +1,11 @@
 package com.androidpv.java.gui;
-import com.androidpv.java.apkParser.APKParser;
 import com.androidpv.java.xposed.ModuleBuilder;
-import jadx.core.utils.exceptions.JadxException;
+import javafx.scene.input.MouseEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import javax.swing.*;
 
 /**
@@ -21,7 +17,7 @@ public final class PVView extends JFrame {
     private JButton dirButton;
     private JButton parseButton;
     private JTextArea outputArea;
-    private JTextField jarField;
+    private JTextField apkField;
     private JButton apkButton;
     private JTextField sdkField;
     private JButton sdkButton;
@@ -62,18 +58,32 @@ public final class PVView extends JFrame {
 //            });
 
             // JFileChooser for APK
-            apkButton.addActionListener(ae -> {
-                JFileChooser fileChooser = new JFileChooser("C:/Users/");
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setAcceptAllFileFilterUsed(false);
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    apk = fileChooser.getSelectedFile();
-                    jarField.setText(apk.getAbsolutePath());
-                    outputArea.append("A Directory Has Been Selected\n");
-                    outputArea.append(apk.getAbsolutePath() + "\n");
-                    outputArea.append("");
-                };
+            final int[] clicks = {0};
+            apkButton.addActionListener((ActionEvent ae) -> {
+                Object source = ae.getSource();
+                if(source == apkButton){
+                    if(clicks[0] %2 == 0){
+                        JFileChooser fileChooser = new JFileChooser("C:/Users/");
+                        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                        fileChooser.setAcceptAllFileFilterUsed(false);
+                        int returnValue = fileChooser.showOpenDialog(null);
+                        if (returnValue == JFileChooser.APPROVE_OPTION) {
+                            apk = fileChooser.getSelectedFile();
+                            apkField.setText(apk.getAbsolutePath());
+                            outputArea.append("Apk Has Been Selected\n");
+                            outputArea.append(apk.getAbsolutePath() + "\n");
+                            outputArea.append("");
+                        };
+                        apkButton.setText("Clear Apk");
+                    }
+                    if(clicks[0] %2 == 1){
+                        apkField.setText(null);
+                        apkButton.setText("Install Apk");
+                    }
+                    System.out.println(clicks[0]);
+                    clicks[0]++;
+                }
+
             });
 
             // JFileChooser for SDK Directory

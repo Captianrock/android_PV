@@ -28,7 +28,7 @@
           <text value="Parse"/>
         </properties>
       </component>
-      <component id="da230" class="javax.swing.JTextField" binding="jarField">
+      <component id="da230" class="javax.swing.JTextField" binding="apkField">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="477" height="24"/>
