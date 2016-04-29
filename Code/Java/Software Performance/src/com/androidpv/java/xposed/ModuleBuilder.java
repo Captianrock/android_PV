@@ -5,8 +5,7 @@ import com.androidpv.java.gui.PVView;
 
 import javax.swing.*;
 import java.io.*;
-import java.sql.Array;
-import java.util.*;
+
 
 /**
  * Created by Erin on 2/27/16.
@@ -70,7 +69,7 @@ public class ModuleBuilder {
                     PVView.getInstance().updateOutLog("Building module...\n");
                     builder.tryToBuildAPK(adbLoc, sdkLoc);
 
-                    int reply = JOptionPane.showConfirmDialog(null, "Your module is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
+                    int reply = JOptionPane.showConfirmDialog(null, "Your module is ready.\nWould you like to switch views?", "Submit View", JOptionPane.OK_OPTION);
                     if (reply == JOptionPane.OK_OPTION) {
                         DataSubmit.instance = new DataSubmit(uName, adbDir);
                         PVView.getInstance().setVisible(false);
@@ -80,8 +79,10 @@ public class ModuleBuilder {
                 }
                 else {
                     System.err.println("Device not connected.");
-                    PVView.getInstance().updateOutLog("No device detected. Please connect device and try again.\n");
-                    JOptionPane.showMessageDialog(null, "No device detected.\nPlease connect device\nand try again.\n");
+                    PVView.getInstance().updateOutLog("No device detected or incorrect path to adb. " +
+                            "Please connect device or update correct path and try again.\n");
+                    JOptionPane.showMessageDialog(null, "No device detected\n or incorrect path to adb.\n" +
+                            "Please connect device\n or provide correct path\nand try again.\n");
                 }
             }
         };
