@@ -102,7 +102,7 @@ public class LoginGui extends JFrame{
     }
 
     public static void main(String ... args){
-       new LoginGui();
+       new DataSubmit("stuff","stufff2");
     }
 
 }
