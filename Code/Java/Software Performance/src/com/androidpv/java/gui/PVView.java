@@ -28,6 +28,7 @@ public final class PVView extends JFrame {
     private JTextField adbField;
     private JButton adbButton;
     private JScrollPane scrollPane;
+    private JLabel packLabel;
     private File selectedFile;
     private File apk;
     private File sdkDir;

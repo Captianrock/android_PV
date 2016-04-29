@@ -69,7 +69,7 @@ public class ModuleBuilder {
 
                 int reply = JOptionPane.showConfirmDialog(null, "Your module is ready, would you like to switch views ", "Submit View", JOptionPane.OK_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
-                    new DataSubmit(uName, adbDir);
+                    DataSubmit.instance = new DataSubmit(uName, adbDir);
                     PVView.getInstance().setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "GOODBYE");
