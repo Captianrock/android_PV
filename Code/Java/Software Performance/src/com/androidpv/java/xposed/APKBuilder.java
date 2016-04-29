@@ -13,6 +13,57 @@ public class APKBuilder {
 
     public APKBuilder() { }
 
+    public boolean tryPing(String adbLoc) {
+        boolean success = ping(adbLoc, "/");
+
+        if (!success) {
+            success = ping(adbLoc, "\\");
+            if (!success) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean ping(String adbLoc, String slash) {
+
+        List<String> pingCommands = new ArrayList<>();
+        ProcessBuilder runPing = new ProcessBuilder();
+        File adbLocFile = new File(adbLoc);
+        runPing.directory(adbLocFile);
+
+        pingCommands.add(runPing.directory().getAbsolutePath() + slash + "adb");
+        pingCommands.add("devices");
+        runPing.command(pingCommands);
+        System.out.println("Test ping: " + runPing.directory().getAbsolutePath());
+
+        try {
+            Process p = runPing.start();
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String s;
+            System.out.println(p);
+            int count = 0; // if no device, will print header and newline
+            while ((s = reader.readLine()) != null) {
+                System.out.println(s);
+                count += 1;
+            }
+            if (count == 2) {
+                System.out.println("No device connected.");
+                return false;
+            }
+            System.out.println("pinged?");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     public void tryToBuildAPK(String adbLoc, String sdkLoc) {
         boolean success = buildAPK(adbLoc, sdkLoc, "/", "gradlew");
 
