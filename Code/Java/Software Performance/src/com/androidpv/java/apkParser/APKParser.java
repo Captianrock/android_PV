@@ -1,6 +1,5 @@
 package com.androidpv.java.apkParser;
 import com.androidpv.java.codeParser.GetFileExtension;
-import com.androidpv.java.codeParser.Parser;
 import jadx.api.JadxDecompiler;
 import jadx.core.utils.exceptions.JadxException;
 import java.io.File;
