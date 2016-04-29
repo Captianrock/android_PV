@@ -29,6 +29,7 @@ public final class MBConstants {
             "        XposedBridge.log(\"  Loaded app: \" + lpparam.packageName);\n" +
             "        \n" +
             "        if (!(lpparam.packageName.equals(\"";
+    public static final String ANOTHER = "\") || lpparam.packageName.equals(\"";
     public static final String SECOND_HALF = "\"))) {\n" +
             "            return;\n" +
             "        }\n" +

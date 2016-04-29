@@ -39,7 +39,7 @@ public class ModuleBuilder {
 
                     for (int i = 0; i < packageList.length; i++) {
                         if (i > 0) {
-                            writer.print(" || ");
+                            writer.print(MBConstants.ANOTHER);
                         }
                         writer.print(packageList[i].trim());
                     }
