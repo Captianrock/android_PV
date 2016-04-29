@@ -45,7 +45,7 @@
         </constraints>
         <properties>
           <hideActionText value="true"/>
-          <text value="Jar Directory"/>
+          <text value="Install APK"/>
         </properties>
       </component>
       <component id="48555" class="javax.swing.JTextField" binding="sdkField">
