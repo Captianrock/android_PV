@@ -61,7 +61,7 @@ public class LoginGui extends JFrame{
                 String ppasswd = pass.getText();
 
                 if(db.checkMembership(puname , ppasswd) && !containsWhiteSpace(puname) && !containsWhiteSpace( ppasswd) ) {
-                    createNotice("Please make sure Xposed is installed or else the framewwork will not work!");
+                    createNotice("Please make sure Xposed is installed or else the framework will not work!");
                    PVView.instance = new PVView(puname);
                     dispose();
                 }
