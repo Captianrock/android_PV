@@ -8,7 +8,13 @@ $userName = $_SESSION['user'];
 
 if (isset($_GET['user'])){
     $appList = $methodExecVar->getApplications($_GET['user']);
-} 
+}
+
+if($_GET['user'] != $_SESSION['user'])
+{
+	$redirect = 'location: index.php?user=' . $_SESSION['user'];
+	header($redirect);
+}
 ?>
 <script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
 

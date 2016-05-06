@@ -65,7 +65,7 @@ Web application:
 		6. Copied and pasted url when logged out.
 
 		7. Changed username in url to another name.
-			Bug. Did not give error message and/or just switch back to correct page. 
+			Bug. Did not give error message and/or just switch back to correct page. *Fixed*
 
 	- Trace page
 		1. Displays traces correctly.
