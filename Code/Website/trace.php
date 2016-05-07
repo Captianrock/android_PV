@@ -33,7 +33,7 @@ $_SESSION['app'] = $_GET['app'];
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
-	<link href="css/style2.css" rel="stylesheet">
+    <link href="css/style2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -195,41 +195,41 @@ $_SESSION['app'] = $_GET['app'];
                 </div>
                 <!-- /.row -->
 
-				<div class="row col-lg-12">
-					<div class="panel panel-info">
+                <div class="row col-lg-12">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
                             <h3 class="panel-title" style="height:20px;">
-								<div class="col-lg-1">
-									<div class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
-										<ul class="dropdown-menu">
-											<li>
-												<a href="#" onclick="selectSort('traceList', '0', 'new')">Ten newest traces</a>
-											</li>
-											<li>
-												<a href="#" onclick="selectSort('traceList', '0', 'old')">Ten oldest traces</a>
-											</li>
-											<li>
-												<a href="#" onclick="selectSort('traceList', '0', 'allNew')">Newest to Oldest</a>
-											</li>
-											<li>
-												<a href="#" onclick="selectSort('traceList', '0', 'allOld')">Oldest to Newest</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</h3>
-						</div>
+                                <div class="col-lg-1">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'new')">Ten newest traces</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'old')">Ten oldest traces</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'allNew')">Newest to Oldest</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'allOld')">Oldest to Newest</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </h3>
+                        </div>
                         <div class="panel-body">
                             <div class="list-group" id="traceList"></div>
-							<ul class="pager" style="padding-left: 30px; padding-right: 30px;">
-								<li class="previous"><a href="#" onclick="selectSort('traceList', '-')">Previous</a></li>
-								<li class="next"><a href="#" onclick="selectSort('traceList', '+')">Next</a></li>
-							</ul>
+                            <ul class="pager" style="padding-left: 30px; padding-right: 30px;">
+                                <li class="previous"><a href="#" onclick="selectSort('traceList', '-')">Previous</a></li>
+                                <li class="next"><a href="#" onclick="selectSort('traceList', '+')">Next</a></li>
+                            </ul>
                         </div>
                     </div>
-				</div>
-				<!-- /.row -->
+                </div>
+                <!-- /.row -->
 
             </div>
             <!-- /.container-fluid -->

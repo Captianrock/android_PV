@@ -39,6 +39,7 @@ function addTrace() {
   	deleteButton.setAttribute('id',traceID);
   	deleteButton.setAttribute('class','btn btn-danger');
   	deleteButton.setAttribute('style',"margin-left: 50px; margin-top: 10px;");
+  	deleteButton.setAttribute('onclick','deleteTrace(\'' + traceID + '\')');
   	deleteButton.innerHTML = "Remove Trace";
 
   	var newSpan = document.createElement('span');
@@ -170,10 +171,112 @@ function addButton(newRowId,appNameHeader){
 	classAPanel.appendChild(newFix);
 }
 
+function newTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
+    if (traces.length > 10)
+    {
+        traces.length = 10;
+    }
+
+    addTrace();
+}
+
+function oldTen(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    if (traces.length > 10) {
+        traces.length = 10;
+    }
+
+    addTrace();
+}
+
+function newAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
+
+    for (i = traces.length; i > 0; i--) {
+        traceName[traces.length - i] = i - 1;
+    }
+
+    addTrace();
+}
+
+function oldAll(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+    traceName.length = 0;
+    
+    traces = trace2.slice();
+
+    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
+
+    for (i = 0; i < traces.length; i++) {
+        traceName[i] = i;
+    }
+
+    addTrace();
+}
+
+function deleteTrace(traceID){
+	console.log("DELETE",traceID);
+	$.ajax({
+	    type: "POST",
+	    url: 'classes/databaseChanges.php',
+	    dataType: 'json',
+	    data: {functionname: 'deleteTrace', arguments: traceID},
+		complete: function(jqXHR, textStatus) {
+		    console.log('AJAX call complete');
+		    traceID
+		},
+	    success: function (obj, textstatus) {
+	                  if( !('error' in obj) ) {
+	                  	console.log("SUCCESS");
+	                  }
+	                  else {
+	                  	console.log(obj.error);
+	                  }
+	    			}
+	});
+	for(var i = 0; i < trace2.length; i++){
+		if(trace2[i][0] == traceID){
+			trace2.splice(i,1);
+			console.log(trace2);
+		}	
+	}
+ 	selectSort('traceList');
+}
+
 function selectSort(elementID, page2, sort2)
 {
     sort2 = sort2 || sort;
-    page2 = page2 || '0';
+    page2 = page2 || page.toString();
 
     if (page2 == '-')
     {
@@ -187,7 +290,7 @@ function selectSort(elementID, page2, sort2)
     {
         page++;
     }
-    else
+    else if (parseInt(page2) == 0)
     {
         page = 0;
     }
