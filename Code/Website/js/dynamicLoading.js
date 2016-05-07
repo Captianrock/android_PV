@@ -1,5 +1,7 @@
 var traceName = [];
 var trace2 = traces.slice(0);
+var page = 0;
+var sort = 'new';
 
 function addTrace() {
 
@@ -150,6 +152,46 @@ function addButton(newRowId,appNameHeader){
 	classAPanel.appendChild(newFix);
 }
 
+function selectSort(elementID, page2, sort2)
+{
+    sort2 = sort2 || sort;
+    page2 = page2 || '0';
+
+    if (page2 == '-')
+    {
+        page--;
+        if (page < 0)
+        {
+            page = 0;
+        }
+    }
+    else if (page2 == '+')
+    {
+        page++;
+    }
+    else
+    {
+        page = 0;
+    }
+
+    sort = sort2;
+
+    if (sort == 'old') {
+        oldTen(elementID, sort, page);
+    }
+    else if (sort == 'new') {
+        newTen(elementID, sort, page);
+    }
+    else if (sort == 'allOld')
+    {
+        oldAll(elementID);
+    }
+    else if (sort == 'allNew')
+    {
+        newAll(elementID);
+    }
+}
+
 function newTen(elementID)
 {
     document.getElementById(elementID).innerHTML = "";
@@ -161,6 +203,15 @@ function newTen(elementID)
 
     for (i = traces.length; i > 0; i--) {
         traceName[traces.length - i] = i - 1;
+    }
+
+    if (traces.length <= page * 10)
+    {
+        page--;
+    }
+    for (i = 0; i < page * 10; i++) {
+        traces.shift();
+        traceName.shift();
     }
 
     if (traces.length > 10)
@@ -182,6 +233,14 @@ function oldTen(elementID)
 
     for (i = 0; i < traces.length; i++) {
         traceName[i] = i;
+    }
+
+    if (traces.length <= page * 10) {
+        page--;
+    }
+    for (i = 0; i < page * 10; i++) {
+        traces.shift();
+        traceName.shift();
     }
 
     if (traces.length > 10) {

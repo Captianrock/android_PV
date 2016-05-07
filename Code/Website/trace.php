@@ -204,16 +204,16 @@ $_SESSION['app'] = $_GET['app'];
 										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
 										<ul class="dropdown-menu">
 											<li>
-												<a href="#" onclick="newTen('traceList')">Ten newest traces</a>
+												<a href="#" onclick="selectSort('traceList', '0', 'new')">Ten newest traces</a>
 											</li>
 											<li>
-												<a href="#" onclick="oldTen('traceList')">Ten oldest traces</a>
+												<a href="#" onclick="selectSort('traceList', '0', 'old')">Ten oldest traces</a>
 											</li>
 											<li>
-												<a href="#" onclick="newAll('traceList')">Newest to Oldest</a>
+												<a href="#" onclick="selectSort('traceList', '0', 'allNew')">Newest to Oldest</a>
 											</li>
 											<li>
-												<a href="#" onclick="oldAll('traceList')">Oldest to Newest</a>
+												<a href="#" onclick="selectSort('traceList', '0', 'allOld')">Oldest to Newest</a>
 											</li>
 										</ul>
 									</div>
@@ -222,6 +222,10 @@ $_SESSION['app'] = $_GET['app'];
 						</div>
                         <div class="panel-body">
                             <div class="list-group" id="traceList"></div>
+							<ul class="pager" style="padding-left: 30px; padding-right: 30px;">
+								<li class="previous"><a href="#" onclick="selectSort('traceList', '-')">Previous</a></li>
+								<li class="next"><a href="#" onclick="selectSort('traceList', '+')">Next</a></li>
+							</ul>
                         </div>
                     </div>
 				</div>
@@ -244,7 +248,7 @@ $_SESSION['app'] = $_GET['app'];
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <script>newTen('traceList');</script>
+    <script>selectSort('traceList', '0', 'new');</script>
 </body>
 
 </html>
