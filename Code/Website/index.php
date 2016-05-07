@@ -84,6 +84,7 @@ if($_GET['user'] != $_SESSION['user'])
                         <a href="#">
                             <div class="media">
                                 <span class="pull-left">
+									<img class="media-object" src="http://placehold.it/50x50" alt="">
                                 </span>
                                 <div class="media-body">
                                     <h5 class="media-heading"><strong><?php echo $userName ?></strong>
