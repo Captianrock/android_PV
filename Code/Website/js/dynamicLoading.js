@@ -1,12 +1,12 @@
 var traceName = [];
 var trace2 = traces.slice(0);
-
 function addTrace() {
 
   var traceContainer = document.getElementById('traceList');
   for(var i = 0; i < traces.length; i++){
   	var traceID = traces[i][0];
   	var time = traces[i][1];
+  	var divContain = document.createElement('div');
   	var newTrace = document.createElement('a');
   	arrayofString = time.split(" ");
   	arraydate = arrayofString[0];
@@ -28,7 +28,23 @@ function addTrace() {
   	newTrace.innerHTML = "Trace " + (traceName[i]+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
   	newTrace.setAttribute('href','charts.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
-  	traceContainer.appendChild(newTrace);
+  	newTrace.setAttribute('style',"width: 80%; float: left;");
+  	divContain.appendChild(newTrace);
+
+  	var deleteButton = document.createElement('button');
+  	deleteButton.setAttribute('type','button');
+  	deleteButton.setAttribute('id',traceID);
+  	deleteButton.setAttribute('class','btn btn-danger');
+  	deleteButton.setAttribute('style',"margin-left: 50px; margin-top: 10px;");
+  	deleteButton.innerHTML = "Remove Trace";
+
+  	var newSpan = document.createElement('span');
+  	newSpan.setAttribute('class', 'glyphicon glyphicon-trash');
+
+  	deleteButton.appendChild(newSpan);
+
+  	divContain.appendChild(deleteButton);
+  	traceContainer.appendChild(divContain);
   }
   if (traces.length == 0){
   	var newTrace = document.createElement('div');
@@ -40,16 +56,17 @@ function addTrace() {
 function addApp(){
 	var rowNumber = 1;
 	var rowsLeft = apps.length;
-	if(apps.length > 0){
-		rowsLeft = rowsLeft -3;
+	if(rowsLeft > 0){
+		rowsLeft = rowsLeft - 3;
 		addRow(rowNumber);
 		while(rowsLeft > 0){
+			rowsLeft = rowsLeft - 3;
 			rowNumber++;
 			addRow(rowNumber);
 		}
 		rowsId = 1;
 		for (var i = 0; i < apps.length; i++){
-			if((i+1) % 3 == 0){
+			if(i % 3 == 0 && i != 0 ){
 				rowsId++;
 			}
 			addButton('row'+ rowsId,apps[i][0]);

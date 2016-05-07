@@ -221,7 +221,9 @@ $_SESSION['app'] = $_GET['app'];
 							</h3>
 						</div>
                         <div class="panel-body">
-                            <div class="list-group" id="traceList"></div>
+                            <div class="list-group" id="traceList">
+   
+                            </div>
                         </div>
                     </div>
 				</div>
