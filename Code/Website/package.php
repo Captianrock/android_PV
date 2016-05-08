@@ -2,15 +2,14 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-$userName = $_SESSION['user'];
-
 $membership->confirmMember();
 
-if (isset($_GET['app'])){
-    $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
-} 
+$userName = $_SESSION['user'];
 
-$_SESSION['app'] = $_GET['app'];
+if (isset($_GET['trace']))
+{
+    $traceData = $methodExecVar->getTimes($_GET['trace']);
+}
 ?>
 <script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
 
@@ -98,7 +97,7 @@ $_SESSION['app'] = $_GET['app'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
+                                <i class="fa fa-dashboard"></i> <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
 							<li>
 								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
@@ -131,7 +130,7 @@ $_SESSION['app'] = $_GET['app'];
                             </h3>
                         </div>
                         <div class="panel-body">
-                            <div class="list-group" id="traceList"></div>
+                            <div class="list-group" id="packageList"></div>
 							<a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">View Charts</button></a>
                         </div>
                     </div>
@@ -155,7 +154,7 @@ $_SESSION['app'] = $_GET['app'];
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <script>selectSort('traceList', '0', 'new');</script>
+    <!-- <script>selectSort('traceList', '0', 'new');</script> -->
 </body>
 
 </html>

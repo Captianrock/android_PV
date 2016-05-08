@@ -82,6 +82,9 @@ $userName = $_SESSION['user'];
 						<a href="trace.php?app=<?php echo $_SESSION['app'] ?>"><i class="fa fa-database"></i> Traces</a>
 					</li>
 					<li>
+                        <a href="package.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-database"></i> Packages</a>
+                    </li>
+					<li>
                         <a href="tables.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
                     </li>
 					<li>
@@ -110,10 +113,13 @@ $userName = $_SESSION['user'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
+                                <i class="fa fa-dashboard"></i> <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
 							<li>
 								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
+							</li>
+							<li>
+								<i class="fa fa-database"></i> <a href="package.php?trace=<?php echo $_GET['trace'] ?>">Packages</a>
 							</li>
                             <li class="active">
                                 <i class="fa fa-bar-chart-o"></i> Charts

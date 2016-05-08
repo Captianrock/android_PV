@@ -2,9 +2,9 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-$userName = $_SESSION['user'];
-
 $membership->confirmMember();
+
+$userName = $_SESSION['user'];
 
 if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
@@ -95,7 +95,7 @@ $_SESSION['app'] = $_GET['app'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
+                                <i class="fa fa-dashboard"></i> <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-database"></i> Traces

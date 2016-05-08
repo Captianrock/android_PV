@@ -29,7 +29,7 @@ function addTrace() {
  		AmPm = "A.M";
  	}
   	newTrace.innerHTML = "Trace " + (traceName[i]+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
-  	newTrace.setAttribute('href','charts.php?trace=' + traceID);
+  	newTrace.setAttribute('href','package.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
   	newTrace.setAttribute('style',"width: 80%; float: left;");
   	divContain.appendChild(newTrace);
