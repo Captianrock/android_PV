@@ -11,6 +11,7 @@ public final class MBConstants {
     public static final String USER_DIR = "user.dir";
     public static final String ANDROID_TEST_DIR = "AndroidTest";
     public static final String BUILD_FAILED = "BUILD FAILED";
+    public static final String LOGCAT_SEP = "*!*";
 
     // To build module
     public static final String FIRST_HALF = "package com.test;\n\n" +
@@ -27,7 +28,7 @@ public final class MBConstants {
             "    long startTime, endTime;\n" +
             "\n" +
             "    public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {\n" +
-            "        XposedBridge.log(\"  Loaded app: \" + lpparam.packageName);\n" +
+            "        XposedBridge.log(\"" + LOGCAT_SEP + "Loaded app: \" + lpparam.packageName);\n" +
             "        \n" +
             "        if (!(lpparam.packageName.equals(\"";
     public static final String ANOTHER = "\") || lpparam.packageName.equals(\"";
@@ -64,7 +65,7 @@ public final class MBConstants {
             "                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n" +
             "\n" +
             "                        startTime = System.nanoTime();\n" +
-            "                        XposedBridge.log(clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
+            "                        XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                \".constructor::methodStart::\" + startTime);\n" +
             "                    }\n" +
             "\n" +
@@ -72,7 +73,7 @@ public final class MBConstants {
             "                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {\n" +
             "\n" +
             "                        endTime = System.nanoTime();\n" +
-            "                        XposedBridge.log(clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
+            "                        XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                \".constructor::methodEnd::\" + endTime);\n" +
             "                    }\n" +
             "                });\n" +
@@ -94,7 +95,7 @@ public final class MBConstants {
             "                                }\n" +
             "\n" +
             "                                startTime = System.nanoTime();\n" +
-            "                                XposedBridge.log(clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
+            "                                XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                        \".\" + method.getName() + \"(\" + paramString +\n" +
             "                                        \")::methodStart::\" + startTime);\n" +
             "                            }\n" +
@@ -112,7 +113,7 @@ public final class MBConstants {
             "                                }\n" +
             "\n" +
             "                                endTime = System.nanoTime();\n" +
-            "                                XposedBridge.log(clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
+            "                                XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                        \".\" + method.getName() + \"(\" + paramString +\n" +
             "                                        \")::methodEnd::\" + endTime);\n" +
             "                            }\n" +

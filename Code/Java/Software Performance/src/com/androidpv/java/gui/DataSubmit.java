@@ -39,13 +39,17 @@ public class DataSubmit extends JFrame{
         });
 
         stopDataBttn.addActionListener(ae ->{
-                new commandLine(adbPath);
+
+            // add check after commandLine to make sure data has no errors
+
+            commandLine cmdLine = new commandLine(adbPath);
+            boolean success = cmdLine.parseData();
+            if (success) {
                 dataCheck = true;
                 dataButton.setVisible(true);
                 stopDataBttn.setVisible(false);
-
-                }
-        );
+            }
+        });
         // Back button to previous view
         backButton.addActionListener(ae -> {
             PVView.getInstance().setVisible(true);
