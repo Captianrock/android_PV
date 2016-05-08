@@ -194,7 +194,7 @@ if($_GET['user'] != $_SESSION['user'])
                     </div>
                 </div>
                 <div class="row">
-                    <h2 class="animated fadeInUp" style="text-align: center">
+                    <h2 class="animated fadeInUp editable" style="text-align: center">
                         Welcome!
                     </h2>
                     <h3 class="animated fadeInUp" style="text-align: center">
@@ -218,8 +218,13 @@ if($_GET['user'] != $_SESSION['user'])
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
+    <script type="text/javascript">
+    $('#rowContainer').on('dblclick', 'div', function(e) {
+        console.log(e.target);
+    });
+    </script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>

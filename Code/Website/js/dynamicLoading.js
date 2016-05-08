@@ -92,6 +92,7 @@ function addButton(newRowId,appNameHeader){
 	var newPadding = document.createElement('div');
 	newPadding.setAttribute('class','col-md-4');
 	newPadding.setAttribute('style','padding-top: 50px; padding-left: 20px; padding-right: 20px;');
+	newPadding.setAttribute('ondblclick','reNameApp(\'' + appNameHeader + '\')');
 
 	newRow.appendChild(newPadding);
 
@@ -127,6 +128,7 @@ function addButton(newRowId,appNameHeader){
 
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
+
 	var appNameArray = appNameHeader.split(/(?=[A-Z])/);
 	var realName = "";
 	for(var j = 0; j < appNameArray.length; j++){
@@ -245,6 +247,12 @@ function oldAll(elementID)
 }
 
 function deleteTrace(traceID){
+	console.log("DELETE",traceID);
+
+
+}
+
+function reNameApp(appID){
 	console.log("DELETE",traceID);
 	$.ajax({
 	    type: "POST",

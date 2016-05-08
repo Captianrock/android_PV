@@ -1,0 +1,1 @@
+$('.editable').dblclick(function(e){ dblclickFunc(e, this);  })

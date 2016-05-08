@@ -11,10 +11,43 @@ class methodExec {
 				die('There was a problem with the database connection.');
 	}
 
-	function getTimes($time){
+	function getTimes($time,$selection){
 
 		$timesList = [];
-		$query = "SELECT *
+
+		$example = '(com.package),(alton.kim1)';
+		$tablequery = "DECLARE @listOfIDs table (package varchar(500));
+		INSERT @listOfIDs(id) values ?";  
+		if($create = $this->conn->prepare($tablequery)){
+			$result->bind_param('s',$example);
+			$result->execute();
+			$result->close();	
+		}
+		if($test = $this->conn->query("SELECT * FROM @listOfIDs")){
+			echo($test);
+		}
+		/*$query = "SELECT *
+					FROM data
+					WHERE traceId=? AND data.package in (SELECT id FROM @listofIDs";
+
+		if($result = $this->conn->prepare($query)){
+			$result->bind_param('s',$time);
+			$result->execute();
+			$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd,$package);
+			while($result->fetch()){
+				$timesList[] = array($traceId,$name,$methodStart,$methodEnd,$package);
+			}
+			$result->close();
+		}*/
+
+   		$this->conn->close();
+
+		return $timesList;
+	}
+	function getPackage($time){
+
+		$timesList = [];
+		$query = "SELECT DISTINCT package
 					FROM data
 					WHERE traceId=?";
 
@@ -32,6 +65,7 @@ class methodExec {
 
 		return $timesList;
 	}
+
 
 	function getTraces($appName,$user){
 		$traceList = [];
