@@ -21,9 +21,9 @@ class methodExec {
 		if($result = $this->conn->prepare($query)){
 			$result->bind_param('s',$time);
 			$result->execute();
-			$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd);
+			$result->bind_result($id,$traceId,$name,$methodStart,$methodEnd,$package);
 			while($result->fetch()){
-				$timesList[] = array($traceId,$name,$methodStart,$methodEnd);
+				$timesList[] = array($traceId,$name,$methodStart,$methodEnd,$package);
 			}
 			$result->close();
 		}

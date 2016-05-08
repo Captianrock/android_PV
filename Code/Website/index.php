@@ -37,6 +37,7 @@ if($_GET['user'] != $_SESSION['user'])
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
 	<link href="css/style2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -191,6 +192,15 @@ if($_GET['user'] != $_SESSION['user'])
                             </li>
                         </ol>
                     </div>
+                </div>
+                <div class="row">
+                    <h2 class="animated fadeInUp" style="text-align: center">
+                        Welcome!
+                    </h2>
+                    <h3 class="animated fadeInUp" style="text-align: center">
+                    Welcome to the home page of the Android Performance Visualization! To view your data select the "View Details" button. If you would like to
+                    rename your application. Just double click on the button!    
+                    </h3>
                 </div>
                 <!-- /.row -->
                 <div id="rowContainer">

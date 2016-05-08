@@ -137,7 +137,7 @@ function addButton(newRowId,appNameHeader){
 	newCol2.appendChild(appName);
 
 	var link = document.createElement('div');
-	link.innerHTML = 'View charts';
+	link.innerHTML = 'High Charts Analysis';
 
 	newCol2.appendChild(link);
 
