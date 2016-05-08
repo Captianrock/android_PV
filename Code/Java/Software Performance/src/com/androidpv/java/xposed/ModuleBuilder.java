@@ -60,7 +60,7 @@ public class ModuleBuilder {
 
                 APKBuilder builder = new APKBuilder();
 
-                boolean pingSuccess = builder.tryPing(adbLoc);
+                boolean pingSuccess = builder.ping(adbLoc, File.separator);
                 if (pingSuccess) {
 
                     if (!apk.equals("")) {

@@ -15,18 +15,6 @@ public class APKBuilder {
 
     public APKBuilder() { }
 
-    public boolean tryPing(String adbLoc) {
-        boolean success = ping(adbLoc, "/");
-
-        if (!success) {
-            success = ping(adbLoc, "\\");
-            if (!success) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public boolean ping(String adbLoc, String slash) {
 
         List<String> pingCommands = new ArrayList<>();
@@ -83,6 +71,8 @@ public class APKBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "local.properties")));
+//            sdkLoc = sdkLoc.replace("\\", "\\\\");
+//            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
             writer.println("sdk.dir = " + sdkLoc);
             writer.close();
         } catch (IOException e) {
