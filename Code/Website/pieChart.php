@@ -12,6 +12,12 @@ if (isset($_GET['trace']))
     $traceData = $methodExecVar->getTimes($_GET['trace']);
 }
 
+if (strpos($_GET['trace'], $_SESSION['user']) === false)
+{
+	$redirect = 'location: index.php?user=' . $_SESSION['user'];
+    header($redirect);
+}
+
 $userName = $_SESSION['user'];
 ?>
 
