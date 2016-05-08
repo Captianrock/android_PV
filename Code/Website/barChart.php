@@ -12,6 +12,12 @@ if (isset($_GET['trace']))
     $traceData = $methodExecVar->getTimes($_GET['trace']);
 }
 
+if (strpos($_GET['trace'], $_SESSION['user']) === false)
+{
+	$redirect = 'location: index.php?user=' . $_SESSION['user'];
+    header($redirect);
+}
+
 $userName = $_SESSION['user'];
 ?>
 
@@ -56,107 +62,17 @@ $userName = $_SESSION['user'];
                 </button>
                 <a class="navbar-brand" href="index.php?user=<?php echo $userName ?>">Android Performance Visualizer</a>
             </div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-footer">
-                            <a href="#">Read All New Messages</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+			<!-- Top Menu Items -->
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
@@ -166,6 +82,9 @@ $userName = $_SESSION['user'];
 					<li>
 						<a href="trace.php?app=<?php echo $_SESSION['app'] ?>"><i class="fa fa-database"></i> Traces</a>
 					</li>
+					<li>
+                        <a href="package.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-database"></i> Packages</a>
+                    </li>
 					<li>
                         <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
@@ -198,10 +117,13 @@ $userName = $_SESSION['user'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
+                                <i class="fa fa-dashboard"></i> <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
 							<li>
 								<i class="fa fa-database"></i> <a href="trace.php?app=<?php echo $_SESSION['app'] ?>">Traces</a>
+							</li>
+							<li>
+								<i class="fa fa-database"></i> <a href="package.php?trace=<?php echo $_GET['trace'] ?>">Packages</a>
 							</li>
                             <li>
                                 <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
