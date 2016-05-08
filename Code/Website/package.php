@@ -8,10 +8,10 @@ $userName = $_SESSION['user'];
 
 if (isset($_GET['trace']))
 {
-    $traceData = $methodExecVar->getTimes($_GET['trace']);
+    $packageData = $methodExecVar->getPackage($_GET['trace']);
 }
 ?>
-<script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
+<script type="text/javascript">var packages = <?php echo json_encode(str_replace('"','\'',$packageData)); ?>;</script>
 
 <!DOCTYPE html>
 
@@ -119,10 +119,10 @@ if (isset($_GET['trace']))
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Packages <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="#">Select All</a>
+                                                <a id="rowSelectAll">Select All</a>
                                             </li>
                                             <li>
-                                                <a href="#">Deselect All</a>
+                                                <a id="rowDeselectAll">Deselect All</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -131,17 +131,9 @@ if (isset($_GET['trace']))
                         </div>
                         <div class="panel-body">
                             <!-- <div class="list-group" id="packageList"></div> -->
-							<div class="checkbox">
-								<!-- Check example below. Alton, go to http://stackoverflow.com/questions/25143083/check-uncheck-bootstrap-checkboxes-with-jquery for javascript checkbox stuff -->
-								<!-- checkbox-inline class is also an option -->
-								<label><input type="checkbox" value="" id="checkbox1" style="width:18px; height:18px;" checked><font size="5">Package 1</font></label>
-							</div>
-							<div class="checkbox">
-								<label><input type="checkbox" value="" id="checkbox2" style="width:18px; height:18px;"><font size="5">Package 2</font></label>
-							</div>
-							<div class="checkbox">
-								<label><input type="checkbox" value="" id="checkbox3" style="width:18px; height:18px;"><font size="5"> Package 3</font></label>
-							</div>
+                            <div id="checkboxList">
+
+                            </div>
 							<a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">View Charts</button></a>
                         </div>
                     </div>
@@ -165,7 +157,7 @@ if (isset($_GET['trace']))
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <!-- <script>selectSort('traceList', '0', 'new');</script> -->
+    <script>addPackage();</script>
 </body>
 
 </html>

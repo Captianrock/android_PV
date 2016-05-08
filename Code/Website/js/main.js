@@ -1,7 +1,5 @@
 function buildCSV() {
 
-	console.log(jsArray);
-
 	var array = JSON.parse(JSON.stringify(jsArray));
 	var str = '';
 
@@ -25,8 +23,6 @@ function buildCSV() {
 }
 
 function buildPDF() {
-
-	console.log(jsArray);
 
 	var doc = new jsPDF();
 	
