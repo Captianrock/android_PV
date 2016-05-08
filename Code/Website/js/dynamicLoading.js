@@ -173,86 +173,37 @@ function addButton(newRowId,appNameHeader){
 	classAPanel.appendChild(newFix);
 }
 
-function newTen(elementID)
-{
-    document.getElementById(elementID).innerHTML = "";
-    traceName.length = 0;
+function addPackage(){
+  var checkList = document.getElementById("checkboxList");
+  for(var i =0; i < packages.length; i++){
+    var checkBox = document.createElement('div');
+    checkBox.setAttribute('class','checkbox');
+    checkboxList.appendChild(checkBox);
 
-    traces = trace2.slice();
+    var newLabel = document.createElement('label');
+    var newInput = document.createElement('input');
+    newInput.setAttribute('type','checkbox');
+    newInput.setAttribute('value','');
+    newInput.setAttribute('style','width:18px; height:18px;');
+    newInput.setAttribute('id',packages[i]);
+    newInput.setAttribute('checked',"");
+    var newFont = document.createElement('font');
+    newFont.innerHTML = packages[i].toString();
+    newFont.setAttribute('size','5');
 
-    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
-
-    for (i = traces.length; i > 0; i--) {
-        traceName[traces.length - i] = i - 1;
-    }
-
-    if (traces.length > 10)
-    {
-        traces.length = 10;
-    }
-
-    addTrace();
-}
-
-function oldTen(elementID)
-{
-    document.getElementById(elementID).innerHTML = "";
-    traceName.length = 0;
-
-    traces = trace2.slice();
-
-    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
-
-    for (i = 0; i < traces.length; i++) {
-        traceName[i] = i;
-    }
-
-    if (traces.length > 10) {
-        traces.length = 10;
-    }
-
-    addTrace();
-}
-
-function newAll(elementID)
-{
-    document.getElementById(elementID).innerHTML = "";
-    traceName.length = 0;
-
-    traces = trace2.slice();
-
-    traces.sort(function (a, b) { return ((a[1] > b[1]) ? -1 : ((a[1] < b[1]) ? 1 : 0)) });
-
-    for (i = traces.length; i > 0; i--) {
-        traceName[traces.length - i] = i - 1;
-    }
-
-    addTrace();
-}
-
-function oldAll(elementID)
-{
-    document.getElementById(elementID).innerHTML = "";
-    traceName.length = 0;
-    
-    traces = trace2.slice();
-
-    traces.sort(function (a, b) { return ((a[1] < b[1]) ? -1 : ((a[1] > b[1]) ? 1 : 0)) });
-
-    for (i = 0; i < traces.length; i++) {
-        traceName[i] = i;
-    }
-
-    addTrace();
-}
-
-function deleteTrace(traceID){
-	console.log("DELETE",traceID);
-
-
+    newLabel.appendChild(newInput);
+    newLabel.appendChild(newFont);
+    checkBox.appendChild(newLabel);
+  }
 }
 
 function reNameApp(appID){
+	console.log("rename",appID);
+
+
+}
+
+function deleteTrace(traceID){
 	console.log("DELETE",traceID);
 	$.ajax({
 	    type: "POST",
@@ -275,7 +226,6 @@ function reNameApp(appID){
 	for(var i = 0; i < trace2.length; i++){
 		if(trace2[i][0] == traceID){
 			trace2.splice(i,1);
-			console.log(trace2);
 		}	
 	}
  	selectSort('traceList');
