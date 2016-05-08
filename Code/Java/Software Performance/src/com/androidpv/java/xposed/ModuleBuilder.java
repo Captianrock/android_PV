@@ -82,7 +82,9 @@ public class ModuleBuilder {
 
                         if (apkSuccess) {
 
-                            int reply = JOptionPane.showConfirmDialog(null, "Your module is ready.\nPlease restart device.\nWould you like to switch views?", "Submit View", JOptionPane.OK_OPTION);
+                            int reply = JOptionPane.showConfirmDialog(null,
+                                    "Your module is ready.\nPlease restart device.\nWould you like to switch views?",
+                                    "Submit View", JOptionPane.OK_OPTION);
                             if (reply == JOptionPane.OK_OPTION) {
                                 DataSubmit.instance = new DataSubmit(uName, adbDir);
                                 PVView.getInstance().setVisible(false);
