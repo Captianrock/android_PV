@@ -133,6 +133,7 @@ if (isset($_GET['trace']))
                             <!-- <div class="list-group" id="packageList"></div> -->
 							<div class="checkbox">
 								<!-- Check example below. Alton, go to http://stackoverflow.com/questions/25143083/check-uncheck-bootstrap-checkboxes-with-jquery for javascript checkbox stuff -->
+								<!-- checkbox-inline class is also an option -->
 								<label><input type="checkbox" value="" id="checkbox1" style="width:18px; height:18px;" checked><font size="5">Package 1</font></label>
 							</div>
 							<div class="checkbox">
