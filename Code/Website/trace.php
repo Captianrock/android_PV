@@ -2,9 +2,9 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
-$userName = $_SESSION['user'];
-
 $membership->confirmMember();
+
+$userName = $_SESSION['user'];
 
 if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
@@ -33,7 +33,7 @@ $_SESSION['app'] = $_GET['app'];
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
-	<link href="css/style2.css" rel="stylesheet">
+    <link href="css/style2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -58,106 +58,16 @@ $_SESSION['app'] = $_GET['app'];
                 <a class="navbar-brand" href="index.php?user=<?php echo $userName ?> "> <img class ="pull-left" src="images\logo.png"  align="middle" style=" max-height:150%; max-width:110%" hspace="20"></img> <font size="6">Android Performance Visualizer</font></a>
             </div>
             <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading"><strong><?php echo $userName ?></strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-footer">
-                            <a href="#">Read All New Messages</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $userName ?> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="login.php?status=loggedout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -185,47 +95,51 @@ $_SESSION['app'] = $_GET['app'];
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.php?user=<?php echo $userName ?>">Home</a>
+                                <i class="fa fa-dashboard"></i> <a href="index.php?user=<?php echo $userName ?>">Home</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-database"></i> Trace
+                                <i class="fa fa-database"></i> Traces
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 
-				<div class="row col-lg-12">
-					<div class="panel panel-info">
+                <div class="row col-lg-12">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
                             <h3 class="panel-title" style="height:20px;">
-								<div class="col-lg-1">
-									<div class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
-										<ul class="dropdown-menu">
-											<li>
-												<a href="#" onclick="newTen('traceList')">Ten newest traces</a>
-											</li>
-											<li>
-												<a href="#" onclick="oldTen('traceList')">Ten oldest traces</a>
-											</li>
-											<li>
-												<a href="#" onclick="newAll('traceList')">Newest to Oldest</a>
-											</li>
-											<li>
-												<a href="#" onclick="oldAll('traceList')">Oldest to Newest</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</h3>
-						</div>
+                                <div class="col-lg-1">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Traces <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'new')">Ten newest traces</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'old')">Ten oldest traces</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'allNew')">Newest to Oldest</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" onclick="selectSort('traceList', '0', 'allOld')">Oldest to Newest</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </h3>
+                        </div>
                         <div class="panel-body">
                             <div class="list-group" id="traceList"></div>
+                            <ul class="pager" style="padding-left: 30px; padding-right: 30px;">
+                                <li class="previous"><a href="#" onclick="selectSort('traceList', '-')">Previous</a></li>
+                                <li class="next"><a href="#" onclick="selectSort('traceList', '+')">Next</a></li>
+                            </ul>
                         </div>
                     </div>
-				</div>
-				<!-- /.row -->
+                </div>
+                <!-- /.row -->
 
             </div>
             <!-- /.container-fluid -->
@@ -244,7 +158,7 @@ $_SESSION['app'] = $_GET['app'];
     <script src="js/main.js"></script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
-    <script>newTen('traceList');</script>
+    <script>selectSort('traceList', '0', 'new');</script>
 </body>
 
 </html>

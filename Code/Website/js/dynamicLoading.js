@@ -1,5 +1,7 @@
 var traceName = [];
 var trace2 = traces.slice(0);
+var page = 0;
+var sort = 'new';
 
 function addTrace() {
 
@@ -7,6 +9,7 @@ function addTrace() {
   for(var i = 0; i < traces.length; i++){
   	var traceID = traces[i][0];
   	var time = traces[i][1];
+  	var divContain = document.createElement('div');
   	var newTrace = document.createElement('a');
   	arrayofString = time.split(" ");
   	arraydate = arrayofString[0];
@@ -26,9 +29,26 @@ function addTrace() {
  		AmPm = "A.M";
  	}
   	newTrace.innerHTML = "Trace " + (traceName[i]+1) + " recorded on " + arraydate+ " at "+ time + ":" + arraytime[1] + ":" + arraytime[2] + " "+ AmPm;
-  	newTrace.setAttribute('href','charts.php?trace=' + traceID);
+  	newTrace.setAttribute('href','package.php?trace=' + traceID);
   	newTrace.setAttribute('class','list-group-item');
-  	traceContainer.appendChild(newTrace);
+  	newTrace.setAttribute('style',"width: 80%; float: left;");
+  	divContain.appendChild(newTrace);
+
+  	var deleteButton = document.createElement('button');
+  	deleteButton.setAttribute('type','button');
+  	deleteButton.setAttribute('id',traceID);
+  	deleteButton.setAttribute('class','btn btn-danger');
+  	deleteButton.setAttribute('style',"margin-left: 50px; margin-top: 10px;");
+  	deleteButton.setAttribute('onclick','deleteTrace(\'' + traceID + '\')');
+  	deleteButton.innerHTML = "Remove Trace";
+
+  	var newSpan = document.createElement('span');
+  	newSpan.setAttribute('class', 'glyphicon glyphicon-trash');
+
+  	deleteButton.appendChild(newSpan);
+
+  	divContain.appendChild(deleteButton);
+  	traceContainer.appendChild(divContain);
   }
   if (traces.length == 0){
   	var newTrace = document.createElement('div');
@@ -40,16 +60,17 @@ function addTrace() {
 function addApp(){
 	var rowNumber = 1;
 	var rowsLeft = apps.length;
-	if(apps.length > 0){
-		rowsLeft = rowsLeft -3;
+	if(rowsLeft > 0){
+		rowsLeft = rowsLeft - 3;
 		addRow(rowNumber);
 		while(rowsLeft > 0){
+			rowsLeft = rowsLeft - 3;
 			rowNumber++;
 			addRow(rowNumber);
 		}
 		rowsId = 1;
 		for (var i = 0; i < apps.length; i++){
-			if((i+1) % 3 == 0){
+			if(i % 3 == 0 && i != 0 ){
 				rowsId++;
 			}
 			addButton('row'+ rowsId,apps[i][0]);
@@ -71,6 +92,7 @@ function addButton(newRowId,appNameHeader){
 	var newPadding = document.createElement('div');
 	newPadding.setAttribute('class','col-md-4');
 	newPadding.setAttribute('style','padding-top: 50px; padding-left: 20px; padding-right: 20px;');
+	newPadding.setAttribute('ondblclick','reNameApp(\'' + appNameHeader + '\')');
 
 	newRow.appendChild(newPadding);
 
@@ -106,6 +128,7 @@ function addButton(newRowId,appNameHeader){
 
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
+
 	var appNameArray = appNameHeader.split(/(?=[A-Z])/);
 	var realName = "";
 	for(var j = 0; j < appNameArray.length; j++){
@@ -116,7 +139,7 @@ function addButton(newRowId,appNameHeader){
 	newCol2.appendChild(appName);
 
 	var link = document.createElement('div');
-	link.innerHTML = 'View charts';
+	link.innerHTML = 'High Charts Analysis';
 
 	newCol2.appendChild(link);
 
@@ -150,6 +173,104 @@ function addButton(newRowId,appNameHeader){
 	classAPanel.appendChild(newFix);
 }
 
+function addPackage(){
+  var checkList = document.getElementById("checkboxList");
+  for(var i =0; i < packages.length; i++){
+    var checkBox = document.createElement('div');
+    checkBox.setAttribute('class','checkbox');
+    checkboxList.appendChild(checkBox);
+
+    var newLabel = document.createElement('label');
+    var newInput = document.createElement('input');
+    newInput.setAttribute('type','checkbox');
+    newInput.setAttribute('value','');
+    newInput.setAttribute('style','width:18px; height:18px;');
+    newInput.setAttribute('id',packages[i]);
+    newInput.setAttribute('checked',"");
+    var newFont = document.createElement('font');
+    newFont.innerHTML = packages[i].toString();
+    newFont.setAttribute('size','5');
+
+    newLabel.appendChild(newInput);
+    newLabel.appendChild(newFont);
+    checkBox.appendChild(newLabel);
+  }
+}
+
+function reNameApp(appID){
+	console.log("rename",appID);
+
+
+}
+
+function deleteTrace(traceID){
+	console.log("DELETE",traceID);
+	$.ajax({
+	    type: "POST",
+	    url: 'classes/databaseChanges.php',
+	    dataType: 'json',
+	    data: {functionname: 'deleteTrace', arguments: traceID},
+		complete: function(jqXHR, textStatus) {
+		    console.log('AJAX call complete');
+		    traceID
+		},
+	    success: function (obj, textstatus) {
+	                  if( !('error' in obj) ) {
+	                  	console.log("SUCCESS");
+	                  }
+	                  else {
+	                  	console.log(obj.error);
+	                  }
+	    			}
+	});
+	for(var i = 0; i < trace2.length; i++){
+		if(trace2[i][0] == traceID){
+			trace2.splice(i,1);
+		}	
+	}
+ 	selectSort('traceList');
+}
+
+function selectSort(elementID, page2, sort2)
+{
+    sort2 = sort2 || sort;
+    page2 = page2 || page.toString();
+
+    if (page2 == '-')
+    {
+        page--;
+        if (page < 0)
+        {
+            page = 0;
+        }
+    }
+    else if (page2 == '+')
+    {
+        page++;
+    }
+    else if (parseInt(page2) == 0)
+    {
+        page = 0;
+    }
+
+    sort = sort2;
+
+    if (sort == 'old') {
+        oldTen(elementID, sort, page);
+    }
+    else if (sort == 'new') {
+        newTen(elementID, sort, page);
+    }
+    else if (sort == 'allOld')
+    {
+        oldAll(elementID);
+    }
+    else if (sort == 'allNew')
+    {
+        newAll(elementID);
+    }
+}
+
 function newTen(elementID)
 {
     document.getElementById(elementID).innerHTML = "";
@@ -161,6 +282,15 @@ function newTen(elementID)
 
     for (i = traces.length; i > 0; i--) {
         traceName[traces.length - i] = i - 1;
+    }
+
+    if (traces.length <= page * 10)
+    {
+        page--;
+    }
+    for (i = 0; i < page * 10; i++) {
+        traces.shift();
+        traceName.shift();
     }
 
     if (traces.length > 10)
@@ -182,6 +312,14 @@ function oldTen(elementID)
 
     for (i = 0; i < traces.length; i++) {
         traceName[i] = i;
+    }
+
+    if (traces.length <= page * 10) {
+        page--;
+    }
+    for (i = 0; i < page * 10; i++) {
+        traces.shift();
+        traceName.shift();
     }
 
     if (traces.length > 10) {

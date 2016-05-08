@@ -100,7 +100,8 @@ $(function () {
 
 	if (jsArray.length >= 300)
 	{
-		text = '<span style="text-decoration: underline;">Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/></span>';
+	    text = '<span style="text-decoration: underline;">Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the legend.<br/></span>';
+	    alert("Warning: The trace data contains an extremely large amount of methods, the webpage may become temporarily unresponsive while using the pie-chart's legend.");
 	}
 
     // Create the chart
