@@ -65,3 +65,14 @@ function checkFilter(){
 	console.log(stringofPackages);
 	selectionList.setAttribute('href','charts.php?trace='+traceID+'&package='+stringofPackages);
 }
+function toggle(source) {
+  checkboxes = document.getElementsByName('checkPackage');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    if(source == "unCheck"){
+    	checkboxes[i].checked = false;
+	}
+	else{
+		checkboxes[i].checked = true;
+	}
+  }
+}

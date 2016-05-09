@@ -119,10 +119,10 @@ if (isset($_GET['trace']))
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Packages <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a id="rowSelectAll">Select All</a>
+                                                <a onClick="toggle('select')">Select All</a>
                                             </li>
                                             <li>
-                                                <a id="rowDeselectAll">Deselect All</a>
+                                                <a onClick="toggle('unCheck')">Deselect All</a>
                                             </li>
                                         </ul>
                                     </div>

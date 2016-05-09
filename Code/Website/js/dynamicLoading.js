@@ -186,6 +186,7 @@ function addPackage(){
     newInput.setAttribute('value','');
     newInput.setAttribute('style','width:18px; height:18px;');
     newInput.setAttribute('id',packages[i]);
+    newInput.setAttribute('name','checkPackage');
     newInput.setAttribute('checked',"");
     var newFont = document.createElement('font');
     newFont.innerHTML = packages[i].toString();
