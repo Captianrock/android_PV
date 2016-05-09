@@ -72,41 +72,77 @@ callQueue.sort(function(a, b){return parseFloat(b.O) - parseFloat(a.O)});
 
 var maxNames = function(i)
 {
-    return maxQueue[i].N;
+    if (i < maxQueue.length)
+    {
+        return maxQueue[i].N;
+    }
+    return "";
 };
 var maxTimes = function(i)
 {
-    return maxQueue[i].T;
+    if (i < maxQueue.length)
+    {
+        return maxQueue[i].T;
+    }
+    return "";
 };
 var maxOccurences = function(i)
 {
-    return maxQueue[i].O;
+    if (i < maxQueue.length)
+    {
+        return maxQueue[i].O;
+    }
+    return "";
 };
 
 var minNames = function(i)
 {
-    return minQueue[i].N;
+    if (i < minQueue.length)
+    {
+        return minQueue[i].N;
+    }
+    return "";
 };
 var minTimes = function(i)
 {
-    return minQueue[i].T;
+    if (i < minQueue.length)
+    {
+        return minQueue[i].T;
+    }
+    return "";
 };
 var minOccurences = function(i)
 {
-    return minQueue[i].O;
+    if (i < minQueue.length)
+    {
+        return minQueue[i].O;
+    }
+    return "";
 };
 
 var callNames = function(i)
 {
-    return callQueue[i].N;
+    if (i < callQueue.length)
+    {
+        return callQueue[i].N;
+    }
+    return "";
 };
 var callTimes = function(i)
 {
-    return callQueue[i].T;
+    if (i < callQueue.length)
+    {
+        return callQueue[i].T;
+    }
+    return "";
 };
 var callOccurences = function(i)
 {
-    return callQueue[i].O;
+    if (i < callQueue.length)
+    {
+        return callQueue[i].O;
+    }
+    return "";
 };
 
 document.getElementById( 'maxName1' ).innerHTML = maxNames(0);

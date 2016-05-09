@@ -111,10 +111,10 @@ var currentApp; </script>
                     <h2 class="animated fadeInUp editable" style="text-align: center">
                         Welcome!
                     </h2>
-                    <h3 class="animated fadeInUp" style="text-align: center">
+                    <h4 class="animated fadeInUp" style="text-align: center">
                     Welcome to the home page of the Android Performance Visualization! To view your data select the "View Details" button. If you would like to
                     rename your application. Just double click on the button!    
-                    </h3>
+                    </h4>
                 </div>
                 <!-- /.row -->
                 <div id="rowContainer">
