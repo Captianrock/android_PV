@@ -2,7 +2,6 @@ package com.androidpv.java.codeParser;
 
 import com.androidpv.java.gui.DataSubmit;
 import com.androidpv.java.xposed.MBConstants;
-import com.mysql.fabric.xmlrpc.base.Data;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,8 +21,6 @@ public class commandLine {
     }
 
     private void getLogcat() {
-
-        String currentDir = System.getProperty("user.dir");
 
         List<String> deployCommands = new ArrayList<>();
         ProcessBuilder deployPB = new ProcessBuilder();
@@ -83,7 +80,6 @@ public class commandLine {
     private void buildCleanFile() {
 
         try {
-            String currentDir = System.getProperty("user.dir");
 
             BufferedReader reader = new BufferedReader(new FileReader(MBConstants.DIRTY_FILE));
             BufferedWriter writer = new BufferedWriter(new FileWriter(MBConstants.CLEAN_FILE));
@@ -117,7 +113,6 @@ public class commandLine {
             e.printStackTrace();
         }
     }
-
 
 
     // read through data.txt to make sure everything worked
@@ -171,6 +166,5 @@ public class commandLine {
         }
         return true;
     }
-
 
 }

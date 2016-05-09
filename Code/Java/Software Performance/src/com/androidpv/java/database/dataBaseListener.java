@@ -116,7 +116,7 @@ public class dataBaseListener {
         Statement stmt;
         ResultSet rs;
         ResultSet userRs;
-        String oldFileName = "data.txt";
+        String oldFileName = MBConstants.CLEAN_FILE;
         BufferedReader br = null;
         BufferedWriter bw = null;
         DataSubmit ds = DataSubmit.instance;
