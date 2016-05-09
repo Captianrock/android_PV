@@ -33,6 +33,7 @@ if (isset($_GET['trace']))
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/style2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -109,7 +110,14 @@ if (isset($_GET['trace']))
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div class="row">
+                    <h2 class="animated fadeInUp" style="text-align: center">
+                        Filter Packages
+                    </h3>
+                    <h3 class="animated fadeInUp" style="text-align: center">
+                        Please select the packages that will appear in the data.
+                    </h3>
+                </div>
                 <div class="row col-lg-12">
                     <div class="panel panel-info">
                         <div class="panel-heading">

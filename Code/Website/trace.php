@@ -8,11 +8,23 @@ $userName = $_SESSION['user'];
 
 if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
+    $stringofTraces = "";
+    for ($x = 0; $x < count($traceData); $x++) {
+        $tempResult = implode(",", $traceData[$x]);
+        $tempResult2 = explode(",", $tempResult);
+        $stringofTraces .= '(\''.$tempResult2[0].'\'),';
+    } 
+    $stringofTraces = chop($stringofTraces,',');
+
+    $maxMethod = $methodExecVar->getMaxMethod($stringofTraces);
 } 
+
+
 
 $_SESSION['app'] = $_GET['app'];
 ?>
-<script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
+<script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;
+var maxMethod = <?php echo json_encode($maxMethod); ?>;</script>
 
 <!DOCTYPE html>
 
@@ -34,6 +46,7 @@ $_SESSION['app'] = $_GET['app'];
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/style2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -103,6 +116,13 @@ $_SESSION['app'] = $_GET['app'];
                         </ol>
                     </div>
                 </div>
+                <div class="row">
+                    <h2 class="animated fadeInUp" style="text-align: center">
+                        Browse Individual Traces
+                    </h3>
+                    <h3 id="fillMax" class="animated fadeInUp" style="text-align: center">
+                    </h3>
+                </div>
                 <!-- /.row -->
 
                 <div class="row col-lg-12">
@@ -159,6 +179,7 @@ $_SESSION['app'] = $_GET['app'];
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
     <script>selectSort('traceList', '0', 'new');</script>
+    <script>getMaxMethod(maxMethod);</script>
 </body>
 
 </html>

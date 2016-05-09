@@ -29,7 +29,7 @@ class methodExec {
 		$query = "SELECT *
 					FROM data
 					WHERE traceId=? AND data.package in (SELECT package FROM temp_table_1)";
-					
+
 		if($result = $this->conn->query($tablequery)){
 			echo "Temp Table Created\n";
 		}
@@ -99,7 +99,6 @@ class methodExec {
 			}
 			$result->close();
 		}
-   		$this->conn->close();
 		return $traceList;
 	}
 
@@ -120,9 +119,79 @@ class methodExec {
    		$this->conn->close();
 		return $traceList;
 	}
+	function getMaxMethod($traceList){
+		$resultList = [];
+		echo($traceList);
+		$tablequery = "
+		CREATE TEMPORARY TABLE temp_list (
+      	`id` varchar(500)
+    	)
+  		";
+  		
+  		$insertQuery = "INSERT INTO temp_list (id)
+  		VALUES ".$traceList;
+		
+		$query = "SELECT methodName, timeDiff
+		FROM (SELECT methodName, SUM(timeEnd - timeStart) AS timeDiff
+				FROM data
+				WHERE traceId IN (SELECT id FROM temp_list)
+				GROUP BY methodName) as times
+        ORDER BY times.timeDiff DESC LIMIT 1
+		";
+
+		$dumb = "SELECT * FROM temp_list";
+
+  		if($result = $this->conn->query($tablequery)){
+			echo "Temp Table Created\n";
+		}
+		else{
+			trigger_error("Query Failed! SQL: $tablequery - Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		}
+		if($test = $this->conn->query($insertQuery)){
+			echo "Insert Success\n";
+		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
+		if($agh = $this->conn->query($dumb)){
+			echo "Dumb Success\n";
+			echo($agh->fetch_row()[0]);
+		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
+		if($res = $this->conn->query($query)){
+			echo "Select Success\n";
+			while($save = $res->fetch_row()){
+				$resultList[] = $save;
+			}
+		}
+		else{
+			trigger_error("Query Failed! SQL: $query- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
+
+		return $resultList;
+
+	}
 }
 
 $methodExecVar = new methodExec();
+/*
+CREATE TEMPORARY TABLE temp_list (
+ `id` varchar(500)
+);
+
+INSERT INTO temp_list (id)
+  		VALUES ('erinNPRNews28/04/16-16:41:58');
+
+SELECT methodName, timeDiff
+FROM (SELECT methodName, SUM(timeEnd - timeStart) AS timeDiff
+		FROM data
+		WHERE traceId IN (SELECT * FROM temp_list)
+		GROUP BY methodName) as times
+        ORDER BY times.timeDiff DESC LIMIT 1
+*/
 ?>
 
 <script type="text/javascript" src="js/main.js"></script>
+

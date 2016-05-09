@@ -322,3 +322,9 @@ function oldAll(elementID)
 
     addTrace();
 }
+
+function getMaxMethod(maxMethod){
+  var header = document.getElementById('fillMax');
+  console.log(maxMethod);
+  header.innerHTML = "Out of all the traces, the most time consuming method on average is " +maxMethod[0][0].bold() + " with a computational time of " + maxMethod[0][1].bold() + " miliseconds";  
+}
