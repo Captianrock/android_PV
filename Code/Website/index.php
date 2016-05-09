@@ -16,7 +16,10 @@ if($_GET['user'] != $_SESSION['user'])
     header($redirect);
 } 
 ?>
-<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
+<script type="text/javascript">
+var apps = <?php echo json_encode($appList); ?>;
+var name = '<?php echo $_GET['user']; ?>'; 
+var currentApp; </script> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -127,50 +130,45 @@ if($_GET['user'] != $_SESSION['user'])
 
     </div>
     <!-- /#wrapper -->
-
-	<!-- Modal -->
-	<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" 
-		 aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<button type="button" class="close" 
-					   data-dismiss="modal">
-						   <span aria-hidden="true">&times;</span>
-						   <span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">
-						Change App Name
-					</h4>
-				</div>
-            
-				<!-- Modal Body -->
-				<div class="modal-body">
-					<form role="form">
-					  <div class="form-group">
-						<label for="exampleInputEmail1">App Name</label>
-						  <input type="appName" class="form-control" id="nameInput" placeholder="Enter New Name"/>
-					  </div>
-					</form>
-				</div>
-            
-				<!-- Modal Footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-    <!-- jQuery -->
+    <!-- Modal -->
+   <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" 
+        aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <!-- Modal Header -->
+               <div class="modal-header">
+                   <a class="close" 
+                      data-dismiss="modal">
+                          <span aria-hidden="true">&times;</span>
+                          <span class="sr-only">Close</span>
+                   </a>
+                   <h4 class="modal-title" id="myModalLabel">
+                       Change App Name
+                   </h4>
+               </div>
+             
+               <!-- Modal Body -->
+               <div class="modal-body">
+                   <form role="form">
+                     <div class="form-group">
+                       <label for="exampleInputEmail1">App Name</label>
+                         <input type="appName" class="form-control" id="nameInput" placeholder="Enter New Name"/>
+                     </div>
+                   </form>
+               </div>
+             
+               <!-- Modal Footer -->
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-primary" onClick="reNameApp()" data-dismiss="modal" >Save changes</button>
+               </div>
+           </div>
+       </div>
+   </div>
+   <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
     <script type="text/javascript">
-    $('#rowContainer').on('dblclick', 'div', function(e) {
-        $('#renameModal').modal('show');
-    });
     </script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
@@ -178,7 +176,6 @@ if($_GET['user'] != $_SESSION['user'])
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
     <script>addApp();</script>
-    <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>
 

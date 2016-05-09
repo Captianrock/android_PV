@@ -21,6 +21,14 @@ if( !isset($aResult['error']) ) {
               $aResult['result'] = deleteTrace($_POST['arguments']);
            }
            break;
+        case 'updateAppName':
+           if( !is_array($_POST['arguments']) ) {
+               $aResult['error'] = 'Error in arguments!';
+           }
+           else {
+              $aResult['result'] = updateAppName($_POST['arguments']);
+           }
+           break;
 
         default:
            $aResult['error'] = 'Not found function '.$_POST['functionname'].'!';
@@ -30,7 +38,6 @@ if( !isset($aResult['error']) ) {
 echo json_encode($aResult);
 
 function deleteTrace($traceId){
-    echo $traceId;
     global $conn;
     $query = "DELETE 
           FROM traces
@@ -40,6 +47,40 @@ function deleteTrace($traceId){
       $result->execute();
       $result->close();
     }
+    else{
+      trigger_error("Query Failed! SQL: $query - Error: ".mysqli_error($conn), E_USER_ERROR);
+    }
   $conn->close();
 }
+
+
+function updateAppName($arguments){
+
+    global $conn;
+    $query = "UPDATE applications 
+          SET application = REPLACE(application,?,?) 
+          WHERE username = ?";
+    if($result = $conn->prepare($query)){
+      $result->bind_param('sss',$arguments[1],$arguments[2],$arguments[0]);
+      $result->execute();
+      $result->close();
+    }
+    else{
+      trigger_error("Query Failed! SQL: $query - Error: ".mysqli_error($conn), E_USER_ERROR);
+    }
+    $query = "UPDATE traces 
+      SET application = REPLACE(application,?,?)
+      WHERE username = ?";
+    if($result = $conn->prepare($query)){
+      $result->bind_param('sss',$arguments[1],$arguments[2],$arguments[0]);
+      $result->execute();
+      $result->close();
+    }
+    else{
+      trigger_error("Query Failed! SQL: $query - Error: ".mysqli_error($conn), E_USER_ERROR);
+    }
+   
+  $conn->close();
+}
+
 ?>
