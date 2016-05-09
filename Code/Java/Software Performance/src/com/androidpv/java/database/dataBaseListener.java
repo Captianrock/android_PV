@@ -1,6 +1,7 @@
 package com.androidpv.java.database;
 
 import com.androidpv.java.gui.DataSubmit;
+import com.androidpv.java.xposed.MBConstants;
 
 import javax.swing.*;
 import java.io.*;
@@ -180,7 +181,7 @@ public class dataBaseListener {
                             if (splitline.length == 4) {
                                 String[] temp = splitline[0].split(" ");
                                 String methodName = splitline[1];
-                                String packageName = temp[temp.length - 1];
+                                String packageName = temp[temp.length - 1].substring(MBConstants.LOGCAT_SEP.length());
                                 String currentName = packageName + "." + methodName;
                                 if (stack.containsKey(currentName)) {
                                     if (splitline[2].equals("methodStart")) {

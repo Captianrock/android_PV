@@ -11,9 +11,15 @@ public final class MBConstants {
     public static final String USER_DIR = "user.dir";
     public static final String ANDROID_TEST_DIR = "AndroidTest";
     public static final String BUILD_FAILED = "BUILD FAILED";
-    public static final String LOGCAT_SEP = "*!*";
+
+
+    // for data parsing (commandLine)
+    public static final String DIRTY_FILE = "dataOriginal.txt";
+    public static final String CLEAN_FILE = "data.txt";
+    public static final String DASHES = "-----------------";
 
     // To build module
+    public static final String LOGCAT_SEP = "*!*";
     public static final String FIRST_HALF = "package com.test;\n\n" +
             "import java.lang.reflect.Method;\n" +
             "import java.lang.reflect.Modifier;\n" +

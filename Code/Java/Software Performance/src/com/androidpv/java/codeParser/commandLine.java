@@ -18,6 +18,7 @@ public class commandLine {
     public commandLine(String adbPath ){
         this.adbPath = adbPath;
         this.getLogcat();
+        this.buildCleanFile();
     }
 
     private void getLogcat() {
@@ -32,7 +33,7 @@ public class commandLine {
         if (adb.exists()) {
             System.out.println("trueeeeee");
         }
-        File dataFile = new File(currentDir + "/data.txt");
+        File dataFile = new File(MBConstants.DIRTY_FILE);
         if (!dataFile.exists()) {
             try {
                 dataFile.createNewFile();
@@ -66,11 +67,64 @@ public class commandLine {
     }
 
 
+    /**
+     * Logcat will keep hooks from old module between reboots. We need to get data from most recent module.
+     * A new module is initialized in logcat with 17 dashes. This happens twice. Example:
+     *
+     * I/Xposed  ( 1672): -----------------
+     * I/Xposed  ( 1672): Added Xposed (/data/data/de.robv.android.xposed.installer/bin/XposedBridge.jar) to CLASSPATH.
+     * D/Xposed  ( 1672): Using structure member offsets for mode WITH_JIT
+     * I/Xposed  ( 1672): Found Xposed class 'de/robv/android/xposed/XposedBridge', now initializing
+     * I/Xposed  ( 1672): -----------------
+     *
+     * We run through dirty file until we hit 17 dashes twice. Because logcat is cleared after APK is installed, these
+     * dash pairs should only occur once in the logcat.
+     */
+    private void buildCleanFile() {
+
+        try {
+            String currentDir = System.getProperty("user.dir");
+
+            BufferedReader reader = new BufferedReader(new FileReader(MBConstants.DIRTY_FILE));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(MBConstants.CLEAN_FILE));
+            String line;
+            int dashesFound = 0;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(MBConstants.DASHES)) {
+                    dashesFound += 1;
+                }
+                if (dashesFound == 2) {
+                    // we are at the correct logcat section. create clean file
+                    writer.write(line + "\n");
+                }
+            }
+            reader.close();
+            writer.close();
+
+            if (dashesFound == 0) {
+                // won't always appear. Just transfer everything from dirty to clean
+                reader = new BufferedReader(new FileReader(MBConstants.DIRTY_FILE));
+                writer = new BufferedWriter(new FileWriter(MBConstants.CLEAN_FILE));
+                while ((line = reader.readLine()) != null) {
+                    writer.write(line + "\n");
+                }
+                reader.close();
+                writer.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     // read through data.txt to make sure everything worked
     public boolean parseData() {
         int methodCount = 0;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(MBConstants.CLEAN_FILE));
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.contains(MBConstants.LOGCAT_SEP)) {
