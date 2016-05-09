@@ -11,18 +11,17 @@ Code/Java/Software Performance/out/production/Software Performance/com/androidpv
 Code/Java/Software Performance/.gradle/2.2/taskArtifacts/cache.properties.lock
 *.bin
 Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileSnapshots.bin
-*.bin
+Code/Java/Software Performance/AndroidTest/build
+Code/Java/Software Performance/AndroidTest/.gradle
 *.lock
 Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileHashes.bin
 *.xml
 *.png
-*.jar
 Code/Java/Software Performance/AndroidTest/build/outputs/lint-results.html
 Code/Java/Software Performance/AndroidTest/build/outputs/lint-results_files/hololike.css
-*.txt
+
 Code/Java/Software Performance/AndroidTest/build/test-results/binary/testRelease/output.bin.idx
 *.idx
-Code/Java/Software Performance/AndroidTest/src/main/java/com/test/Tutorial.java
 *.apk
 Code/Java/Software Performance/AndroidTest/build/reports/tests/release/css/base-style.css
 *.js
@@ -40,11 +39,11 @@ Code/Java/Software Performance/AndroidTest/build/intermediates/dex/release/class
 *.aidl
 *.store
 Code/Java/Software Performance/AndroidTest/build/intermediates/resources/resources-debug.ap_
-*.css
 *.bin
 Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/outputFileStates.bin
 *.lock
-*.java
-Code/Java/Software Performance/AndroidTest/
-Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/cache.properties.lock
 Code/Website/images/Thumbs.db
+Code/Java/Software Performance/.idea/workspace.xml
+*.bin
+Code/Java/Software Performance/AndroidTest/.gradle/2.2/taskArtifacts/fileSnapshots.bin
+*.bin
