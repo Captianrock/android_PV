@@ -31,66 +31,48 @@ public final class MBConstants {
             "import de.robv.android.xposed.XposedBridge;\n" +
             "import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;\n\n" +
             "public class Tutorial implements IXposedHookLoadPackage {\n" +
-            "    long startTime, endTime;\n" +
-            "\n" +
+            "    long startTime, endTime;\n\n" +
             "    public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {\n" +
-            "        XposedBridge.log(\"" + LOGCAT_SEP + "Loaded app: \" + lpparam.packageName);\n" +
-            "        \n" +
+            "        XposedBridge.log(\"" + LOGCAT_SEP + "Loaded app: \" + lpparam.packageName);\n\n" +
             "        if (!(lpparam.packageName.equals(\"";
     public static final String ANOTHER = "\") || lpparam.packageName.equals(\"";
     public static final String SECOND_HALF = "\"))) {\n" +
             "            return;\n" +
-            "        }\n" +
-            "\n" +
+            "        }\n\n" +
             "        final XSharedPreferences pref = new XSharedPreferences(\"com.example.kim.softwareperformance\", \"user_settings\");\n" +
             "        pref.makeWorldReadable();\n" +
-            "        pref.reload();\n" +
-            "\n" +
-            "        func0(lpparam);\n" +
-            "\n" +
-            "    }\n" +
-            "\n" +
-            "\n" +
-            "    public void func0(final LoadPackageParam lpparam) throws Throwable {\n" +
-            "\n" +
-            "        DexFile dexFile = new DexFile(lpparam.appInfo.sourceDir);\n" +
-            "\n" +
+            "        pref.reload();\n\n" +
+            "        func0(lpparam);\n\n" +
+            "    }\n\n\n" +
+            "    public void func0(final LoadPackageParam lpparam) throws Throwable {\n\n" +
+            "        DexFile dexFile = new DexFile(lpparam.appInfo.sourceDir);\n\n" +
             "        Enumeration<String> classNames = dexFile.entries();\n" +
             "        while (classNames.hasMoreElements()) {\n" +
-            "            final String className = classNames.nextElement();\n" +
-            "\n" +
-            "\n" +
+            "            final String className = classNames.nextElement();\n\n\n" +
             "            if (className.startsWith(lpparam.packageName) // Only listen to package classes\n" +
             "                    && !className.contains(\"BuildConfig\") // Android class that isn't actually used\n" +
             "                    && !className.startsWith(lpparam.packageName + \".R$\") // ^ same here\n" +
             "                    && !className.equals(lpparam.packageName + \".R\")) {\n" +
-            "                final Class clazz = Class.forName(className, false, lpparam.classLoader);\n" +
-            "\n" +
+            "                final Class clazz = Class.forName(className, false, lpparam.classLoader);\n\n" +
             "                XposedBridge.hookAllConstructors(clazz, new XC_MethodHook() {\n" +
             "                    @Override\n" +
-            "                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n" +
-            "\n" +
+            "                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n\n" +
             "                        startTime = System.nanoTime();\n" +
             "                        XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                \".constructor::methodStart::\" + startTime);\n" +
-            "                    }\n" +
-            "\n" +
+            "                    }\n\n" +
             "                    @Override\n" +
-            "                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {\n" +
-            "\n" +
+            "                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {\n\n" +
             "                        endTime = System.nanoTime();\n" +
             "                        XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                \".constructor::methodEnd::\" + endTime);\n" +
             "                    }\n" +
-            "                });\n" +
-            "\n" +
+            "                });\n\n" +
             "                for (final Method method : clazz.getDeclaredMethods()) {\n" +
             "                    if (!Modifier.isAbstract(method.getModifiers())) {\n" +
-            "                        XposedBridge.hookMethod(method, new XC_MethodHook() {\n" +
-            "\n" +
+            "                        XposedBridge.hookMethod(method, new XC_MethodHook() {\n\n" +
             "                            @Override\n" +
-            "                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n" +
-            "\n" +
+            "                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {\n\n" +
             "                                Class<?>[] params = method.getParameterTypes();\n" +
             "                                String paramString = \"\";\n" +
             "                                for (int i = 0; i < params.length; i++) {\n" +
@@ -98,14 +80,12 @@ public final class MBConstants {
             "                                        paramString += \", \";\n" +
             "                                    }\n" +
             "                                    paramString += params[i].getSimpleName();\n" +
-            "                                }\n" +
-            "\n" +
+            "                                }\n\n" +
             "                                startTime = System.nanoTime();\n" +
             "                                XposedBridge.log(\"" + LOGCAT_SEP + "\" + clazz.getPackage().getName() + \"::\" + clazz.getSimpleName() +\n" +
             "                                        \".\" + method.getName() + \"(\" + paramString +\n" +
             "                                        \")::methodStart::\" + startTime);\n" +
-            "                            }\n" +
-            "\n" +
+            "                            }\n\n" +
             "                            @Override\n" +
             "                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {\n" +
             "\n" +
