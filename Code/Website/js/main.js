@@ -14,8 +14,6 @@ function buildCSV() {
 		str += line + '\r\n';
 	}
 
-	alert(str);
-
 	var csvContent = "data:text/csv;charset=utf-8," + str;
 
 	var encodedUri = encodeURI(csvContent);
@@ -44,4 +42,26 @@ function buildPDF() {
 
 	doc.save('Test.pdf');
 	
+}
+
+function checkFilter(){
+	var checkboxes = document.getElementById("checkboxList").getElementsByTagName("input");
+	var checkboxesChecked = [];
+	// loop over them all
+	for (var i=0; i<checkboxes.length; i++) {
+	 // And stick the checked ones onto an array...
+	 if (checkboxes[i].checked) {
+	 	checkboxesChecked.push(checkboxes[i]);
+	 }
+	}
+	// Return the array if it is non-empty, or null
+	var selectionList = document.getElementById("selectionResponse");
+	var stringofPackages = "";
+	console.log(checkboxesChecked);
+	for (var j = 0; j < checkboxesChecked.length; j++){
+		stringofPackages += '(\''+checkboxesChecked[j].id+'\'),';
+	}
+	stringofPackages = stringofPackages.slice(0, -1);
+	console.log(stringofPackages);
+	selectionList.setAttribute('href','charts.php?trace='+traceID+'&package='+stringofPackages);
 }

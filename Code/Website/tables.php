@@ -5,9 +5,9 @@ require_once 'classes/methodExec.php';
 $membership->confirmMember();
 
 $methodExecVar = new methodExec();
-if (isset($_GET['trace']))
+if (isset($_GET['trace']) && isset($_GET['package']))
 {
-    $traceData = $methodExecVar->getTimes($_GET['trace']);
+    $traceData = $methodExecVar->getTimes($_GET['trace'],$_GET['package']);
 }
 
 if (strpos($_GET['trace'], $_SESSION['user']) === false)

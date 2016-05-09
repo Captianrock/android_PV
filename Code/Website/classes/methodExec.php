@@ -13,22 +13,36 @@ class methodExec {
 
 	function getTimes($time,$selection){
 
+		echo $selection;
+		$packageList = [];
 		$timesList = [];
+		$tablequery = "
+		CREATE TEMPORARY TABLE temp_table_1 (
+      	`package` varchar(500)
+    	)
+  		";  
+  		$insertQuery = "INSERT INTO temp_table_1 (package)
+  		VALUES ".$selection;
 
-		$example = '(com.package),(alton.kim1)';
-		$tablequery = "DECLARE @listOfIDs table (package varchar(500));
-		INSERT @listOfIDs(id) values ?";  
-		if($create = $this->conn->prepare($tablequery)){
-			$result->bind_param('s',$example);
-			$result->execute();
-			$result->close();	
-		}
-		if($test = $this->conn->query("SELECT * FROM @listOfIDs")){
-			echo($test);
-		}
-		/*$query = "SELECT *
+  		$selectQ = "SELECT * FROM temp_table_1";
+
+		$query = "SELECT *
 					FROM data
-					WHERE traceId=? AND data.package in (SELECT id FROM @listofIDs";
+					WHERE traceId=? AND data.package in (SELECT package FROM temp_table_1)";
+					
+		if($result = $this->conn->query($tablequery)){
+			echo "Temp Table Created\n";
+		}
+		else{
+			trigger_error("Query Failed! SQL: $tablequery - Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		}
+
+		if($test = $this->conn->query($insertQuery)){
+			echo "Insert Success\n";
+		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		}
 
 		if($result = $this->conn->prepare($query)){
 			$result->bind_param('s',$time);
@@ -38,10 +52,14 @@ class methodExec {
 				$timesList[] = array($traceId,$name,$methodStart,$methodEnd,$package);
 			}
 			$result->close();
-		}*/
+		}
+		else{
+			trigger_error("Query Failed! SQL: $query- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		}
 
    		$this->conn->close();
 
+		//return $timesList;
 		return $timesList;
 	}
 	function getPackage($time){

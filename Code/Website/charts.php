@@ -3,12 +3,10 @@ require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
 $membership->confirmMember();
-
-if (isset($_GET['trace']))
+if (isset($_GET['package']) && isset($_GET['trace']))
 {
-    $traceData = $methodExecVar->getTimes($_GET['trace']);
+    $traceData = $methodExecVar->getTimes($_GET['trace'],$_GET['package']);
 }
-
 if (strpos($_GET['trace'], $_SESSION['user']) === false)
 {
 	$redirect = 'location: index.php?user=' . $_SESSION['user'];
@@ -18,7 +16,7 @@ if (strpos($_GET['trace'], $_SESSION['user']) === false)
 $userName = $_SESSION['user'];
 ?>
 
-<script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
+<script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>; console.log(jsArray);</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +83,7 @@ $userName = $_SESSION['user'];
                         <a href="package.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-database"></i> Packages</a>
                     </li>
 					<li>
-                        <a href="tables.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
+                        <a href="tables.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
                     </li>
 					<li>
 						<a role="button" id="csvButton" onclick="buildCSV()"> <i class="fa fa-fw fa-file"></i> Make CSV</a>
