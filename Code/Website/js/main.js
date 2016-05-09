@@ -47,23 +47,24 @@ function buildPDF() {
 function checkFilter(){
 	var checkboxes = document.getElementById("checkboxList").getElementsByTagName("input");
 	var checkboxesChecked = [];
-	// loop over them all
+
 	for (var i=0; i<checkboxes.length; i++) {
-	 // And stick the checked ones onto an array...
-	 if (checkboxes[i].checked) {
-	 	checkboxesChecked.push(checkboxes[i]);
-	 }
+		if (checkboxes[i].checked) {
+			checkboxesChecked.push(checkboxes[i]);
+		}
 	}
-	// Return the array if it is non-empty, or null
-	var selectionList = document.getElementById("selectionResponse");
-	var stringofPackages = "";
-	console.log(checkboxesChecked);
-	for (var j = 0; j < checkboxesChecked.length; j++){
-		stringofPackages += '(\''+checkboxesChecked[j].id+'\'),';
+	if(checkboxesChecked.length > 0){
+		var selectionList = document.getElementById("selectionResponse");
+		var stringofPackages = "";
+		for (var j = 0; j < checkboxesChecked.length; j++){
+			stringofPackages += '(\''+checkboxesChecked[j].id+'\'),';
+		}
+		stringofPackages = stringofPackages.slice(0, -1);
+		selectionList.setAttribute('href','charts.php?trace='+traceID+'&package='+stringofPackages);
 	}
-	stringofPackages = stringofPackages.slice(0, -1);
-	console.log(stringofPackages);
-	selectionList.setAttribute('href','charts.php?trace='+traceID+'&package='+stringofPackages);
+	else{
+		alert("Please select at least one package!");
+	}
 }
 function toggle(source) {
   checkboxes = document.getElementsByName('checkPackage');
@@ -75,4 +76,73 @@ function toggle(source) {
 		checkboxes[i].checked = true;
 	}
   }
+}
+function reNameAppClick(current){
+  currentApp = current;
+  document.getElementById('nameInput').value = currentApp;
+
+  $('#renameModal').modal('show');
+  console.log(currentApp);
+}
+function reNameApp(){
+  var newAppName = document.getElementById('nameInput').value;
+	console.log("rename",currentApp,newAppName);
+  if(currentApp != newAppName){
+	  $.ajax({
+	        type: "POST",
+	        url: 'classes/databaseChanges.php',
+	        dataType: 'json',
+	        data: {functionname: 'updateAppName', arguments: [name,currentApp,newAppName]},
+	      complete: function(jqXHR, textStatus) {
+	          console.log('AJAX reName call complete');
+	          console.log(jqXHR);
+	      },
+	        success: function (obj, textstatus) {
+	                      if( !('error' in obj) ) {
+	                        console.log("SUCCESS");
+	                      }
+	                      else {
+	                        console.log(obj.error);
+	                      }
+	              }
+	    });
+	    var currentLabel = document.getElementById(currentApp);
+	    currentLabel.setAttribute('id',newAppName);
+	    currentLabel.innerHTML = newAppName;
+
+	    var currentButton = document.getElementById(currentApp+"CURRENT");
+	    currentButton.setAttribute('id',newAppName);
+	    currentButton.setAttribute('ondblclick','reNameAppClick(\'' + newAppName + '\')');
+
+	    var currentLink = document.getElementById(currentApp+"LINK");
+		currentLink.setAttribute('id',newAppName);
+		currentLink.setAttribute('href',"trace.php?app=".concat(newAppName));
+	}
+}
+
+function deleteTrace(traceID){
+	console.log("DELETE",traceID);
+	$.ajax({
+	    type: "POST",
+	    url: 'classes/databaseChanges.php',
+	    dataType: 'json',
+	    data: {functionname: 'deleteTrace', arguments: traceID},
+		complete: function(jqXHR, textStatus) {
+		    console.log('AJAX Delete call complete');
+		},
+	    success: function (obj, textstatus) {
+	                  if( !('error' in obj) ) {
+	                  	console.log("SUCCESS");
+	                  }
+	                  else {
+	                  	console.log(obj.error);
+	                  }
+	    			}
+	});
+	for(var i = 0; i < trace2.length; i++){
+		if(trace2[i][0] == traceID){
+			trace2.splice(i,1);
+		}	
+	}
+ 	selectSort('traceList');
 }

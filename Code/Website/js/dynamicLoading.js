@@ -92,12 +92,13 @@ function addButton(newRowId,appNameHeader){
 	var newPadding = document.createElement('div');
 	newPadding.setAttribute('class','col-md-4');
 	newPadding.setAttribute('style','padding-top: 50px; padding-left: 20px; padding-right: 20px;');
-	newPadding.setAttribute('ondblclick','reNameApp(\'' + appNameHeader + '\')');
 
 	newRow.appendChild(newPadding);
 
 	var newPanel = document.createElement('div');
 	newPanel.setAttribute('class','panel panel-primary');
+  newPanel.setAttribute('id',appNameHeader+"CURRENT");
+  newPanel.setAttribute('ondblclick','reNameAppClick(\'' + appNameHeader + '\')');
 
 	newPadding.appendChild(newPanel);
 
@@ -128,14 +129,8 @@ function addButton(newRowId,appNameHeader){
 
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
-
-	var appNameArray = appNameHeader.split(/(?=[A-Z])/);
-	var realName = "";
-	for(var j = 0; j < appNameArray.length; j++){
-		realName += appNameArray[j] + " ";
-	}
-	appName.innerHTML = realName;
-
+	appName.innerHTML = appNameHeader;
+  appName.setAttribute('id',appNameHeader);
 	newCol2.appendChild(appName);
 
 	var link = document.createElement('div');
@@ -144,7 +139,8 @@ function addButton(newRowId,appNameHeader){
 	newCol2.appendChild(link);
 
 	var newA = document.createElement('a');
-	console.log(appNameHeader);
+
+  newA.setAttribute('id',appNameHeader+"LINK");
 	newA.setAttribute('href',"trace.php?app=".concat(appNameHeader));
 
 	newPanel.appendChild(newA);
@@ -197,41 +193,6 @@ function addPackage(){
     checkBox.appendChild(newLabel);
   }
 }
-
-function reNameApp(appID){
-	console.log("rename",appID);
-
-
-}
-
-function deleteTrace(traceID){
-	console.log("DELETE",traceID);
-	$.ajax({
-	    type: "POST",
-	    url: 'classes/databaseChanges.php',
-	    dataType: 'json',
-	    data: {functionname: 'deleteTrace', arguments: traceID},
-		complete: function(jqXHR, textStatus) {
-		    console.log('AJAX call complete');
-		    traceID
-		},
-	    success: function (obj, textstatus) {
-	                  if( !('error' in obj) ) {
-	                  	console.log("SUCCESS");
-	                  }
-	                  else {
-	                  	console.log(obj.error);
-	                  }
-	    			}
-	});
-	for(var i = 0; i < trace2.length; i++){
-		if(trace2[i][0] == traceID){
-			trace2.splice(i,1);
-		}	
-	}
- 	selectSort('traceList');
-}
-
 function selectSort(elementID, page2, sort2)
 {
     sort2 = sort2 || sort;

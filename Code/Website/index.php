@@ -16,7 +16,10 @@ if($_GET['user'] != $_SESSION['user'])
     header($redirect);
 } 
 ?>
-<script type="text/javascript">var apps = <?php echo json_encode($appList); ?>;</script> 
+<script type="text/javascript">
+var apps = <?php echo json_encode($appList); ?>;
+var name = '<?php echo $_GET['user']; ?>'; 
+var currentApp; </script> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -134,11 +137,11 @@ if($_GET['user'] != $_SESSION['user'])
            <div class="modal-content">
                <!-- Modal Header -->
                <div class="modal-header">
-                   <button type="button" class="close" 
+                   <a class="close" 
                       data-dismiss="modal">
                           <span aria-hidden="true">&times;</span>
                           <span class="sr-only">Close</span>
-                   </button>
+                   </a>
                    <h4 class="modal-title" id="myModalLabel">
                        Change App Name
                    </h4>
@@ -157,7 +160,7 @@ if($_GET['user'] != $_SESSION['user'])
                <!-- Modal Footer -->
                <div class="modal-footer">
                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                   <button type="button" class="btn btn-primary">Save changes</button>
+                   <button type="button" class="btn btn-primary" onClick="reNameApp()" data-dismiss="modal" >Save changes</button>
                </div>
            </div>
        </div>
@@ -166,9 +169,6 @@ if($_GET['user'] != $_SESSION['user'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
     <script type="text/javascript">
-    $('#rowContainer').on('dblclick', 'div', function(e) {
-         $('#renameModal').modal('show');
-    });
     </script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
@@ -176,7 +176,6 @@ if($_GET['user'] != $_SESSION['user'])
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
     <script>addApp();</script>
-    <!--<script type="text/javascript">var jsArray = <?php echo json_encode($timesList); ?>;</script> -->
 
 </body>
 
