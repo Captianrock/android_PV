@@ -322,3 +322,7 @@ function oldAll(elementID)
 
     addTrace();
 }
+
+function getMaxMethod(){
+  
+}

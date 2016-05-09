@@ -87,7 +87,7 @@ $userName = $_SESSION['user'];
                         <a href="package.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-database"></i> Packages</a>
                     </li>
 					<li>
-                        <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                         <a href="charts.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
 					<li>
 						<a role="button" id="csvButton" onclick="buildCSV()"> <i class="fa fa-fw fa-file"></i> Make CSV</a>

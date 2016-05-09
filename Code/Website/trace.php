@@ -34,6 +34,7 @@ $_SESSION['app'] = $_GET['app'];
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/style2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -102,6 +103,14 @@ $_SESSION['app'] = $_GET['app'];
                             </li>
                         </ol>
                     </div>
+                </div>
+                <div class="row">
+                    <h2 class="animated fadeInUp" style="text-align: center">
+                        Browse Individual Traces
+                    </h3>
+                    <h3 class="animated fadeInUp" style="text-align: center">
+                        Out of all the traces, the most time consuming method on average is ... with a computational time of ...
+                    </h3>
                 </div>
                 <!-- /.row -->
 

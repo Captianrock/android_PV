@@ -82,4 +82,5 @@ function updateAppName($arguments){
    
   $conn->close();
 }
+
 ?>

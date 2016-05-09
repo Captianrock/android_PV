@@ -146,3 +146,4 @@ function deleteTrace(traceID){
 	}
  	selectSort('traceList');
 }
+
