@@ -141,10 +141,26 @@ function addButton(newRowId, appNameHeader) {
 
 	newInsideRow.appendChild(newCol);
 
-	var newClass = document.createElement('center');
 	var newImg = document.createElement('i');
-	newImg.setAttribute('class','fa fa-area-chart fa-5x');
-	newClass.appendChild(newImg);
+
+	rando = Math.floor((Math.random() * 4) + 1);
+	if (rando == 1) {
+	    newImg.setAttribute('class', 'fa fa-bar-chart fa-5x');
+	}
+	else if (rando == 2) {
+	    newImg.setAttribute('class', 'fa fa-area-chart fa-5x');
+	}
+	else if (rando == 3) {
+	    newImg.setAttribute('class', 'fa fa-line-chart fa-5x');
+	}
+	else if (rando == 4) {
+	    newImg.setAttribute('class', 'fa fa-pie-chart fa-5x');
+	}
+	else {
+	    newImg.setAttribute('class', 'fa fa-pie-chart fa-5x');
+	}
+
+	newCol.appendChild(newImg);
 
 	var newCol2 = document.createElement('div');
 	newCol2.setAttribute('class','col-xs-9 text-right');
