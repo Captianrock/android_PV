@@ -11,7 +11,7 @@ if (isset($_GET['trace']))
     $packageData = $methodExecVar->getPackage($_GET['trace']);
 }
 ?>
-<script type="text/javascript">var packages = <?php echo json_encode(str_replace('"','\'',$packageData)); ?>;</script>
+<script type="text/javascript">var packages = <?php echo json_encode(str_replace('"','\'',$packageData));?>; var traceID = <?php echo json_encode($_GET['trace']); ?>;</script>
 
 <!DOCTYPE html>
 
@@ -119,10 +119,10 @@ if (isset($_GET['trace']))
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Packages <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a id="rowSelectAll">Select All</a>
+                                                <a onClick="toggle('select')">Select All</a>
                                             </li>
                                             <li>
-                                                <a id="rowDeselectAll">Deselect All</a>
+                                                <a onClick="toggle('unCheck')">Deselect All</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -134,7 +134,7 @@ if (isset($_GET['trace']))
                             <div id="checkboxList">
 
                             </div>
-							<a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">View Charts</button></a>
+							<a id="selectionResponse" href=""><button type="button" class="btn btn-lg btn-danger" onClick="checkFilter()" style="width:100%; border-radius:2px;">View Charts</button></a>
                         </div>
                     </div>
                 </div>
