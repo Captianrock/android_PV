@@ -8,11 +8,23 @@ $userName = $_SESSION['user'];
 
 if (isset($_GET['app'])){
     $traceData = $methodExecVar->getTraces($_GET['app'],$_SESSION['user']);
+    $stringofTraces = "";
+    for ($x = 0; $x < count($traceData); $x++) {
+        $tempResult = implode(",", $traceData[$x]);
+        $tempResult2 = explode(",", $tempResult);
+        $stringofTraces .= '(\''.$tempResult2[0].'\'),';
+    } 
+    $stringofTraces = chop($stringofTraces,',');
+
+    $maxMethod = $methodExecVar->getMaxMethod($stringofTraces);
 } 
+
+
 
 $_SESSION['app'] = $_GET['app'];
 ?>
-<script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;</script>
+<script type="text/javascript">var traces = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>;
+var maxMethod = <?php echo json_encode($maxMethod); ?>;</script>
 
 <!DOCTYPE html>
 
@@ -108,8 +120,7 @@ $_SESSION['app'] = $_GET['app'];
                     <h2 class="animated fadeInUp" style="text-align: center">
                         Browse Individual Traces
                     </h3>
-                    <h3 class="animated fadeInUp" style="text-align: center">
-                        Out of all the traces, the most time consuming method on average is ... with a computational time of ...
+                    <h3 id="fillMax" class="animated fadeInUp" style="text-align: center">
                     </h3>
                 </div>
                 <!-- /.row -->
@@ -168,6 +179,7 @@ $_SESSION['app'] = $_GET['app'];
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
     <script>selectSort('traceList', '0', 'new');</script>
+    <script>getMaxMethod(maxMethod);</script>
 </body>
 
 </html>

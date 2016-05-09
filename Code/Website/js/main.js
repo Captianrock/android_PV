@@ -147,3 +147,13 @@ function deleteTrace(traceID){
  	selectSort('traceList');
 }
 
+function getMax(traceList){
+	if(traceList.length > 0){
+		var stringofTraces = "";
+		for (var j = 0; j < traceList.length; j++){
+			stringofTraces += '(\''+traceList[j].id+'\'),';
+		}
+		stringofTraces = stringofTraces.slice(0, -1);
+	}
+	return stringofTraces;	
+}

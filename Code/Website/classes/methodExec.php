@@ -99,7 +99,6 @@ class methodExec {
 			}
 			$result->close();
 		}
-   		$this->conn->close();
 		return $traceList;
 	}
 
@@ -122,7 +121,7 @@ class methodExec {
 	}
 	function getMaxMethod($traceList){
 		$resultList = [];
-		
+		echo($traceList);
 		$tablequery = "
 		CREATE TEMPORARY TABLE temp_list (
       	`id` varchar(500)
@@ -135,10 +134,12 @@ class methodExec {
 		$query = "SELECT methodName, timeDiff
 		FROM (SELECT methodName, SUM(timeEnd - timeStart) AS timeDiff
 				FROM data
-				WHERE traceId IN (SELECT * FROM temp_list)
+				WHERE traceId IN (SELECT id FROM temp_list)
 				GROUP BY methodName) as times
         ORDER BY times.timeDiff DESC LIMIT 1
 		";
+
+		$dumb = "SELECT * FROM temp_list";
 
   		if($result = $this->conn->query($tablequery)){
 			echo "Temp Table Created\n";
@@ -152,15 +153,23 @@ class methodExec {
 		else{
 			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
 		} 
+		if($agh = $this->conn->query($dumb)){
+			echo "Dumb Success\n";
+			echo($agh->fetch_row()[0]);
+		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
 		if($res = $this->conn->query($query)){
 			echo "Select Success\n";
-			while($res->fetch()){
-				$resultList[] = mysqli_fetch_row($res);
+			while($save = $res->fetch_row()){
+				$resultList[] = $save;
 			}
 		}
 		else{
 			trigger_error("Query Failed! SQL: $query- Error: ".mysqli_error($this->conn), E_USER_ERROR);
 		} 
+
 		return $resultList;
 
 	}
