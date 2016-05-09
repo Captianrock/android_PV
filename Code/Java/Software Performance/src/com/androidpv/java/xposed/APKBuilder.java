@@ -83,7 +83,7 @@ public class APKBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "local.properties")));
-//            sdkLoc = sdkLoc.replace("\\", "\\\\");
+            sdkLoc = sdkLoc.replace("\\", "\\\\\\\\");
 //            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
             writer.println("sdk.dir = " + sdkLoc);
             writer.close();
