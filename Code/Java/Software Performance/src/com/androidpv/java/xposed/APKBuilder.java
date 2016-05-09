@@ -83,8 +83,9 @@ public class APKBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "local.properties")));
-            sdkLoc = sdkLoc.replace("\\", "\\\\");
-            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
+//            sdkLoc = sdkLoc.replace("\\", "\\\\");
+//            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
+            writer.println("sdk.dir = " + sdkLoc);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -210,6 +211,40 @@ public class APKBuilder {
             return false;
         }
 
+        clearLogcat(adbLoc, slash);
+
         return true;
     }
+
+
+    private void clearLogcat(String adbLoc, String slash) {
+        List<String> clearCommands = new ArrayList<>();
+        ProcessBuilder clearPB = new ProcessBuilder();
+        File adbLocFile = new File(adbLoc);
+        clearPB.directory(adbLocFile);
+        File adb = new File(adbLoc + slash + "adb");
+
+        clearCommands.add(clearPB.directory().getAbsolutePath() + slash + "adb");
+        clearCommands.add("logcat");
+        clearCommands.add("-c");
+        clearPB.command(clearCommands);
+        System.out.println(clearPB.directory().getAbsolutePath());
+
+        try {
+            Process p = clearPB.start();
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String s;
+            System.out.println(p);
+            while ((s = reader.readLine()) != null) {
+                System.out.println(s);
+            }
+            System.out.println("cleared?");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package com.androidpv.java.gui;
 
 import com.androidpv.java.codeParser.commandLine;
 import com.androidpv.java.database.dataBaseListener;
+import com.androidpv.java.xposed.APKBuilder;
 
 import javax.swing.*;
 
@@ -39,13 +40,24 @@ public class DataSubmit extends JFrame{
         });
 
         stopDataBttn.addActionListener(ae ->{
-                new commandLine(adbPath);
-                dataCheck = true;
-                dataButton.setVisible(true);
-                stopDataBttn.setVisible(false);
 
+            // check that device is still connected
+            APKBuilder builder = new APKBuilder();
+            boolean ping = builder.tryPing(adbPath);
+            if (!ping) {
+                JOptionPane.showMessageDialog(null,"Please Connect ADB Device. Data may be\ncorrupted if device was disconnected.");
+            }
+            else {
+                // add check after commandLine to make sure data has no errors
+                commandLine cmdLine = new commandLine(adbPath);
+                boolean success = cmdLine.parseData();
+                if (success) {
+                    dataCheck = true;
+                    dataButton.setVisible(true);
+                    stopDataBttn.setVisible(false);
                 }
-        );
+            }
+        });
         // Back button to previous view
         backButton.addActionListener(ae -> {
             PVView.getInstance().setVisible(true);
