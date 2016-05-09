@@ -16,13 +16,10 @@ public class APKBuilder {
     public APKBuilder() { }
 
     public boolean tryPing(String adbLoc) {
-        boolean success = ping(adbLoc, "/");
+        boolean success = ping(adbLoc, File.separator);
 
         if (!success) {
-            success = ping(adbLoc, "\\");
-            if (!success) {
-                return false;
-            }
+            return false;
         }
         return true;
     }
@@ -67,13 +64,17 @@ public class APKBuilder {
     }
 
     public boolean tryToBuildAPK(String adbLoc, String sdkLoc) {
-        boolean success = buildAPK(adbLoc, sdkLoc, "/", "gradlew");
+        String gradle;
+        if (File.separator.equals("/")) {
+            gradle = "gradlew";
+        }
+        else {
+            gradle = "gradlew.bat";
+        }
+        boolean success = buildAPK(adbLoc, sdkLoc, File.separator, gradle);
 
         if (!success) {
-            success = buildAPK(adbLoc, sdkLoc, "\\", "gradlew.bat");
-            if (!success) {
                 return false;
-            }
         }
         return true;
     }
@@ -83,8 +84,9 @@ public class APKBuilder {
 
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(currentDir + slash + MBConstants.ANDROID_TEST_DIR + slash + "local.properties")));
-            sdkLoc = sdkLoc.replace("\\", "\\\\\\\\");
-//            writer.println("sdk.dir = C:\\\\Users\\\\kim\\\\AppData\\\\Local\\\\Android\\\\android-sdk");
+            if (File.separator.equals("\\")) {
+                sdkLoc = sdkLoc.replace(File.separator, "\\\\");
+            }
             writer.println("sdk.dir = " + sdkLoc);
             writer.close();
         } catch (IOException e) {
@@ -165,13 +167,10 @@ public class APKBuilder {
             return false;
         }
 
-        boolean success = installAPK(adbLoc, apkLoc, "/");
+        boolean success = installAPK(adbLoc, apkLoc, File.separator);
 
         if (!success) {
-            success = installAPK(adbLoc, apkLoc, "\\");
-            if (!success) {
-                return false;
-            }
+            return false;
         }
         return true;
     }
