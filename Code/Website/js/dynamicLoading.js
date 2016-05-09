@@ -86,7 +86,8 @@ function addRow(rowNumber){
 }
 
 
-function addButton(newRowId,appNameHeader){
+function addButton(newRowId, appNameHeader) {
+    var rando = Math.floor((Math.random() * 5) + 1);
 	var newRow = document.getElementById(newRowId);
 
 	var newPadding = document.createElement('div');
@@ -96,9 +97,32 @@ function addButton(newRowId,appNameHeader){
 	newRow.appendChild(newPadding);
 
 	var newPanel = document.createElement('div');
-	newPanel.setAttribute('class','panel panel-primary');
-  newPanel.setAttribute('id',appNameHeader+"CURRENT");
-  newPanel.setAttribute('ondblclick','reNameAppClick(\'' + appNameHeader + '\')');
+	if (rando == 1)
+	{
+	    newPanel.setAttribute('class','panel panel-primary');
+	}
+	else if (rando == 2)
+	{
+	    newPanel.setAttribute('class', 'panel panel-green');
+	}
+	else if (rando == 3)
+	{
+	    newPanel.setAttribute('class', 'panel panel-yellow');
+	}
+	else if (rando == 4)
+	{
+	    newPanel.setAttribute('class', 'panel panel-red');
+	}
+	else if (rando == 5)
+	{
+	    newPanel.setAttribute('class', 'panel panel-purple');
+	}
+	else
+	{
+	    newPanel.setAttribute('class','panel panel-primary');
+	}
+    newPanel.setAttribute('id',appNameHeader+"CURRENT");
+    newPanel.setAttribute('ondblclick','reNameAppClick(\'' + appNameHeader + '\')');
 
 	newPadding.appendChild(newPanel);
 
@@ -117,10 +141,26 @@ function addButton(newRowId,appNameHeader){
 
 	newInsideRow.appendChild(newCol);
 
-	var newClass = document.createElement('center');
 	var newImg = document.createElement('i');
-	newImg.setAttribute('class','fa fa-area-chart fa-5x');
-	newClass.appendChild(newImg);
+
+	rando = Math.floor((Math.random() * 4) + 1);
+	if (rando == 1) {
+	    newImg.setAttribute('class', 'fa fa-bar-chart fa-5x');
+	}
+	else if (rando == 2) {
+	    newImg.setAttribute('class', 'fa fa-area-chart fa-5x');
+	}
+	else if (rando == 3) {
+	    newImg.setAttribute('class', 'fa fa-line-chart fa-5x');
+	}
+	else if (rando == 4) {
+	    newImg.setAttribute('class', 'fa fa-pie-chart fa-5x');
+	}
+	else {
+	    newImg.setAttribute('class', 'fa fa-pie-chart fa-5x');
+	}
+
+	newCol.appendChild(newImg);
 
 	var newCol2 = document.createElement('div');
 	newCol2.setAttribute('class','col-xs-9 text-right');
@@ -130,7 +170,7 @@ function addButton(newRowId,appNameHeader){
 	var appName = document.createElement('div');
 	appName.setAttribute('class','huge');
 	appName.innerHTML = appNameHeader;
-  appName.setAttribute('id',appNameHeader);
+    appName.setAttribute('id',appNameHeader);
 	newCol2.appendChild(appName);
 
 	var link = document.createElement('div');
@@ -140,7 +180,7 @@ function addButton(newRowId,appNameHeader){
 
 	var newA = document.createElement('a');
 
-  newA.setAttribute('id',appNameHeader+"LINK");
+    newA.setAttribute('id',appNameHeader+"LINK");
 	newA.setAttribute('href',"trace.php?app=".concat(appNameHeader));
 
 	newPanel.appendChild(newA);
