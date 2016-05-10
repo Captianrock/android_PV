@@ -120,7 +120,8 @@ var maxMethod = <?php echo json_encode($maxMethod); ?>;</script>
                     <h2 class="animated fadeInUp" style="text-align: center">
                         Browse Individual Traces
                     </h3>
-                    <h4 id="fillMax" class="animated fadeInUp" style="text-align: center"></h4>
+                    <h3 id="fillMax" class="animated fadeInUp" style="text-align: center">
+                    </h3>
                 </div>
                 <!-- /.row -->
 

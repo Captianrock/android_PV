@@ -2,8 +2,11 @@
 require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
+$membership = New membership();
+
 $membership->confirmMember();
 
+$methodExecVar = new methodExec();
 if (isset($_GET['package']) && isset($_GET['trace']))
 {
     $traceData = $methodExecVar->getTimes($_GET['trace'],$_GET['package']);
@@ -83,10 +86,10 @@ $userName = $_SESSION['user'];
                         <a href="package.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-database"></i> Packages</a>
                     </li>
 					<li>
-                        <a href="charts.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                        <a href="charts.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
 					<li>
-                        <a href="tables.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
+                        <a href="tables.php?trace=<?php echo $_GET['trace'] ?>"><i class="fa fa-fw fa-table"></i> Tables</a>
                     </li>
 					<li>
 						<a role="button" id="csvButton" onclick="buildCSV()"> <i class="fa fa-fw fa-file"></i> Make CSV</a>
@@ -123,7 +126,7 @@ $userName = $_SESSION['user'];
 								<i class="fa fa-database"></i> <a href="package.php?trace=<?php echo $_GET['trace'] ?>">Packages</a>
 							</li>
                             <li>
-                                <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>">Charts</a>
+                                <i class="fa fa-bar-chart-o"></i> <a href="charts.php?trace=<?php echo $_GET['trace'] ?>">Charts</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-bar-chart-o"></i> Column Chart

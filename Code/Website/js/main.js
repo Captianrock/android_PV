@@ -107,15 +107,15 @@ function reNameApp(){
 	              }
 	    });
 	    var currentLabel = document.getElementById(currentApp);
+	    var currentButton = document.getElementById(currentApp+"CURRENT");
+	    var currentLink = document.getElementById(currentApp+"LINK");
 	    currentLabel.setAttribute('id',newAppName);
 	    currentLabel.innerHTML = newAppName;
 
-	    var currentButton = document.getElementById(currentApp+"CURRENT");
-	    currentButton.setAttribute('id',newAppName);
+	    currentButton.setAttribute('id',newAppName+"CURRENT");
 	    currentButton.setAttribute('ondblclick','reNameAppClick(\'' + newAppName + '\')');
 
-	    var currentLink = document.getElementById(currentApp+"LINK");
-		currentLink.setAttribute('id',newAppName);
+		currentLink.setAttribute('id',newAppName+"LINK");
 		currentLink.setAttribute('href',"trace.php?app=".concat(newAppName));
 	}
 }

@@ -12,6 +12,8 @@ class methodExec {
 	}
 
 	function getTimes($time,$selection){
+
+		echo $selection;
 		$packageList = [];
 		$timesList = [];
 		$tablequery = "
@@ -28,11 +30,17 @@ class methodExec {
 					FROM data
 					WHERE traceId=? AND data.package in (SELECT package FROM temp_table_1)";
 
-		if(!$result = $this->conn->query($tablequery)){
+		if($result = $this->conn->query($tablequery)){
+			echo "Temp Table Created\n";
+		}
+		else{
 			trigger_error("Query Failed! SQL: $tablequery - Error: ".mysqli_error($this->conn), E_USER_ERROR);
 		}
 
-		if(!$test = $this->conn->query($insertQuery)){
+		if($test = $this->conn->query($insertQuery)){
+			echo "Insert Success\n";
+		}
+		else{
 			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
 		}
 
@@ -113,6 +121,7 @@ class methodExec {
 	}
 	function getMaxMethod($traceList){
 		$resultList = [];
+		echo($traceList);
 		$tablequery = "
 		CREATE TEMPORARY TABLE temp_list (
       	`id` varchar(500)
@@ -132,13 +141,27 @@ class methodExec {
 
 		$dumb = "SELECT * FROM temp_list";
 
-  		if(!$result = $this->conn->query($tablequery)){
+  		if($result = $this->conn->query($tablequery)){
+			echo "Temp Table Created\n";
+		}
+		else{
 			trigger_error("Query Failed! SQL: $tablequery - Error: ".mysqli_error($this->conn), E_USER_ERROR);
 		}
-		if(!$test = $this->conn->query($insertQuery)){
-			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		if($test = $this->conn->query($insertQuery)){
+			echo "Insert Success\n";
 		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
+		if($agh = $this->conn->query($dumb)){
+			echo "Dumb Success\n";
+			echo($agh->fetch_row()[0]);
+		}
+		else{
+			trigger_error("Query Failed! SQL: $insertQuery- Error: ".mysqli_error($this->conn), E_USER_ERROR);
+		} 
 		if($res = $this->conn->query($query)){
+			echo "Select Success\n";
 			while($save = $res->fetch_row()){
 				$resultList[] = $save;
 			}
