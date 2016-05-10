@@ -176,7 +176,17 @@ var currentApp; </script>
     <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script> 
     <script src="js/dynamicLoading.js"></script>
     <script>addApp();</script>
+    <script type="text/javascript"> 
 
+    function stopRKey(evt) { 
+      var evt = (evt) ? evt : ((event) ? event : null); 
+      var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+      if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+    } 
+
+    document.onkeypress = stopRKey; 
+
+    </script>
 </body>
 
 </html>

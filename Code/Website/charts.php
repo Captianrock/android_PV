@@ -3,12 +3,10 @@ require_once 'classes/membership.php';
 require_once 'classes/methodExec.php';
 
 $membership->confirmMember();
-
 if (isset($_GET['package']) && isset($_GET['trace']))
 {
     $traceData = $methodExecVar->getTimes($_GET['trace'],$_GET['package']);
 }
-
 if (strpos($_GET['trace'], $_SESSION['user']) === false)
 {
 	$redirect = 'location: index.php?user=' . $_SESSION['user'];
@@ -18,7 +16,7 @@ if (strpos($_GET['trace'], $_SESSION['user']) === false)
 $userName = $_SESSION['user'];
 ?>
 
-<script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>; </script>
+<script type="text/javascript">var jsArray = <?php echo json_encode(str_replace('"','\'',$traceData)); ?>; console.log(jsArray);</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -144,7 +142,7 @@ $userName = $_SESSION['user'];
                                 <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Bar Chart of Total Method Runtimes</h3>
                             </div>
                             <div class="panel-body" id="container2" style="min-height: 700px"></div>
-							<a href="barChart.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
+							<a href="barChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
                         </div>
                     </div>
                 </div>
@@ -157,7 +155,7 @@ $userName = $_SESSION['user'];
                                 <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Column Chart of Individual Method Runtimes</h3>
                             </div>
                             <div class="panel-body" id="container3" style="min-height: 1200px"></div>
-							<a href="columnChart.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
+							<a href="columnChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
                         </div>
                     </div>
                     <div class="col-lg-7">
@@ -166,7 +164,7 @@ $userName = $_SESSION['user'];
                                 <h3 class="panel-title"><i class="fa fa-pie-chart"></i> Pie Chart of Total and Individual Method Runtimes</h3>
                             </div>
                             <div class="panel-body" id="container" style="min-height: 1200px"></div>
-							<a href="pieChart.php?trace=<?php echo $_GET['trace'] ?>&package=<?php echo $_GET['package'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
+							<a href="pieChart.php?trace=<?php echo $_GET['trace'] ?>"><button type="button" class="btn btn-lg btn-danger" style="width:100%; border-radius:2px;">Click for larger view</button></a>
                         </div>
                     </div>
                 </div>
